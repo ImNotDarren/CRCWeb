@@ -5,12 +5,10 @@ var decoration = BoxDecoration(
     //   color: Colors.blue,
     //   width: 1.3,
     // ),
+    color: Colors.white,
     boxShadow: [
       BoxShadow(
-        color: Colors.grey.withOpacity(0.5),
-        spreadRadius: 2,
-        blurRadius: 5
-      )
+          color: Colors.grey.withOpacity(0.5), spreadRadius: 2, blurRadius: 5)
     ],
     borderRadius: BorderRadius.circular(10));
 
@@ -30,12 +28,13 @@ class LandingPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Container(
-                          width: (MediaQuery.of(context).size.width - 40) * 0.5,
-                          height: 200,
-                          decoration: decoration),
+                        width: (MediaQuery.of(context).size.width - 40) * 0.5,
+                        height: 200,
+                        decoration: decoration,
+                      ),
                     ],
-                  )
-                )
+                  ),
+                ),
               ],
             )));
   }
