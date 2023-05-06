@@ -8,7 +8,7 @@ class ContentPage extends StatelessWidget {
     return const Scaffold(
       body: Center(
         child: Text('Content'),
-      )
+      ),
     );
   }
 }

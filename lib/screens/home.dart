@@ -33,9 +33,11 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         leading: GestureDetector(
-            child: const Icon(
-          Icons.menu,
-        ))),
+          child: const Icon(
+            Icons.menu,
+          ),
+        ),
+      ),
       body: _children[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
