@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _children = [
     const LandingPage(),
-    const ContentPage(),
+    ContentPage(),
     const MePage(),
   ];
 
