@@ -85,6 +85,11 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+  fonts:
+    - family: Open_Sans
+      fonts:
+        - asset: assets/fonts/Open_Sans/OpenSans-Italic-VariableFont_wdth,wght.ttf
+        - asset: assets/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

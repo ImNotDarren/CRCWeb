@@ -30,8 +30,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey.shade200,
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          
+        ),
         leading: GestureDetector(
           child: const Icon(
             Icons.menu,

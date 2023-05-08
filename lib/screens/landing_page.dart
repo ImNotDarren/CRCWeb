@@ -1,39 +1,54 @@
-import 'package:crc_web/widgets/role_cards.dart';
 import 'package:flutter/material.dart';
+import 'package:crc_web/widgets/role_cards.dart';
+import 'package:crc_web/screens/login.dart';
+import 'package:crc_web/globals.dart' as globals;
 
 var decoration = BoxDecoration(
-    // border: Border.all(
-    //   color: Colors.blue.shade200,
-    //   width: 1.5,
-    // ),
-    color: Colors.white,
-    boxShadow: [
-      BoxShadow(
-        color: Colors.grey.withOpacity(0.5),
-        spreadRadius: 2,
-        blurRadius: 5,
-      ),
-    ],
-    borderRadius: BorderRadius.circular(10));
+  color: Colors.white,
+  borderRadius: BorderRadius.circular(10),
+);
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
         child: Column(
           children: <Widget>[
-            // choose patient or caregivers
-            Center(
+            Visibility(
+              visible: globals.user['id'] == -1,
+              child: SizedBox(
+                width: double
+                    .infinity, // set the width to the maximum available width
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Do something when the button is pressed
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                    );
+                  },
+                  child: const Text('LOGIN'),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
                     margin: const EdgeInsets.only(bottom: 20),
-                    // width: MediaQuery.of(context).size.width,
+                    // width: (MediaQuery.of(context).size.width - 40) * 0.5,
                     decoration: decoration,
                     child: const Padding(
                       padding: EdgeInsets.all(15),
@@ -48,7 +63,7 @@ class LandingPage extends StatelessWidget {
                   ),
                   Container(
                     margin: const EdgeInsets.only(bottom: 20),
-                    // width: MediaQuery.of(context).size.width,
+                    // width: (MediaQuery.of(context).size.width - 40) * 0.5,
                     decoration: decoration,
                     child: const Padding(
                       padding: EdgeInsets.all(15),
@@ -56,7 +71,7 @@ class LandingPage extends StatelessWidget {
                         title: 'Caregivers',
                         content: [
                           'Caregiver Education',
-                          'Family Involvement & support',
+                          'Family Involvement & suport',
                           'Surveys: 1 week, 8 weeks'
                         ],
                       ),
