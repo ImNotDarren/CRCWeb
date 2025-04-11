@@ -22,7 +22,6 @@ export default function FitbitPanel({ navigation }) {
   const rotateAnimation = useState(new Animated.Value(0))[0];
 
   const user = useSelector(state => state.user);
-  const server = useSelector(state => state.server.url);
   const fontSize = useSelector(state => state.font.fontSize);
   const styles = getStyles(fontSize);
 
@@ -188,7 +187,7 @@ export default function FitbitPanel({ navigation }) {
           .catch(error => console.error('Error:', error));
       }
     }
-  }, [user.user, server]);
+  }, [user.user]);
 
   return (
     <View style={styles.fitbitPanelContainer}>
