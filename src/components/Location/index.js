@@ -54,7 +54,6 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
 
 const uploadActivities = async (locations, accs) => {
   console.log('Uploading activities...', locations.length);
-  const server = JSON.parse(await AsyncStorage.getItem('server'));
   const user = JSON.parse(await AsyncStorage.getItem('user'));
 
   let locationRes = await fetch(`${Config.SERVER_URL}/crc/locations/bulkCreate`, {

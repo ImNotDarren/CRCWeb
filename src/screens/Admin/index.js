@@ -12,7 +12,6 @@ import Config from "react-native-config";
 export default function AdminScreen({ navigation }) {
 
   const fontSize = useSelector(state => state.fontSize);
-  const server = useSelector(state => state.server.url);
   const styles = getStyles(fontSize);
   const [allUsers, setAllUsers] = useState([]);
   const [currentUsers, setCurrentUsers] = useState([]);
@@ -21,7 +20,7 @@ export default function AdminScreen({ navigation }) {
 
   useEffect(() => {
     getData();
-  }, [server]);
+  }, []);
 
   const getData = () => {
     setRefreshing(true);

@@ -10,7 +10,6 @@ import Config from "react-native-config";
 export default function UserInfoScreen({ navigation, route }) {
 
   const fontSize = useSelector(state => state.fontSize);
-  const server = useSelector(state => state.server.url);
   const styles = getStyles(fontSize);
   const [userPermissions, setUserPermissions] = useState([]);
   const [activityPermission, setActivityPermission] = useState(false);

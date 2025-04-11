@@ -11,7 +11,6 @@ export default function UserLocationsScreen({ navigation, route }) {
   const { user } = route.params;
 
   const fontSize = useSelector(state => state.fontSize);
-  const server = useSelector(state => state.server.url);
   const styles = getStyles(fontSize);
 
   const [locations, setLocations] = useState([]);

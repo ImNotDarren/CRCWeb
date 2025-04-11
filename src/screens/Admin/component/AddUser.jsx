@@ -13,7 +13,6 @@ export default function AddUser({ navigation }) {
 
   const fontSize = useSelector(state => state.font.fontSize);
   const styles = getStyles(fontSize);
-  const server = useSelector(state => state.server.url);
 
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");

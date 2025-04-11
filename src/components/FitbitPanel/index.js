@@ -19,7 +19,6 @@ export default function FitbitPanel({ user }) {
 
   const rotateAnimation = useState(new Animated.Value(0))[0];
 
-  const server = useSelector(state => state.server.url);
   const fontSize = useSelector(state => state.font.fontSize);
   const styles = getStyles(fontSize);
 
