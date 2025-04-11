@@ -48,7 +48,7 @@ export default function ResourcesScreen({ mid }) {
         getData();
       }
     }
-  }, [mid, server, dispatch]);
+  }, [mid, dispatch]);
 
   const handleNavigate = (url) => () => {
     openURL(url);

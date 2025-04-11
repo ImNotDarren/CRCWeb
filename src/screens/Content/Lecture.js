@@ -47,7 +47,7 @@ export default function LectureScreen({ mid, navigation }) {
           .catch(error => console.error(error));
       }
     }
-  }, [mid, server, dispatch]);
+  }, [mid, dispatch]);
 
   const handleEdit = () => {
     navigation.navigate('Edit', { screen: "lecture", mid: mid });

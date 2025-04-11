@@ -58,7 +58,7 @@ export default function QuizScreen({ route, navigation }) {
         getData();
       }
     }
-  }, [mid, server, dispatch]);
+  }, [mid, dispatch]);
 
   // Prevent back button on Android from exiting the app
   useEffect(() => {

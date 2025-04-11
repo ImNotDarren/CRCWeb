@@ -118,7 +118,7 @@ export default function ContentsScreen({ mid, navigation }) {
         getData();
       }
     }
-  }, [mid, server, dispatch]);
+  }, [mid, dispatch]);
 
   if (!module?.crcContents)
     return (

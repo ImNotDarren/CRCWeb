@@ -78,7 +78,7 @@ export default function ActivityScreen({ mid, navigation }) {
         getData();
       }
     }
-  }, [mid, server, dispatch]);
+  }, [mid, dispatch]);
 
   if (!module?.crcAssignments)
     return (
