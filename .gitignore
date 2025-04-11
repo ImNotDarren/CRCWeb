@@ -1,0 +1,104 @@
+# Dependencies
+node_modules/
+yarn.lock
+package-lock.json
+
+# Generated
+# ios/build/
+# android/build/
+# android/app/src/main/assets/index.android.bundle
+# android/app/src/main/assets/index.android.bundle.meta
+# android/app/src/main/res/
+
+ios
+android
+.netlify
+dist
+
+# Temp files
+*.swp
+*.swo
+*.tmp
+*.bak
+*.sublime-project
+*.sublime-workspace
+*.tlog
+*.log
+*.vs/
+*.vscode/
+*.idea/
+.DS_Store
+Thumbs.db
+*.orig
+
+# # OS files
+# ._*
+# .Spotlight-V100
+# .Trashes
+# ehthumbs.db
+
+# # IDEs and editors
+/.idea
+/.vscode
+# *.iml
+# *.xcuserstate
+
+# # Keystore files
+*.jks
+*.keystore
+
+# # Expo (if used)
+.expo/
+.expo-shared/
+# web-build/
+
+# # Various
+*.class
+*.jar
+*.dll
+*.exe
+*.apk
+*.ap_
+*.aab
+*.dex
+*.lib
+*.obj
+*.so
+*.zip
+*.tar.gz
+*.rar
+*.sql
+*.sqlite
+*.realm
+*.npmignore
+*.yarn-integrity
+*.env
+# *.env.local
+# *.env.development.local
+# *.env.test.local
+# *.env.production.local
+
+# # Fastlane (if used)
+# fastlane/report.xml
+# fastlane/Preview.html
+# fastlane/screenshots
+# fastlane/test_output
+
+# # Detox (if used)
+# .detox
+
+# # Output of the Bundle command
+# /index.android.bundle
+# /index.android.bundle.meta
+# /index.ios.bundle
+# /index.ios.bundle.meta
+
+# # Yarn V2
+# .yarn/*
+# !.yarn/cache
+# !.yarn/patches
+# !.yarn/plugins
+# !.yarn/releases
+# !.yarn/sdks
+# !.yarn/versions
+# .pnp.*
