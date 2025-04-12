@@ -1,7 +1,19 @@
-# CRCWeb
+<div align="center">
+  <img src="./docs/icon-black.png" style="height: 100px" />
+</div>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Contributors](https://img.shields.io/github/contributors/ImNotDarren/CRCWeb)](https://github.com/ImNotDarren/CRCWeb/graphs/contributors)
+<p align="center">
+    <a href="https://github.com/ArmynC/ArminC-AutoExec/commits/master">
+    <img src="https://img.shields.io/github/last-commit/ArmynC/ArminC-AutoExec.svg?style=flat-square&logo=github&logoColor=white"
+         alt="GitHub last commit">
+    <a href="https://github.com/ArmynC/ArminC-AutoExec/issues">
+    <img src="https://img.shields.io/github/issues-raw/ArmynC/ArminC-AutoExec.svg?style=flat-square&logo=github&logoColor=white"
+         alt="GitHub issues">
+    <a href="https://github.com/ArmynC/ArminC-AutoExec/pulls">
+    <img src="https://img.shields.io/github/issues-pr-raw/ArmynC/ArminC-AutoExec.svg?style=flat-square&logo=github&logoColor=white"
+         alt="GitHub pull requests">
+    <a href="https://github.com/ImNotDarren/CRCWeb/graphs/contributors">
+</p>
 
 > **CRCWeb** is a modern, responsive mobile framework designed to provide online multimedia educational content to users.
 
@@ -9,22 +21,21 @@
 
 ## 🚀 Table of Contents
 
-- [CRCWeb](#crcweb)
-  - [🚀 Table of Contents](#-table-of-contents)
-  - [📖 About](#-about)
-  - [✨ Features](#-features)
-  - [🛠 Tech Stack](#-tech-stack)
-  - [🚀 Getting Started](#-getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Configuration](#configuration)
-  - [💻 Usage](#-usage)
-  - [🤖 Build Android](#-build-android)
-      - [Create Android bundle (AAB)](#create-android-bundle-aab)
-  - [🧑‍💻 Build Web](#-build-web)
-  - [🤝 Contributing](#-contributing)
-  - [📄 License](#-license)
-  - [📬 Contact](#-contact)
+- [🚀 Table of Contents](#-table-of-contents)
+- [📖 About](#-about)
+- [✨ Features](#-features)
+- [🛠 Tech Stack](#-tech-stack)
+- [🚀 Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+- [💻 Usage](#-usage)
+- [🤖 Build Android](#-build-android)
+    - [Create Android bundle (AAB)](#create-android-bundle-aab)
+- [🧑‍💻 Build Web](#-build-web)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [📬 Contact](#-contact)
 
 ---
 
@@ -41,8 +52,11 @@ CRCWeb provides a **React Native** front-end for multimedia educational content 
 ## 🛠 Tech Stack
 
 - **Frontend**: React Native
-- **Backend**: Node.js, Express (Our backend project will be open-sourced soon)
+- **Backend**: Node.js, Express
 - **Database**: SQLite
+
+> [!NOTE]
+> Backend will be open-source in the future. We're actively working on it.
 
 ## 🚀 Getting Started
 
@@ -100,19 +114,20 @@ npx expo run:android --device
 
 ## 🤖 Build Android
 
-```
+```bash
 cd android
 ```
 
-```
+```bash
 ./gradlew assembleRelease
 ```
 
-APK file in `android/app/build/outputs/apk/release/app-release.apk`
+> [!IMPORTANT]
+> APK file: `android/app/build/outputs/apk/release/app-release.apk`
 
 #### Create Android bundle (AAB)
 
-```
+```bash
 npx react-native build-android --mode=release
 ```
 
