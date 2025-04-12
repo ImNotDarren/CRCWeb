@@ -3,16 +3,17 @@
 </div>
 
 <p align="center">
-    <a href="https://github.com/ArmynC/ArminC-AutoExec/commits/master">
-    <img src="https://img.shields.io/github/last-commit/ArmynC/ArminC-AutoExec.svg?style=flat-square&logo=github&logoColor=white"
-         alt="GitHub last commit">
-    <a href="https://github.com/ArmynC/ArminC-AutoExec/issues">
-    <img src="https://img.shields.io/github/issues-raw/ArmynC/ArminC-AutoExec.svg?style=flat-square&logo=github&logoColor=white"
-         alt="GitHub issues">
-    <a href="https://github.com/ArmynC/ArminC-AutoExec/pulls">
-    <img src="https://img.shields.io/github/issues-pr-raw/ArmynC/ArminC-AutoExec.svg?style=flat-square&logo=github&logoColor=white"
-         alt="GitHub pull requests">
+    <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg"
+         alt="GitHub last commit" />
+    </a>
     <a href="https://github.com/ImNotDarren/CRCWeb/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/ImNotDarren/CRCWeb"
+         alt="GitHub issues" />
+    </a>
+    <a href="#-coming-soon">
+      <img src="https://img.shields.io/static/v1?label=version&message=beta%200.0.1&color=blue" alt="version">
+    </a>
 </p>
 
 > **CRCWeb** is a modern, responsive mobile framework designed to provide online multimedia educational content to users.
@@ -24,6 +25,7 @@
 - [🚀 Table of Contents](#-table-of-contents)
 - [📖 About](#-about)
 - [✨ Features](#-features)
+- [🚅 Coming Soon](#-coming-soon)
 - [🛠 Tech Stack](#-tech-stack)
 - [🚀 Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
@@ -32,7 +34,7 @@
 - [💻 Usage](#-usage)
 - [🤖 Build Android](#-build-android)
     - [Create Android bundle (AAB)](#create-android-bundle-aab)
-- [🧑‍💻 Build Web](#-build-web)
+- [🧑‍💻 Build Web ](#-build-web-)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
 - [📬 Contact](#-contact)
@@ -48,6 +50,10 @@ CRCWeb provides a **React Native** front-end for multimedia educational content 
 - **Multimedia Educational Content Rendering**: Each module contains Lectures, Content, Activities, Resources, and Quizzes.
 - **Realtime Content Update**: Update any content using an Admin account anytime.
 - **Fitbit Data Tracking**: Fitbit API Integrated to track each user's wearable data from Fitbit band.
+
+## 🚅 Coming Soon
+
+- Typescript support
 
 ## 🛠 Tech Stack
 
@@ -122,7 +128,7 @@ cd android
 ./gradlew assembleRelease
 ```
 
-> [!IMPORTANT]
+> [!NOTE]
 > APK file: `android/app/build/outputs/apk/release/app-release.apk`
 
 #### Create Android bundle (AAB)
@@ -131,11 +137,11 @@ cd android
 npx react-native build-android --mode=release
 ```
 
-AAB file in `android/app/build/outputs/bundle/release/app-release.aab`
+> [!NOTE]
+> AAB file: `android/app/build/outputs/bundle/release/app-release.aab`
 
-## 🧑‍💻 Build Web
+## 🧑‍💻 Build Web [![Docs](https://img.shields.io/static/v1?label=Web&message=Expo%20Docs&color=blue&style=flat-square)](https://docs.expo.dev/distribution/publishing-websites/#creating-a-build)
 
-[[Web Reference]](https://docs.expo.dev/distribution/publishing-websites/#creating-a-build)
 
 Make sure netlify-cli is installed:
 
