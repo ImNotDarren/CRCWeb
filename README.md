@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/github/contributors/ImNotDarren/CRCWeb"
          alt="GitHub issues" />
     </a>
-    <a href="#-coming-soon">
+    <a href="./docs/VERSIONS.md">
       <img src="https://img.shields.io/static/v1?label=version&message=beta%200.0.1&color=blue" alt="version">
     </a>
 </p>
