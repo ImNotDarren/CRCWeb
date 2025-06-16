@@ -37,6 +37,7 @@
 - [🧑‍💻 Build Web ](#-build-web-)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
+- [🔗 Reference](#-reference)
 - [📬 Contact](#-contact)
 
 ---
@@ -190,6 +191,29 @@ We welcome contributions! Please follow these steps:
 ## 📄 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🔗 Reference
+
+Please reference these papers [[1]](https://cancer.jmir.org/2025/1/e68516/) [[2]](https://cancer.jmir.org/2025/1/e67914) if you used this tool in your research:
+
+```
+Liu D, Lin Y, Yan R, Wang Z, Bold D, Hu X
+Leveraging Artificial Intelligence for Digital Symptom Management in Oncology: The Development of CRCWeb
+JMIR Cancer 2025;11:e68516
+doi: 10.2196/68516
+PMID: 40324958
+```
+
+```
+Liu D, Hu X, Xiao C, Bai J, Barandouzi ZA, Lee S, Webster C, Brock LU, Lee L, Bold D, Lin Y
+Evaluation of Large Language Models in Tailoring Educational Content for Cancer Survivors and Their Caregivers: Quality Analysis
+JMIR Cancer 2025;11:e67914
+doi: 10.2196/67914
+PMID: 40192716
+PMCID: 11995809
+```
 
 ---
 
