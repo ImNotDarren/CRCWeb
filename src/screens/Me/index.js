@@ -99,6 +99,7 @@ export default function MeScreen({ navigation }) {
         {['admin', 'superadmin'].includes(user.user.featureUsers[3].role.toLowerCase()) && <CustomizeMenuItem title='Manage Accounts' icon='account-cog' onNavigate={() => navigation.navigate('Manage Accounts')} />}
         <CustomizeMenuItem title='Settings' icon='cog' onNavigate={() => navigation.navigate('Settings')} />
         <CustomizeMenuItem title='Paired Accounts' icon='account-multiple' onNavigate={() => navigation.navigate('PairedAccounts')} />
+        <CustomizeMenuItem title='Switch Version' icon='swap-horizontal-bold' onNavigate={() => navigation.replace('Versions')} />
         {Array.isArray(user?.permissions)
           && user.permissions.find(p => p.type === "activity") &&
           // Platform.OS === 'ios' &&

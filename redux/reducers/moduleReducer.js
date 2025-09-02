@@ -9,6 +9,8 @@ export default (state = initialState, action) => {
         ...state,
         modules: action.value,
       }
+    case 'CLEAR_MODULES':
+      return initialState;
     default:
       return state;
   }

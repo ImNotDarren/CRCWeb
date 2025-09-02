@@ -35,16 +35,27 @@ import { alert } from './utils/alert';
 import ContactScreen from './src/screens/Contact';
 import AddUser from './src/screens/Admin/component/AddUser';
 import Config from 'react-native-config';
+import VersionSelection from './src/screens/Login/VersionSelection';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function TabScreen() {
+function TabScreen({ navigation }) {
 
   const user = store.getState().user;
+  const currentVersion = store.getState().version.currentVersion;
   const currUser = user.user;
 
   const [fitbitPermission, setFitbitPermission] = useState(false);
+
+  useEffect(() => {
+    if (currentVersion?.name) {
+      navigation.setOptions({
+        title: currentVersion.name,
+        headerTitleAlign: 'center',
+      })
+    }
+  }, [currentVersion]);
 
   useEffect(() => {
     fetch(`${Config.SERVER_URL}/crc/permission/findByUserId/${currUser.id}`)
@@ -141,11 +152,12 @@ export default function App() {
       } catch (err) {
         alert('Error', err.message);
       }
-
     }
 
     getFontSize();
   }, []);
+
+  const currentVersion = store.getState().version.currentVersion;
 
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
@@ -158,11 +170,16 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
+              name="Versions"
+              component={VersionSelection}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="TabNavigation"
               component={TabScreen}
               label="Home"
               options={({ navigation }) => ({
-                title: 'CRCweb',
+                title: currentVersion.name,
                 headerTitleAlign: 'center',
               })}
             />

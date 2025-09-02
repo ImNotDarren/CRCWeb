@@ -10,6 +10,7 @@ package-lock.json
 # android/app/src/main/assets/index.android.bundle.meta
 # android/app/src/main/res/
 
+.expo/
 ios
 android
 .netlify

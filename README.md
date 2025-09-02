@@ -37,7 +37,7 @@
 - [🧑‍💻 Build Web ](#-build-web-)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
-- [🔗 Reference](#-reference)
+- [🔗 Citation](#-citation)
 - [📬 Contact](#-contact)
 
 ---
@@ -194,7 +194,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-## 🔗 Reference
+## 🔗 Citation
 
 Please reference these papers [[1]](https://cancer.jmir.org/2025/1/e68516/) [[2]](https://cancer.jmir.org/2025/1/e67914) if you used this tool in your research:
 

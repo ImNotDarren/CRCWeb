@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { NestableScrollContainer, NestableDraggableFlatList, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Config from "react-native-config";
+import NoContent from "../../components/NoContent";
 
 
 
@@ -17,7 +18,10 @@ export default function ContentScreen({ navigation }) {
   
   const user = useSelector((state) => state.user.user);
   const modules =useSelector((state) => state.module.modules);
+  const currentVersion = useSelector((state) => state.version.currentVersion);
   const dispatch = useDispatch();
+
+  const [fetched, setFetched] = useState(false);
 
   // const surveyURL = 'https://redcap.emory.edu/surveys/?s=8FHH87R7LPY8Y3W3';
 
@@ -33,12 +37,18 @@ export default function ContentScreen({ navigation }) {
         body: JSON.stringify({
           uid: user.id,
           role: user.featureUsers[3].role,
+          vid: currentVersion.id,
         }),
       });
       const data = await response.json();
+
+      console.log('Modules fetched:', data);
+
       dispatch({ type: 'UPDATE_MODULES', value: data });
     } catch (error) {
       console.error(error);
+    } finally {
+      setFetched(true);
     }
   };
 
@@ -49,10 +59,10 @@ export default function ContentScreen({ navigation }) {
   }
 
   useEffect(() => {
-    if (modules.length === 0) {
+    if (!fetched) {
       fetchData();
     }
-  }, [modules, fetchData]);
+  }, [fetched, fetchData]);
 
   const renderItem = ({ item, drag, isActive }) => {
     return (
@@ -73,12 +83,18 @@ export default function ContentScreen({ navigation }) {
     // TODO: save order in database
   };
 
-  if (modules.length === 0)
+  if (!fetched)
     return (
       <View style={styles.spinnerView}>
         <Spinner size="giant" status="info" />
       </View>
     );
+
+  if (fetched && modules.length === 0) {
+    return (
+      <NoContent />
+    )
+  }
 
   return (
     <GestureHandlerRootView>

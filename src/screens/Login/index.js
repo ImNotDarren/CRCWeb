@@ -1,4 +1,4 @@
-import { Text, TextInput, TouchableOpacity, Alert, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import styles from "./style";
 import { useEffect, useState } from "react";
 // import { LinearGradient } from "expo-linear-gradient";
@@ -12,14 +12,34 @@ export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useState(false);
-
-  
+  const versions = useSelector((state) => state.version.versions);
 
   const dispatch = useDispatch();
 
   const handleUpdateUser = (user) => {
     dispatch({ type: 'UPDATE_USER', value: user });
   }
+
+  useEffect(() => {
+    const fetchVersions = async () => {
+      try {
+        const response = await fetch(`${Config.SERVER_URL}/crc/version`);
+        const data = await response.json();
+        dispatch({ type: 'UPDATE_VERSIONS', value: data });
+        if (data.length > 0) {
+          dispatch({ type: 'UPDATE_CURRENT_VERSION', value: data[0] });
+        }
+      } catch (error) {
+        console.error('Error fetching versions:', error);
+        alert('Error', 'Failed to fetch versions. Please try again later.');
+      }
+    };
+
+    if (versions.length === 0) {
+      fetchVersions();
+    }
+    
+  }, [dispatch]);
 
   useEffect(() => {
     const getAutoLoginStatus = async () => {
@@ -38,10 +58,6 @@ export default function LoginScreen({ navigation }) {
   };
 
   const handleLogin = (un, pwd) => () => {
-    // Perform login logic here
-    // Placeholder: just show an alert
-    // alert('Login Attempt', `Username: ${username}, Password: ${password}`);
-    // make api call
     fetch(`${Config.SERVER_URL}/auth/login`, {
       method: 'POST',
       headers: {
@@ -59,7 +75,7 @@ export default function LoginScreen({ navigation }) {
             username: un,
             password: pwd,
           }));
-          navigation.replace('TabNavigation');
+          navigation.replace('Versions');
         } else {
           alert('Login Failed', data.message);
         }
@@ -72,7 +88,7 @@ export default function LoginScreen({ navigation }) {
   return (
     // <LinearGradient colors={['#d6fcff', '#bbe2fc', '#96b6ff']} style={styles.linearGradient}>
     <View style={styles.outterBox}>
-      <Text style={styles.title}>CRCweb Login</Text>
+      <Text style={styles.title}>CRCWeb Login</Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
