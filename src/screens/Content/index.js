@@ -1,7 +1,7 @@
-import { Linking, Alert, RefreshControl, View } from "react-native";
+import { Linking, Alert, RefreshControl, View, ScrollView } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Spinner } from "@ui-kitten/components";
+import { Button, Divider, Spinner } from "@ui-kitten/components";
 import { CustomizeMenuItem } from "../../components/CustomizeMenuItem";
 import { useEffect, useState } from "react";
 import { NestableScrollContainer, NestableDraggableFlatList, ScaleDecorator } from 'react-native-draggable-flatlist';
@@ -15,9 +15,9 @@ export default function ContentScreen({ navigation }) {
 
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);
-  
+
   const user = useSelector((state) => state.user.user);
-  const modules =useSelector((state) => state.module.modules);
+  const modules = useSelector((state) => state.module.modules);
   const currentVersion = useSelector((state) => state.version.currentVersion);
   const dispatch = useDispatch();
 
@@ -92,8 +92,10 @@ export default function ContentScreen({ navigation }) {
 
   if (fetched && modules.length === 0) {
     return (
-      <NoContent />
-    )
+      <NoContent action={(
+        <Button onPress={handleRefresh}>Refresh</Button>
+      )} />
+    );
   }
 
   return (

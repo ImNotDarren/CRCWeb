@@ -21,27 +21,6 @@ export default function LoginScreen({ navigation }) {
   }
 
   useEffect(() => {
-    const fetchVersions = async () => {
-      try {
-        const response = await fetch(`${Config.SERVER_URL}/crc/version`);
-        const data = await response.json();
-        dispatch({ type: 'UPDATE_VERSIONS', value: data });
-        if (data.length > 0) {
-          dispatch({ type: 'UPDATE_CURRENT_VERSION', value: data[0] });
-        }
-      } catch (error) {
-        console.error('Error fetching versions:', error);
-        alert('Error', 'Failed to fetch versions. Please try again later.');
-      }
-    };
-
-    if (versions.length === 0) {
-      fetchVersions();
-    }
-    
-  }, [dispatch]);
-
-  useEffect(() => {
     const getAutoLoginStatus = async () => {
       const autoLoginStatus = await get('autoLogin');
       if (autoLoginStatus) {

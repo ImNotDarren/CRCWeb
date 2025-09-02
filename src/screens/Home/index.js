@@ -39,7 +39,7 @@ export default function HomeScreen({ navigation }) {
       >
         <View style={styles.sectionContainer}>
           <RichTextView
-            text='<b>CRCweb</b> is an <b>evidence-based</b> online program made for people with colorectal cancer and their caregivers. It helps both people cope with cancer and symptoms and work together as a team. You can use the app <b>anytime</b>, <b>anywhere</b>, during the <b>8-week</b> study. The program has educational content, behavioral activities, and self-reported surveys.'
+            text='<b>CRCWeb</b> is an <b>evidence-based</b> online program designed for individuals with colorectal cancer. It helps patients cope with cancer and its symptoms while supporting <b>mental health</b> during treatment. The app can be used <b>anytime and anywhere</b> over the <b>3-month</b> study period. The program includes educational content, behavioral activities, timely recommendations, and self-report surveys.'
             fontSize={20 + fontSize}
           />
         </View>

@@ -107,6 +107,7 @@ export default function MeScreen({ navigation }) {
         {/* <CustomizeMenuItem title='Discussion' icon='forum' onNavigate={() => navigation.navigate('Discussion')} /> */}
         <CustomizeMenuItem title='Contact Us' icon='account-box' onNavigate={() => navigation.navigate('Contact')} />
         <CustomizeMenuItem title='Logout' icon='logout' onNavigate={handleLogout} />
+        <View style={{ height: 100 }} />
       </ScrollView>
       {/* <Divider
         style={styles.divider}
