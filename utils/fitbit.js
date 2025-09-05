@@ -1,4 +1,4 @@
-import Config from "react-native-config";
+import { FITBIT_CLIENT_ID, SERVER_URL } from "../constants";
 
 export const refreshToken = async (user) => {
   if (!user.accessToken) return null;
@@ -11,7 +11,7 @@ export const refreshToken = async (user) => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        client_id: Config.FITBIT_CLIENT_ID,
+        client_id: FITBIT_CLIENT_ID,
         grant_type: 'refresh_token',
         refresh_token: refreshToken,
       }).toString()
@@ -22,7 +22,7 @@ export const refreshToken = async (user) => {
       return null;
       // return Linking.openURL('https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=23RT4L&scope=activity+cardio_fitness+electrocardiogram+heartrate+location+nutrition+oxygen_saturation+profile+respiratory_rate+settings+sleep+social+temperature+weight&code_challenge=1w_X75XBECB_EQRvdQMvPcluXNJvmrmPSK-NUP_xRBk&code_challenge_method=S256&state=3b3l4c3i2w4c4x5v4t5i1e1m1d1u3w43&redirect_uri=canbewell%3A%2F%2Fredirect');
     }
-    await fetch(`${Config.SERVER_URL}/cbw/accesstokens`, {
+    await fetch(`${SERVER_URL}/cbw/accesstokens`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

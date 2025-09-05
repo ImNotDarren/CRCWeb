@@ -8,7 +8,8 @@ import { refreshToken, getDailyActivitySummary } from '../../../utils/fitbit.js'
 import ProgressBar from '../ProgressBar/index.js';
 import Expand from '../Expand/index.js';
 import colors from '../../../theme/colors.js';
-import Config from 'react-native-config';
+
+import { FITBIT_OAUTH_REDIRECT_URL, SERVER_URL } from '../../../constants.js';
 
 export default function FitbitPanel({ user }) {
 
@@ -48,7 +49,6 @@ export default function FitbitPanel({ user }) {
         if (summary.errors) {
           if (summary.errors[0].message.includes('Access token expired')) {
             const newToken = await refreshToken({ user, accessToken: at });
-            console.log('newToken', newToken)
             return getData(newToken);
           }
           setIsLoading(false);
@@ -70,7 +70,7 @@ export default function FitbitPanel({ user }) {
       if (user.accessToken) {
         return await getData(user.accessToken);
       }
-      Linking.openURL(Config.FITBIT_OAUTH_REDIRECT_URL);
+      Linking.openURL(FITBIT_OAUTH_REDIRECT_URL);
     } catch (err) {
       console.error(err);
     }
@@ -82,7 +82,7 @@ export default function FitbitPanel({ user }) {
   });
 
   useEffect(() => {
-    fetch(`${Config.SERVER_URL}/cbw/accesstokens/${user.id}`, {
+    fetch(`${SERVER_URL}/cbw/accesstokens/${user.id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -92,7 +92,6 @@ export default function FitbitPanel({ user }) {
       .then(data => {
         if (data.token) {
           const token = JSON.parse(data.token);
-          console.log(token)
           if (token.errors)
             return;
           setAccessToken(token);

@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { get, save } from "../../../localStorage";
 import { Radio } from "@ui-kitten/components";
 import { alert } from "../../../utils/alert";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
@@ -37,7 +38,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   const handleLogin = (un, pwd) => () => {
-    fetch(`${Config.SERVER_URL}/auth/login`, {
+    fetch(`${SERVER_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

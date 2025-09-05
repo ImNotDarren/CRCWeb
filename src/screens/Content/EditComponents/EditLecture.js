@@ -6,7 +6,8 @@ import { CustomizeMenuItem } from "../../../components/CustomizeMenuItem";
 import Popup from "../../../components/Popup";
 import { Button, Input, Spinner } from "@ui-kitten/components";
 import WhiteSpace from "../../../components/WhiteSpace";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../../constants";
 
 export default function EditLecture({ navigation, mid }) {
 
@@ -76,7 +77,7 @@ export default function EditLecture({ navigation, mid }) {
 
     // update lecture
     try {
-      await fetch(`${Config.SERVER_URL}/crc/lectures/update`, {
+      await fetch(`${SERVER_URL}/crc/lectures/update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

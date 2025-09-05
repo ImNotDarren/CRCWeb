@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import CustomMapView from "../../components/Location/map";
 import { Spinner } from "@ui-kitten/components";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function UserLocationsScreen({ navigation, route }) {
 
@@ -18,7 +19,7 @@ export default function UserLocationsScreen({ navigation, route }) {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${Config.SERVER_URL}/crc/locations/findAllByUserId/${user.id}`)
+    fetch(`${SERVER_URL}/crc/locations/findAllByUserId/${user.id}`)
       .then(response => response.json())
       .then(data => {
         if (data.err) return console.error(data.err);

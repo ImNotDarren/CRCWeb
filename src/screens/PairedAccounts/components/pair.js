@@ -6,7 +6,8 @@ import colors from "../../../../theme/colors";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CustomizeMenuItem } from "../../../components/CustomizeMenuItem";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../../constants";
 
 const getExpectedRoles = (role) => {
   const adminRoles = ['admin', 'superadmin'];
@@ -34,7 +35,7 @@ export default function Pair() {
   const dispatch = useDispatch();
 
   const handleSearch = () => {
-    fetch(`${Config.SERVER_URL}/user/search`, {
+    fetch(`${SERVER_URL}/user/search`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +61,7 @@ export default function Pair() {
 
   const handlePair = (u) => async () => {
     setPairing(true);
-    fetch(`${Config.SERVER_URL}/pairs/create`, {
+    fetch(`${SERVER_URL}/pairs/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

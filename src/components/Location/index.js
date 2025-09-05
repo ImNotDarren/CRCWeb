@@ -9,7 +9,8 @@ import usePersistReduxState from '../../../hooks/usePersistReduxState';
 import CustomMapView from './map';
 import { Accelerometer } from 'expo-sensors';
 import { alert } from '../../../utils/alert';
-import Config from 'react-native-config';
+
+import { SERVER_URL } from '../../../constants';
 
 const LOCATION_TASK_NAME = 'background-location-task';
 const TRACKING_INTERVAL = 5000;
@@ -53,10 +54,9 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
 });
 
 const uploadActivities = async (locations, accs) => {
-  console.log('Uploading activities...', locations.length);
   const user = JSON.parse(await AsyncStorage.getItem('user'));
 
-  let locationRes = await fetch(`${Config.SERVER_URL}/crc/locations/bulkCreate`, {
+  let locationRes = await fetch(`${SERVER_URL}/crc/locations/bulkCreate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const uploadActivities = async (locations, accs) => {
     throw new Error(`HTTP error! status: ${locationRes.status}`);
   }
 
-  let accelerometerRes = await fetch(`${Config.SERVER_URL}/crc/accelerometers/bulkCreate`, {
+  let accelerometerRes = await fetch(`${SERVER_URL}/crc/accelerometers/bulkCreate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ export default function LocationComponent() {
 
   useEffect(() => {
     if (user?.id) {
-      fetch(`${Config.SERVER_URL}/crc/locations/findAllByUserId/${user.id}`, {
+      fetch(`${SERVER_URL}/crc/locations/findAllByUserId/${user.id}`, {
         method: 'GET',
       })
         .then(response => response.json())

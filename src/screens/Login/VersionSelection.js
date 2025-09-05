@@ -6,7 +6,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from "../../../theme/colors";
 import { TouchableOpacity } from "react-native";
 import { useEffect } from "react";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function VersionSelection({ navigation }) {
 
@@ -27,7 +28,7 @@ export default function VersionSelection({ navigation }) {
     useEffect(() => {
     const fetchVersions = async () => {
       try {
-        const response = await fetch(`${Config.SERVER_URL}/crc/version`);
+        const response = await fetch(`${SERVER_URL}/crc/version`);
         const data = await response.json();
         dispatch({ type: 'UPDATE_VERSIONS', value: data });
         if (data.length > 0) {

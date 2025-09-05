@@ -7,7 +7,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { showMessage } from "react-native-flash-message";
 import colors from '../../../../theme/colors';
 import { alert } from '../../../../utils/alert';
-import Config from 'react-native-config';
+
+import { SERVER_URL } from '../../../../constants';
 
 export default function AddUser({ navigation }) {
 
@@ -34,7 +35,7 @@ export default function AddUser({ navigation }) {
       });
     }
 
-    fetch(`${Config.SERVER_URL}/user/`, {
+    fetch(`${SERVER_URL}/user/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

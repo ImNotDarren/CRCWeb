@@ -8,7 +8,8 @@ import WhiteSpace from "../../components/WhiteSpace";
 import colors from "../../../theme/colors";
 import { Input } from "@ui-kitten/components";
 import { alert } from "../../../utils/alert";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function ContentPageScreen({ route, navigation }) {
 
@@ -53,7 +54,7 @@ export default function ContentPageScreen({ route, navigation }) {
 
   const handleSaveProgress = async () => {
     try {
-      await fetch(`${Config.SERVER_URL}/log/create`, {
+      await fetch(`${SERVER_URL}/log/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +83,7 @@ export default function ContentPageScreen({ route, navigation }) {
     // save content
     try {
       if (content?.crcContentPage?.content) {
-        await fetch(`${Config.SERVER_URL}/crc/contentpages/update`, {
+        await fetch(`${SERVER_URL}/crc/contentpages/update`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ export default function ContentPageScreen({ route, navigation }) {
         moduleCopy.crcContents.find((c) => c.id === cid).crcContentPage.title = editTitle;
         dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
       } else {
-        await fetch(`${Config.SERVER_URL}/crc/contentpages/create`, {
+        await fetch(`${SERVER_URL}/crc/contentpages/create`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

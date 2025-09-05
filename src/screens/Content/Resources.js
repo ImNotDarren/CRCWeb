@@ -7,7 +7,8 @@ import { extractUrl, openURL, removeUrls } from "../../../utils/url";
 import WhiteSpace from "../../components/WhiteSpace";
 import { Spinner } from "@ui-kitten/components";
 import FloatingActionButton from "../../components/FloatingActionButton";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function ResourcesScreen({ mid }) {
 
@@ -23,7 +24,7 @@ export default function ResourcesScreen({ mid }) {
 
   const getData = () => {
     setRefreshing(true);
-    fetch(`${Config.SERVER_URL}/crc/modules/getModuleWebResource/${mid}`, {
+    fetch(`${SERVER_URL}/crc/modules/getModuleWebResource/${mid}`, {
       method: 'GET',
     })
       .then(response => response.json())

@@ -34,8 +34,8 @@ import PendingPairsScreen from './src/screens/PairedAccounts/PendingPairs';
 import { alert } from './utils/alert';
 import ContactScreen from './src/screens/Contact';
 import AddUser from './src/screens/Admin/component/AddUser';
-import Config from 'react-native-config';
 import VersionSelection from './src/screens/Login/VersionSelection';
+import { SERVER_URL } from './constants';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -58,7 +58,7 @@ function TabScreen({ navigation }) {
   }, [currentVersion]);
 
   useEffect(() => {
-    fetch(`${Config.SERVER_URL}/crc/permission/findByUserId/${currUser.id}`)
+    fetch(`${SERVER_URL}/crc/permission/findByUserId/${currUser.id}`)
       .then(response => response.json())
       .then(data => {
         store.dispatch({ type: 'UPDATE_PERMISSIONS', value: data });

@@ -9,7 +9,8 @@ import colors from "../../../theme/colors";
 import { Button, Input } from "@ui-kitten/components";
 import { alert } from "../../../utils/alert";
 import { showMessage } from "react-native-flash-message";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function ActivityPageScreen({ route, navigation }) {
 
@@ -47,7 +48,7 @@ export default function ActivityPageScreen({ route, navigation }) {
     // save content
     try {
       if (activity?.crcAssignmentContent?.content) {
-        const response = await fetch(`${Config.SERVER_URL}/crc/assignmentcontents/update`, {
+        const response = await fetch(`${SERVER_URL}/crc/assignmentcontents/update`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ export default function ActivityPageScreen({ route, navigation }) {
         }
 
       } else {
-        await fetch(`${Config.SERVER_URL}/crc/assignmentcontents/create`, {
+        await fetch(`${SERVER_URL}/crc/assignmentcontents/create`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ export default function ActivityPageScreen({ route, navigation }) {
 
   // const handleSaveProgress = async () => {
   //   try {
-  //     await fetch(`${Config.SERVER_URL}/log/create`, {
+  //     await fetch(`${SERVER_URL}/log/create`, {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json',
@@ -158,7 +159,7 @@ export default function ActivityPageScreen({ route, navigation }) {
 
   const handleReaction = (reaction) => async () => {
     try {
-      const response = await fetch(`${Config.SERVER_URL}/crc/assignmentcontents/createUserAssignmentContent`, {
+      const response = await fetch(`${SERVER_URL}/crc/assignmentcontents/createUserAssignmentContent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

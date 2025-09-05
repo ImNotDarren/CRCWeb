@@ -7,7 +7,8 @@ import WhiteSpace from "../../components/WhiteSpace";
 import { Spinner } from "@ui-kitten/components";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from "../../../theme/colors";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function ActivityScreen({ mid, navigation }) {
 
@@ -23,7 +24,7 @@ export default function ActivityScreen({ mid, navigation }) {
   const getData = () => {
     setRefreshing(true);
   
-    fetch(`${Config.SERVER_URL}/crc/modules/getModuleAssignment/${mid}/${user.id}`, {
+    fetch(`${SERVER_URL}/crc/modules/getModuleAssignment/${mid}/${user.id}`, {
       method: 'GET',
     })
       .then(response => response.json())
@@ -34,7 +35,7 @@ export default function ActivityScreen({ mid, navigation }) {
         // Fetch the completed status for each assignment
         // const updatedCrcAssignments = await Promise.all(
         //   data.map(async (assignment) => {
-        //     const response = await fetch(`${Config.SERVER_URL}/log/find/`, {
+        //     const response = await fetch(`${SERVER_URL}/log/find/`, {
         //       method: 'POST',
         //       headers: {
         //         'Content-Type': 'application/json',

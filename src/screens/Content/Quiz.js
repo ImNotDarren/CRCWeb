@@ -8,7 +8,8 @@ import colors from "../../../theme/colors";
 import RichText from "../../components/RichText";
 import Popup from "../../components/Popup";
 import { alert } from "../../../utils/alert";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function QuizScreen({ route, navigation }) {
 
@@ -33,7 +34,7 @@ export default function QuizScreen({ route, navigation }) {
 
   const getData = () => {
     setRefreshing(true);
-    fetch(`${Config.SERVER_URL}/crc/multiplechoices/findByModuleId/${mid}`, {
+    fetch(`${SERVER_URL}/crc/multiplechoices/findByModuleId/${mid}`, {
       method: 'GET',
     })
       .then(response => response.json())
@@ -91,7 +92,7 @@ export default function QuizScreen({ route, navigation }) {
       }
       // All questions answered
       try {
-        const response = await fetch(`${Config.SERVER_URL}/crc/multiplechoices/recordScore`, {
+        const response = await fetch(`${SERVER_URL}/crc/multiplechoices/recordScore`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -111,7 +112,7 @@ export default function QuizScreen({ route, navigation }) {
         const modulesCopy = JSON.parse(JSON.stringify(modules));
         modulesCopy.find((m) => m.id === mid).crcQuizUsers = [...module.crcQuizUsers, data];
         if (score / module.crcMultipleChoices.length >= 0.8) {
-          const progressResponse = await fetch(`${Config.SERVER_URL}/crc/modules/setProgress`, {
+          const progressResponse = await fetch(`${SERVER_URL}/crc/modules/setProgress`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

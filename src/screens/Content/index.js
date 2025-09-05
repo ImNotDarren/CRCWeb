@@ -6,8 +6,10 @@ import { CustomizeMenuItem } from "../../components/CustomizeMenuItem";
 import { useEffect, useState } from "react";
 import { NestableScrollContainer, NestableDraggableFlatList, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Config from "react-native-config";
+
 import NoContent from "../../components/NoContent";
+import { canEdit } from "../../../utils/user";
+import { SERVER_URL } from "../../../constants";
 
 
 
@@ -16,7 +18,7 @@ export default function ContentScreen({ navigation }) {
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);
 
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
   const modules = useSelector((state) => state.module.modules);
   const currentVersion = useSelector((state) => state.version.currentVersion);
   const dispatch = useDispatch();
@@ -29,20 +31,18 @@ export default function ContentScreen({ navigation }) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${Config.SERVER_URL}/crc/modules/getModuleByRole`, {
+      const response = await fetch(`${SERVER_URL}/crc/modules/getModuleByRole`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          uid: user.id,
-          role: user.featureUsers[3].role,
+          uid: user.user.id,
+          role: user.user.featureUsers[3].role,
           vid: currentVersion.id,
         }),
       });
       const data = await response.json();
-
-      console.log('Modules fetched:', data);
 
       dispatch({ type: 'UPDATE_MODULES', value: data });
     } catch (error) {
@@ -111,7 +111,7 @@ export default function ContentScreen({ navigation }) {
       >
         {/* <CustomizeMenuItem title="Before Survey" icon="form-select" onNavigate={handleSurvey} /> */}
         {/* <Divider style={styles.divider} /> */}
-        {modules.length > 0 ? (user.featureUsers[3].role !== 'admin' ? modules.map((m, idx) => (
+        {modules.length > 0 ? (!canEdit(user) ? modules.map((m, idx) => (
           <CustomizeMenuItem
             key={m.id}
             title={`${idx + 1}  ${m.name}`}

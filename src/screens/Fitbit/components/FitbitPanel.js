@@ -11,7 +11,8 @@ import Expand from '../../../components/Expand/index.js';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../../../../theme/colors.js';
 import { alert } from '../../../../utils/alert.js';
-import Config from 'react-native-config';
+
+import { FITBIT_CLIENT_ID, FITBIT_CODE_VERIFIER, FITBIT_OAUTH_REDIRECT_URL, SERVER_URL } from '../../../../constants.js';
 
 export default function FitbitPanel({ navigation }) {
 
@@ -85,7 +86,7 @@ export default function FitbitPanel({ navigation }) {
       if (user.accessToken) {
         return await getData(user.accessToken);
       }
-      Linking.openURL(Config.FITBIT_OAUTH_REDIRECT_URL);
+      Linking.openURL(FITBIT_OAUTH_REDIRECT_URL);
     } catch (err) {
       console.error(err);
     }
@@ -106,11 +107,11 @@ export default function FitbitPanel({ navigation }) {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-          client_id: Config.FITBIT_CLIENT_ID,
+          client_id: FITBIT_CLIENT_ID,
           grant_type: 'authorization_code',
           redirect_uri: 'crcdata://redirect',
           code: code,
-          code_verifier: Config.FITBIT_CODE_VERIFIER,
+          code_verifier: FITBIT_CODE_VERIFIER,
         }).toString()
       })
         .then(response => response.json())
@@ -120,7 +121,7 @@ export default function FitbitPanel({ navigation }) {
           if (data.errors)
             return alert(data.errors[0].errorType, data.errors[0].message);
 
-          const res = await fetch(`${Config.SERVER_URL}/cbw/accesstokens`, {
+          const res = await fetch(`${SERVER_URL}/cbw/accesstokens`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -168,7 +169,7 @@ export default function FitbitPanel({ navigation }) {
       if (user.accessToken && user.accessToken.access_token) {
         getData(user.accessToken);
       } else {
-        fetch(`${Config.SERVER_URL}/cbw/accesstokens/${user.user.id}`, {
+        fetch(`${SERVER_URL}/cbw/accesstokens/${user.user.id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

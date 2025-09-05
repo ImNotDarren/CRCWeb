@@ -7,7 +7,8 @@ import { Input } from "@ui-kitten/components";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from "../../../theme/colors";
 import FloatingActionButton from "../../components/FloatingActionButton";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function AdminScreen({ navigation }) {
 
@@ -24,7 +25,7 @@ export default function AdminScreen({ navigation }) {
 
   const getData = () => {
     setRefreshing(true);
-    fetch(`${Config.SERVER_URL}/feature/3/users`)
+    fetch(`${SERVER_URL}/feature/3/users`)
       .then(response => response.json())
       .then(data => {
         setAllUsers(data);

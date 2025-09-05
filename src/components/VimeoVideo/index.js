@@ -5,8 +5,6 @@ import { WebView } from 'react-native-webview';
 const VimeoVideo = ({ vimeoId }) => {
   const videoUrl = `https://player.vimeo.com/video/${vimeoId}`;
 
-  console.log(Platform.OS)
-
   return (
     <>
       {Platform.OS === "web" ? (

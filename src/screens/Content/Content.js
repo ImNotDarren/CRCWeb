@@ -9,7 +9,8 @@ import { openURL } from "../../../utils/url";
 import WhiteSpace from "../../components/WhiteSpace";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from "../../../theme/colors";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function ContentsScreen({ mid, navigation }) {
 
@@ -33,7 +34,7 @@ export default function ContentsScreen({ mid, navigation }) {
         const moduleCopy = JSON.parse(JSON.stringify(module));
 
         module.crcContents.forEach(async (content) => {
-          const response = await fetch(`${Config.SERVER_URL}/log/find/`, {
+          const response = await fetch(`${SERVER_URL}/log/find/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -62,7 +63,7 @@ export default function ContentsScreen({ mid, navigation }) {
   const getData = () => {
     setRefreshing(true);
   
-    fetch(`${Config.SERVER_URL}/crc/modules/getModuleContent/${mid}`, {
+    fetch(`${SERVER_URL}/crc/modules/getModuleContent/${mid}`, {
       method: 'GET',
     })
       .then(response => response.json())
@@ -77,7 +78,7 @@ export default function ContentsScreen({ mid, navigation }) {
             if (content.completed !== undefined) {
               return content;
             }
-            const response = await fetch(`${Config.SERVER_URL}/log/find/`, {
+            const response = await fetch(`${SERVER_URL}/log/find/`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

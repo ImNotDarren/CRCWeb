@@ -14,7 +14,9 @@ import Popup from "../../components/Popup";
 import CustomOverflowMenu from "./CustomOverflowMenu";
 import FloatingActionButton from "../../components/FloatingActionButton";
 import ActivityScreen from "./Activities";
-import Config from "react-native-config";
+
+import { canEdit, isAdmin } from "../../../utils/user";
+import { SERVER_URL } from "../../../constants";
 
 export default function ContentHomeScreen({ route, navigation }) {
 
@@ -22,7 +24,7 @@ export default function ContentHomeScreen({ route, navigation }) {
   const styles = getStyles(fontSize);
   const [currPage, setCurrPage] = useState(0);
   const [visible, setVisible] = useState(false);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
   
 
   const { mid } = route.params;
@@ -66,7 +68,7 @@ export default function ContentHomeScreen({ route, navigation }) {
 
   useEffect(() => {
     // save progress
-    if (!["superadmin", "admin"].includes(user.featureUsers[3].role.toLowerCase())) {
+    if (!isAdmin(user.user.featureUsers[3].role)) {
       const currProgress = currPage / Object.keys(renderMap).length
       if (currProgress === 0)
         return;
@@ -74,14 +76,14 @@ export default function ContentHomeScreen({ route, navigation }) {
       if (module?.crcModuleProgresses?.length > 0 && currProgress <= module.crcModuleProgresses[0].progress)
         return;
 
-      fetch(`${Config.SERVER_URL}/crc/modules/setProgress`, {
+      fetch(`${SERVER_URL}/crc/modules/setProgress`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           mid: mid,
-          uid: user.id,
+          uid: user.user.id,
           progress: currProgress
         })
       })
@@ -166,7 +168,7 @@ export default function ContentHomeScreen({ route, navigation }) {
         title={Object.keys(renderMap)[currPage]}
         // backAction={currPage > 0 ? BackAction : null}
         // forwardAction={currPage < Object.keys(renderMap).length - 1 ? ForwardAction : FinishAction}
-        forwardAction={user?.featureUsers[3]?.role === 'admin' ? <EditAction /> : null}
+        forwardAction={canEdit(user) ? <EditAction /> : null}
       />
       {renderMap[Object.keys(renderMap)[currPage]]}
 

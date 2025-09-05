@@ -5,7 +5,8 @@ import { CustomizeMenuItem } from "../../../components/CustomizeMenuItem";
 import { useEffect, useState } from "react";
 import Popup from "../../../components/Popup";
 import { Button, Input, Spinner } from "@ui-kitten/components";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../../constants";
 
 export default function EditActivity({ navigation, mid }) {
 
@@ -52,7 +53,7 @@ export default function EditActivity({ navigation, mid }) {
     }
 
     try {
-      await fetch(`${Config.SERVER_URL}/crc/moduleAssignments/updateContent`, {
+      await fetch(`${SERVER_URL}/crc/moduleAssignments/updateContent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ export default function EditActivity({ navigation, mid }) {
     if (!value)
       return setError("All fields are required");
 
-    fetch(`${Config.SERVER_URL}/crc/moduleAssignments/create`, {
+    fetch(`${SERVER_URL}/crc/moduleAssignments/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ export default function EditActivity({ navigation, mid }) {
   const handleDelete = async () => {
     setLoading("delete");
 
-    fetch(`${Config.SERVER_URL}/crc/moduleAssignments/remove`, {
+    fetch(`${SERVER_URL}/crc/moduleAssignments/remove`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

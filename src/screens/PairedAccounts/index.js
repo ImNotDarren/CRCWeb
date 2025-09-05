@@ -11,7 +11,8 @@ import Expand from "../../components/Expand";
 import { getCurrentPair, getPendingPairs, oppositeRole, oppositeUser } from "../../../utils/user";
 import Badge from "../../components/Badge";
 import { alert } from "../../../utils/alert";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 const AVATAR_SIZE = 70;
 
@@ -28,7 +29,7 @@ export default function PairedAccountsScreen({ navigation }) {
 
   const fetchData = () => {
     setRefreshing(true);
-    fetch(`${Config.SERVER_URL}/pairs/user/${user.user.id}/feature/3`, {
+    fetch(`${SERVER_URL}/pairs/user/${user.user.id}/feature/3`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application-json',
@@ -97,7 +98,7 @@ export default function PairedAccountsScreen({ navigation }) {
           text: 'Confirm',
           onPress: async () => {
             try {
-              const response = await fetch(`${Config.SERVER_URL}/pairs/delete`, {
+              const response = await fetch(`${SERVER_URL}/pairs/delete`, {
                 method: 'DELETE',
                 headers: {
                   'Content-Type': 'application/json',

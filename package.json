@@ -33,7 +33,6 @@
     "react-native": "0.73.6",
     "react-native-background-fetch": "^4.2.2",
     "react-native-circular-progress": "^1.4.0",
-    "react-native-config": "^1.5.5",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-flash-message": "^0.4.2",
     "react-native-gesture-handler": "~2.14.0",

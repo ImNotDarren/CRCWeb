@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { CustomizeMenuItem } from "../../components/CustomizeMenuItem";
 import { Toggle } from "@ui-kitten/components";
 import FitbitPanel from "../../components/FitbitPanel";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 export default function UserInfoScreen({ navigation, route }) {
 
@@ -25,7 +26,7 @@ export default function UserInfoScreen({ navigation, route }) {
   }, [user]);
 
   useEffect(() => {
-    fetch(`${Config.SERVER_URL}/crc/permission/findByUserId/${user.id}`)
+    fetch(`${SERVER_URL}/crc/permission/findByUserId/${user.id}`)
       .then(response => response.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -40,7 +41,7 @@ export default function UserInfoScreen({ navigation, route }) {
   }, [user]);
 
   const getLoginCount = () => {
-    fetch(`${Config.SERVER_URL}/log/findByUserId/${user.id}`)
+    fetch(`${SERVER_URL}/log/findByUserId/${user.id}`)
       .then(response => response.json())
       .then(data => {
         setLoginCount(data.length);
@@ -63,7 +64,7 @@ export default function UserInfoScreen({ navigation, route }) {
   }
 
   const createPermission = (type, uid) => {
-    fetch(`${Config.SERVER_URL}/crc/permission/create`, {
+    fetch(`${SERVER_URL}/crc/permission/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ export default function UserInfoScreen({ navigation, route }) {
   };
 
   const deletePermission = (pid) => {
-    fetch(`${Config.SERVER_URL}/crc/permission/${pid}`, {
+    fetch(`${SERVER_URL}/crc/permission/${pid}`, {
       method: 'DELETE',
     })
       .then(response => response.json())

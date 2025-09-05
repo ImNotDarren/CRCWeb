@@ -11,7 +11,8 @@ import Popup from "../../components/Popup";
 import FloatingActionButton from "../../components/FloatingActionButton";
 import { openURL } from "../../../utils/url";
 import WhiteSpace from "../../components/WhiteSpace";
-import Config from "react-native-config";
+
+import { GITHUB_BUCKET, SERVER_URL } from "../../../constants";
 
 export default function LectureScreen({ mid, navigation }) {
 
@@ -27,12 +28,12 @@ export default function LectureScreen({ mid, navigation }) {
   const [currVideo, setCurrVideo] = useState(0);
   const [visible, setVisible] = useState(false);
 
-  const url = `${Config.GITHUB_BUCKET}/slides/${mid}.pdf?`;
+  const url = `${GITHUB_BUCKET}/slides/${mid}.pdf?`;
 
   useEffect(() => {
     if (module) {
       if (!module.crcLectures) {
-        fetch(`${Config.SERVER_URL}/crc/modules/getModuleLecture/${mid}`, {
+        fetch(`${SERVER_URL}/crc/modules/getModuleLecture/${mid}`, {
           method: 'GET',
         })
           .then(response => response.json())

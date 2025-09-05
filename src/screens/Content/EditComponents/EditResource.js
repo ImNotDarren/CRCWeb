@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import Popup from "../../../components/Popup";
 import { Button, Input, Spinner } from "@ui-kitten/components";
 import { extractUrl, removeUrls } from "../../../../utils/url";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../../constants";
 
 export default function EditResource({ navigation, mid }) {
 
@@ -53,7 +54,7 @@ export default function EditResource({ navigation, mid }) {
     }
 
     try {
-      await fetch(`${Config.SERVER_URL}/crc/webresources/updateContent`, {
+      await fetch(`${SERVER_URL}/crc/webresources/updateContent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +80,7 @@ export default function EditResource({ navigation, mid }) {
     if (!value)
       return setError("All fields are required");
 
-    fetch(`${Config.SERVER_URL}/crc/webresources/create`, {
+    fetch(`${SERVER_URL}/crc/webresources/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -107,7 +108,7 @@ export default function EditResource({ navigation, mid }) {
   const handleDelete = async () => {
     setLoading("delete");
 
-    fetch(`${Config.SERVER_URL}/crc/webresources/remove`, {
+    fetch(`${SERVER_URL}/crc/webresources/remove`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

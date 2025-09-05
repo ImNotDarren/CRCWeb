@@ -8,7 +8,8 @@ import { UserMenuItem } from "./UserMenuItem";
 import getStyles from "./style";
 import { CustomizeMenuItem } from "../../components/CustomizeMenuItem";
 import { alert } from "../../../utils/alert";
-import Config from "react-native-config";
+
+import { SERVER_URL } from "../../../constants";
 
 const AVATAR_SIZE = 90;
 
@@ -47,7 +48,7 @@ export default function MeScreen({ navigation }) {
     setRefreshing(true);
 
     try {
-      const userRes = await fetch(`${Config.SERVER_URL}/user/${user.user.id}`, {
+      const userRes = await fetch(`${SERVER_URL}/user/${user.user.id}`, {
         method: 'GET',
       });
 
@@ -56,7 +57,7 @@ export default function MeScreen({ navigation }) {
         dispatch({ type: 'UPDATE_USER', value: userData });
       }
 
-      const permissionsRes = await fetch(`${Config.SERVER_URL}/crc/permission/findByUserId/${user.user.id}`, {
+      const permissionsRes = await fetch(`${SERVER_URL}/crc/permission/findByUserId/${user.user.id}`, {
         method: 'GET',
       });
 

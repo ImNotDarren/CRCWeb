@@ -1,11 +1,11 @@
 
 
 export const isAdmin = (role) => {
-  return ['Admin', 'SuperAdmin'].includes(role);
+  return ['admin', 'superadmin'].includes(role?.toLowerCase());
 };
 
 export const canEdit = (user) => {
-  return user.role === 'SuperAdmin' || user.permissions.includes('edit');
+  return isAdmin(user.user.featureUsers[3]?.role) || user.permissions.some(p => p.type === 'edit');
 };
 
 export const oppositeUser = (role) => {
