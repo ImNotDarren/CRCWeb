@@ -2,7 +2,7 @@ import { ScrollView, View } from "react-native";
 import getStyles from "./style";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import CustomMapView from "../../components/Location/map";
+// import CustomMapView from "../../components/Location/map";
 import { Spinner } from "@ui-kitten/components";
 
 import { SERVER_URL } from "../../../constants";

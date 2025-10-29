@@ -38,10 +38,11 @@ export default function ContentScreen({ navigation }) {
         },
         body: JSON.stringify({
           uid: user.user.id,
-          role: user.user.featureUsers[3].role,
+          role: user.user.featureUsers[3].role.toLowerCase(),
           vid: currentVersion.id,
         }),
       });
+
       const data = await response.json();
 
       dispatch({ type: 'UPDATE_MODULES', value: data });

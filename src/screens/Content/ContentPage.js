@@ -10,6 +10,7 @@ import { Input } from "@ui-kitten/components";
 import { alert } from "../../../utils/alert";
 
 import { SERVER_URL } from "../../../constants";
+import { canEdit } from "../../../utils/user";
 
 export default function ContentPageScreen({ route, navigation }) {
 
@@ -17,7 +18,7 @@ export default function ContentPageScreen({ route, navigation }) {
 
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -35,7 +36,7 @@ export default function ContentPageScreen({ route, navigation }) {
     navigation.setOptions({
       title: content?.crcContentPage?.title || 'Content',
       headerRight: () => (
-        user?.featureUsers[3]?.role === 'admin' ?
+        canEdit(user) ?
           <TouchableOpacity
             onPress={handleEdit}
           >
@@ -60,7 +61,7 @@ export default function ContentPageScreen({ route, navigation }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          uid: user.id,
+          uid: user.user.id,
           action: "Complete",
           target: `CRCwebContentPage-${cid}`,
         }),

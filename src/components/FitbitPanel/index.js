@@ -99,7 +99,7 @@ export default function FitbitPanel({ user }) {
         }
       })
       .catch(error => console.error('Error:', error));
-  }, [user, server]);
+  }, [user]);
 
   return (
     <View style={styles.fitbitPanelContainer}>

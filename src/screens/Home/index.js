@@ -17,32 +17,31 @@ export default function HomeScreen({ navigation }) {
       <View>
         <Swiper />
       </View>
-      <TouchableOpacity
-        activeOpacity={0.6}
-        onPress={() => navigation.navigate('How To Navigate')}
-      >
-        <View style={styles.sectionContainer}>
+      <View style={styles.section}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={[styles.sectionContainer, { marginLeft: 0, flex: 1, justifyContent: 'center', alignItems: 'center' }]}
+          onPress={() => navigation.navigate('How To Navigate')}
+        >
           <Text style={styles.textButton}>How To Navigate?</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        activeOpacity={0.6}
-        onPress={() => navigation.navigate('FAQ')}
-      >
-        <View style={styles.sectionContainer}>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={[styles.sectionContainer, { marginHorizontal: 0, flex: 1, justifyContent: 'center', alignItems: 'center' }]}
+          onPress={() => navigation.navigate('FAQ')}
+        >
           <Text style={styles.textButton}>FAQ</Text>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity
         activeOpacity={0.6}
+        style={styles.sectionContainer}
         onPress={() => navigation.navigate('Content')}
       >
-        <View style={styles.sectionContainer}>
-          <RichTextView
-            text='<b>CRCWeb</b> is an <b>evidence-based</b> online program designed for individuals with colorectal cancer. It helps patients cope with cancer and its symptoms while supporting <b>mental health</b> during treatment. The app can be used <b>anytime and anywhere</b> over the <b>3-month</b> study period. The program includes educational content, behavioral activities, timely recommendations, and self-report surveys.'
-            fontSize={20 + fontSize}
-          />
-        </View>
+        <RichTextView
+          text='<b>CRCWeb</b> is an <b>evidence-based</b> online program designed for individuals with colorectal cancer. It helps patients cope with cancer and its symptoms while supporting <b>mental health</b> during treatment. The app can be used <b>anytime and anywhere</b> over the <b>3-month</b> study period. The program includes educational content, behavioral activities, timely recommendations, and self-report surveys.'
+          fontSize={20 + fontSize}
+        />
       </TouchableOpacity>
     </ScrollView>
   )

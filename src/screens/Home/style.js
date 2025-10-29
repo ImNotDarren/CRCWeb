@@ -12,6 +12,13 @@ const getStyles = (fontSize) => StyleSheet.create({
     width: '90%',
     borderRadius: 15,
   },
+  section: {
+    // marginVertical: 20,
+    marginHorizontal: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   sectionContainer: {
     padding: 20,
     marginHorizontal: 20,

@@ -14,4 +14,4 @@ export default function HowToNavigateScreen({ navigation }) {
       </View>
     </ScrollView>
   )
-}
+};

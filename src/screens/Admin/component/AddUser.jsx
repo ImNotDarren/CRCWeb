@@ -21,10 +21,10 @@ export default function AddUser({ navigation }) {
   const [role, setRole] = useState(null);
 
   const roleTitleMap = {
-    1: "Patient",
-    2: "Caregiver",
-    3: "Admin",
-    4: "SuperAdmin",
+    1: "patient",
+    2: "caregiver",
+    3: "admin",
+    4: "superadmin",
   };
 
   const handleAddUser = () => {

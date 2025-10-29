@@ -165,11 +165,7 @@ npx serve dist --single
 Then, push to netlify and follow the commands in your terminal:
 
 ```bash
-netlify deploy --dir dist
-```
-
-```bash
-netlify deploy --prod
+netlify deploy --prod --dir dist
 ```
 
 ---

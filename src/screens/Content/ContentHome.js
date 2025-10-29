@@ -9,7 +9,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from "../../../theme/colors";
 import ContentsScreen from "./Content";
 import ResourcesScreen from "./Resources";
-import AssignmentsScreen from "./Activities";
 import Popup from "../../components/Popup";
 import CustomOverflowMenu from "./CustomOverflowMenu";
 import FloatingActionButton from "../../components/FloatingActionButton";
@@ -34,11 +33,11 @@ export default function ContentHomeScreen({ route, navigation }) {
   const dispatch = useDispatch();
 
   const renderMap = {
-    'Lecture': <LectureScreen mid={mid} navigation={navigation} />,
     // 'Slides': <SlideScreen mid={mid} navigation={navigation} />,
     'Content': <ContentsScreen mid={mid} navigation={navigation} />,
     'Activities': <ActivityScreen mid={mid} navigation={navigation} />,
     'Resources': <ResourcesScreen mid={mid} navigation={navigation} />,
+    'Lecture': <LectureScreen mid={mid} navigation={navigation} />,
   }
 
   useEffect(() => {
