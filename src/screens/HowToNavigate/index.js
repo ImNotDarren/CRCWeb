@@ -8,7 +8,7 @@ import {text} from "./text";
 export default function HowToNavigateScreen({ navigation }) {
   return (
     <ScrollView>
-      <VimeoVideo vimeoId='870508057' />
+      <VimeoVideo vimeoId='1130343124' />
       <View style={styles.transcript}>
         <RichText text={text} fontSize={18} />
       </View>

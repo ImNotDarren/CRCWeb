@@ -12,7 +12,7 @@ export default function SurveyScreen({ navigation }) {
   const surveys = [
     {
       title: "Before Survey",
-      url: "https://redcap.emory.edu/surveys/?s=X7PEFN8NKT9NJN7N",
+      url: "https://redcap.emory.edu/surveys/?s=THERLANMEJ834XX4",
     },
     {
       title: "After Survey",
@@ -20,11 +20,11 @@ export default function SurveyScreen({ navigation }) {
     },
     {
       title: "Weekly Check-in",
-      url: "https://survey.qualtrics.emory.edu/jfe/form/SV_5p6tR77GBQU8CV0",
+      url: "https://redcap.emory.edu/surveys/?s=4AHNNAF3EELD7X8H",
     },
     {
       title: "Consent Form",
-      url: "https://redcap.emory.edu/surveys/?s=ECXR4KDP3W8YP94C",
+      url: "https://redcap.emory.edu/surveys/?s=W9JJNRN9JDKCHPFK",
     }
   ];
 
