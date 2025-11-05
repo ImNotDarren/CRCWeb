@@ -8,11 +8,12 @@ export default function SurveyScreen({ navigation }) {
 
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);
+  const user = useSelector((state) => state.user.user);
 
   const surveys = [
     {
       title: "Before Survey",
-      url: "https://redcap.emory.edu/surveys/?s=THERLANMEJ834XX4",
+      url: "https://redcap.emory.edu/surveys/?s=THERLANMEJ834XX4e",
     },
     {
       title: "After Survey",
@@ -20,7 +21,7 @@ export default function SurveyScreen({ navigation }) {
     },
     {
       title: "Weekly Check-in",
-      url: "https://redcap.emory.edu/surveys/?s=4AHNNAF3EELD7X8H",
+      url: `https://redcap.emory.edu/surveys/?s=4AHNNAF3EELD7X8H&uid=${user.id}`,
     },
     {
       title: "Consent Form",
