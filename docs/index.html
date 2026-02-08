@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRCWeb | The Future of Health Education</title>
+    <link rel="icon" href="./assets/iOS-icon.png" type="image/png">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Commercial Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 8%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-logo img {
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6rem 8% 4rem;
+            gap: 40px;
+        }
+
+        .hero-content { flex: 1; }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to bottom right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 550px;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            width: 320px; /* Constrained for iPhone 17 Pro Max aspect ratio */
+            filter: drop-shadow(0 25px 50px rgba(0,0,0,0.5));
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image img:hover {
+            transform: translateY(-10px) rotate(1deg);
+        }
+
+        /* Feature Grid */
+        .features {
+            padding: 8rem 8%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            background: #111827;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .feature-card img {
+            width: 200px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.4));
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 8% 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+
+        .footer-links {
+            margin: 2rem 0;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover { color: white; }
+
+        @media (max-width: 1024px) {
+            .hero { flex-direction: column; text-align: center; }
+            .hero-content h1 { font-size: 3rem; }
+            .hero-content p { margin: 0 auto 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="nav-logo">
+            <img src="./assets/iOS-icon.png" alt="CRCWeb Logo">
+            <span>CRCWeb</span>
+        </a>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Better Outcomes <br>Through Education.</h1>
+            <p>
+                A high-performance mobile framework for digital symptom management. 
+                Delivering personalized oncology education with native precision.
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: inherit;">
+                <a href="https://github.com/ImNotDarren/CRCWeb" class="btn">Get Started</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="./assets/home-page.png" alt="Dashboard Screenshot">
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="feature-card">
+            <img src="./assets/content-page.png" alt="Content Screenshot">
+            <h3>Immersive Content</h3>
+            <p style="color: var(--text-muted);">High-fidelity educational modules optimized for the iPhone 17 Pro Max display.</p>
+        </div>
+
+        <div class="feature-card">
+            <img src="./assets/content-example.png" alt="Detail Screenshot">
+            <h3>Dynamic Interaction</h3>
+            <p style="color: var(--text-muted);">Responsive lectures and quizzes that adapt to your pace and learning style.</p>
+        </div>
+
+        <div class="feature-card">
+            <img src="./assets/fitbit.png" alt="Fitbit Screenshot">
+            <h3>Health Integration</h3>
+            <p style="color: var(--text-muted);">Seamlessly connect Fitbit data to track recovery and activity alongside your education.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="nav-logo" style="justify-content: center; margin-bottom: 1rem;">
+            <img src="./assets/iOS-icon.png" alt="Icon">
+            <span style="color: var(--text-muted)">CRCWeb</span>
+        </div>
+        <div class="footer-links">
+            <a href="https://github.com/ImNotDarren/CRCWeb">GitHub</a>
+            <a href="./privacy-policy.html">Privacy Policy</a>
+            <a href="mailto:yufen.lin@emory.edu">Contact</a>
+        </div>
+        <p style="color: #4b5563; font-size: 0.8rem; margin-top: 2rem;">
+            Published in JMIR Cancer 2025. Powered by React Native & AI.
+        </p>
+    </footer>
+
+</body>
+</html>
