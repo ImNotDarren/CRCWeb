@@ -14,13 +14,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue[200],
   },
   title: {
-    // position: 'absolute',
-    // top: 250,
     fontSize: 40,
     marginBottom: 80,
     fontWeight: 'bold',
     color: colors.blue[500],
-    // fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
     fontFamily: 'System',
   },
   input: {
@@ -56,6 +53,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.grey[500],
     marginLeft: 10,
+  },
+  privacyLinkContainer: {
+    marginTop: 30,
+    padding: 10,
+  },
+  privacyLinkText: {
+    color: colors.blue[500],
+    textDecorationLine: 'underline',
+    fontSize: 14,
   },
   grid: {
     flex: 1,
