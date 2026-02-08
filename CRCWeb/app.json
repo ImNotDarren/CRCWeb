@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "CRCWeb",
+    "slug": "CRCWeb",
+    "version": "1.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/1024x1024Icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to provide navigation directions.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app uses your location to provide location tracking even when the app is not in use.",
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
+      },
+      "bundleIdentifier": "com.anonymous.CRCData"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"
+      ],
+      "package": "com.anonymous.CRCData"
+    },
+    "web": {
+      "favicon": "./assets/1024x1024Icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d52b3498-bba2-4bf9-ac1e-c8ce31c8d87d"
+      }
+    }
+  }
+}
