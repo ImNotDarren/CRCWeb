@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./docs/icon-black.png" style="height: 100px" />
+  <img src="./CRCWeb/docs/icon-black.png" style="height: 100px" />
 </div>
 
 <p align="center">
