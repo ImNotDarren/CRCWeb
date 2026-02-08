@@ -153,11 +153,11 @@ export default function ContentsScreen({ mid, navigation }) {
           )
         })}
 
-        <TouchableOpacity activeOpacity={0.6} onPress={() => setVisible(true)}>
+        {/* <TouchableOpacity activeOpacity={0.6} onPress={() => setVisible(true)}>
           <Text style={styles.disclosure}>
             {`Disclosure:\nThe content was created by ChatGPT, drawing upon patient education materials provided by the National Cancer Institute and the National Comprehensive Cancer Network. For more information, please click here to visit the websites we provided. If you encounter any issues or have questions, please don't hesitate to contact us.`}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <Popup
           visible={visible}
