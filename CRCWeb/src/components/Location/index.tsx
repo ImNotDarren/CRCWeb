@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from 'react-native';
-import { Button } from '@ui-kitten/components';
+import { AppButton } from '@/src/components/ui';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -156,9 +156,9 @@ export default function LocationComponent(): React.ReactElement {
 
   return (
     <View>
-      <Button appearance="outline" onPress={updating ? stopLocationUpdates : startLocationUpdates}>
+      <AppButton appearance="outline" onPress={updating ? stopLocationUpdates : startLocationUpdates}>
         {updating ? 'Stop Location Updates' : 'Start Location Updates'}
-      </Button>
+      </AppButton>
     </View>
   );
 }

@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
 import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
 import Popup from "@/src/components/Popup";
-import { Button, Input, Spinner } from "@ui-kitten/components";
+import { AppButton, AppInput, AppSpinner } from "@/src/components/ui";
 import WhiteSpace from "@/src/components/WhiteSpace";
 import { useNavigation } from "expo-router";
+import { useColors } from "@/hooks/useColors";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
@@ -26,9 +27,9 @@ type LectureItem = {
 
 export default function EditLecture({ router, mid }: EditLectureProps): React.ReactElement {
   const navigation = useNavigation();
-
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const modules = useSelector((state: RootState) => state.module.modules);
 
   const dispatch = useDispatch();
@@ -147,21 +148,21 @@ export default function EditLecture({ router, mid }: EditLectureProps): React.Re
       >
         <View style={styles.popupContainer}>
           <Text style={styles.lectureCardTitle}>Edit Lecture</Text>
-          <Input
+          <AppInput
             label="Title"
             value={editTitle}
             onChangeText={(e) => handleChange(e, setEditTitle)}
             style={styles.popupInput}
             textStyle={styles.popupText}
           />
-          <Input
+          <AppInput
             label="Vimeo ID"
             value={editLink}
             onChangeText={(e) => handleChange(e, setEditLink)}
             style={styles.popupInput}
             textStyle={styles.popupText}
           />
-          <Input
+          <AppInput
             label="Transcript"
             value={editTranscript}
             onChangeText={(e) => handleChange(e, setEditTranscript)}
@@ -169,7 +170,7 @@ export default function EditLecture({ router, mid }: EditLectureProps): React.Re
             textStyle={styles.popupText}
             multiline
           />
-          <Input
+          <AppInput
             label="Note"
             value={editNote}
             onChangeText={(e) => handleChange(e, setEditNote)}
@@ -179,26 +180,26 @@ export default function EditLecture({ router, mid }: EditLectureProps): React.Re
           />
           {error ? <Text style={styles.error}>{error}</Text> : null}
           <View style={styles.buttonContainer}>
-            <Button
+            <AppButton
               appearance="outline"
               status="danger"
               style={[styles.button, { marginRight: 20 }]}
               onPress={handleDelete}
-              accessoryLeft={loading === "delete" ? () => <Spinner size="small" status="danger" /> : undefined}
+              accessoryLeft={loading === "delete" ? () => <AppSpinner size="small" /> : undefined}
               disabled={loading !== false}
             >
               Delete
-            </Button>
-            <Button
+            </AppButton>
+            <AppButton
               appearance="outline"
               status="primary"
               style={styles.button}
               onPress={handleUpdate}
-              accessoryLeft={loading === "update" ? () => <Spinner size="small" status="info" /> : undefined}
+              accessoryLeft={loading === "update" ? () => <AppSpinner size="small" /> : undefined}
               disabled={loading !== false}
             >
               Update
-            </Button>
+            </AppButton>
           </View>
         </View>
         <WhiteSpace />

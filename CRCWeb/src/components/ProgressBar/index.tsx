@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import colors from '@/theme/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useColors } from '@/hooks/useColors';
 
 interface ProgressBarProps {
   title: string;
@@ -13,6 +13,7 @@ interface ProgressBarProps {
 }
 
 const ProgressBar = ({ title, curr, goal, size = 'small', icon }: ProgressBarProps): React.ReactElement => {
+  const colors = useColors();
   const fill = goal > 0 ? (curr / goal) * 100 : 0;
   const dynamicStyles = StyleSheet.create({
     container: {
@@ -24,13 +25,13 @@ const ProgressBar = ({ title, curr, goal, size = 'small', icon }: ProgressBarPro
       backgroundColor: 'transparent',
       position: 'absolute',
       textAlign: 'center',
-      color: colors.blue[400],
+      color: colors.primary,
       fontSize: size === 'big' ? 35 : 20,
     },
     label: {
       fontSize: size === 'big' ? 22 : 18,
       fontWeight: '100',
-      color: colors.grey[400],
+      color: colors.secondaryText,
       marginTop: size === 'big' ? -10 : -5,
     },
   });
@@ -41,8 +42,8 @@ const ProgressBar = ({ title, curr, goal, size = 'small', icon }: ProgressBarPro
         size={size === 'big' ? 150 : 80}
         width={size === 'big' ? 12 : 6}
         fill={fill}
-        tintColor={colors.blue[400]}
-        backgroundColor={colors.blue[200]}
+        tintColor={colors.primary}
+        backgroundColor={colors.primaryLight}
         rotation={235}
         lineCap="round"
         arcSweepAngle={250}
@@ -52,7 +53,7 @@ const ProgressBar = ({ title, curr, goal, size = 'small', icon }: ProgressBarPro
             <MaterialCommunityIcons
               name={icon as 'plus'}
               size={size === 'big' ? 50 : 30}
-              color={colors.blue[400]}
+              color={colors.primary}
             />
           ) : (
             <Text style={dynamicStyles.points}>{curr}</Text>

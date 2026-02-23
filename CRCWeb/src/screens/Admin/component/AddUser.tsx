@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import getStyles from "../style";
 import { useSelector } from 'react-redux';
 import type { RootState } from '@/src/types/store';
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { Button, Input, Select, SelectItem } from "@ui-kitten/components";
+import { Text, TouchableOpacity, View } from "react-native";
+import { AppButton, AppInput, AppSelect, AppSelectItem } from "@/src/components/ui";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { showMessage } from "react-native-flash-message";
-import colors from '@/theme/colors';
 import { alert } from '@/utils/alert';
 import { useRouter } from 'expo-router';
 import { useCreateFeatureUser } from '@/hooks/api';
+import { useColors } from '@/hooks/useColors';
+import { ThemedScrollView } from '@/src/components/ThemedScrollView';
 
 const roleTitleMap: Record<number, string> = {
   1: "patient",
@@ -20,9 +21,9 @@ const roleTitleMap: Record<number, string> = {
 
 export default function AddUser(): React.ReactElement {
   const router = useRouter();
-
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
 
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -87,9 +88,9 @@ export default function AddUser(): React.ReactElement {
 
   return (
     <>
-      <ScrollView style={styles.addUserContainer}>
+      <ThemedScrollView style={styles.addUserContainer}>
         <Text style={styles.title}>Email</Text>
-        <Input
+        <AppInput
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
@@ -99,20 +100,20 @@ export default function AddUser(): React.ReactElement {
             <TouchableOpacity
               onPress={() => setEmail("")}
             >
-              <MaterialCommunityIcons name='close-circle' size={20} color={colors.grey[300]} />
+              <MaterialCommunityIcons name='close-circle' size={20} color={colors.icon} />
             </TouchableOpacity>
           )}
         />
         <Text style={styles.title}>Name</Text>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Input
+          <AppInput
             placeholder="First Name"
             value={firstName}
             onChangeText={setFirstName}
             textStyle={styles.inputText}
             style={[styles.input, { marginRight: 5 }]}
           />
-          <Input
+          <AppInput
             placeholder="Last Name"
             value={lastName}
             onChangeText={setLastName}
@@ -121,35 +122,32 @@ export default function AddUser(): React.ReactElement {
           />
         </View>
         <Text style={styles.title}>Role</Text>
-        <Select
+        <AppSelect
           value={role !== null ? roleTitleMap[role] : undefined}
-          selectedIndex={(role !== null ? { row: role } : undefined) as any}
-          onSelect={index => {
-            const i = Array.isArray(index) ? index[0] : index;
-            setRole(i && typeof i === 'object' && 'row' in i ? (i as { row: number }).row : null);
-          }}
+          onSelect={(index) => setRole(index + 1)}
+          placeholder="Select role"
         >
-          {Object.values(roleTitleMap).map((roleLabel, idx) => (
-            <SelectItem key={idx} title={roleLabel} />
+          {Object.values(roleTitleMap).map((roleLabel) => (
+            <AppSelectItem key={roleLabel} title={roleLabel} />
           ))}
-        </Select>
-      </ScrollView>
+        </AppSelect>
+      </ThemedScrollView>
       <View style={styles.buttonContainer}>
-        <Button
+        <AppButton
           appearance="outline"
           status="danger"
           style={[styles.button, { marginRight: 20 }]}
           onPress={() => router.back()}
         >
           Cancel
-        </Button>
-        <Button
+        </AppButton>
+        <AppButton
           appearance="outline"
           style={styles.button}
           onPress={handleAddUser}
         >
           Confirm
-        </Button>
+        </AppButton>
       </View>
     </>
   );

@@ -7,6 +7,7 @@ import EditContent from "./EditComponents/EditContent";
 import EditResource from "./EditComponents/EditResource";
 import EditActivity from "./EditComponents/EditActivity";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { useColors } from "@/hooks/useColors";
 
 export default function EditScreen(): React.ReactElement {
   const { screen, mid } = useLocalSearchParams<{ screen: string; mid: string }>();
@@ -19,8 +20,9 @@ export default function EditScreen(): React.ReactElement {
     "resources": <EditResource router={router} mid={mid} />,
   };
 
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
 
   return (
     <ScrollView style={styles.editContainer}>

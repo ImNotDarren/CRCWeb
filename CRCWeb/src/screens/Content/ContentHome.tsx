@@ -5,9 +5,8 @@ import type { RootState } from "@/src/types/store";
 import { useEffect, useState, useRef } from "react";
 import LectureScreen from "./Lecture";
 import ContentHeader from "./Header";
-import { Button, TopNavigationAction } from "@ui-kitten/components";
+import { AppButton } from "@/src/components/ui";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from "@/theme/colors";
 import ContentsScreen from "./Content";
 import ResourcesScreen from "./Resources";
 import Popup from "@/src/components/Popup";
@@ -16,6 +15,7 @@ import ActivityScreen from "./Activities";
 import { canEdit, isAdmin } from "@/utils/user";
 import { useLocalSearchParams, useRouter, useNavigation } from "expo-router";
 import { useSetModuleProgress } from "@/hooks/api";
+import { useColors } from "@/hooks/useColors";
 
 const MENU_ITEMS = ['Content', 'Activities', 'Resources', 'Lecture'];
 
@@ -23,8 +23,9 @@ export default function ContentHomeScreen(): React.ReactElement {
   const { mid } = useLocalSearchParams<{ mid: string }>();
   const router = useRouter();
   const navigation = useNavigation();
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const [currPage, setCurrPage] = useState(0);
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef({ openMenu: () => {} });
@@ -55,7 +56,7 @@ export default function ContentHomeScreen(): React.ReactElement {
             onPress={() => menuRef.current.openMenu()}
             style={{ padding: 10 }}
           >
-            <MaterialCommunityIcons name="dots-vertical" size={24} color={colors.grey[500]} />
+            <MaterialCommunityIcons name="dots-vertical" size={24} color={colors.text} />
           </TouchableOpacity>
         ),
       });
@@ -110,27 +111,21 @@ export default function ContentHomeScreen(): React.ReactElement {
   };
 
   const BackAction = () => (
-    <TopNavigationAction
-      icon={(props) => <MaterialCommunityIcons name='arrow-left' size={20} />}
-      onPress={handleBack}
-      style={styles.actionButton}
-    />
+    <TouchableOpacity onPress={handleBack} style={styles.actionButton}>
+      <MaterialCommunityIcons name="arrow-left" size={20} color={colors.text} />
+    </TouchableOpacity>
   );
 
   const ForwardAction = () => (
-    <TopNavigationAction
-      icon={(props) => <MaterialCommunityIcons name='arrow-right' size={18} />}
-      onPress={handleForward}
-      style={styles.actionButton}
-    />
+    <TouchableOpacity onPress={handleForward} style={styles.actionButton}>
+      <MaterialCommunityIcons name="arrow-right" size={18} color={colors.text} />
+    </TouchableOpacity>
   );
 
   const FinishAction = () => (
-    <TopNavigationAction
-      icon={(props) => <MaterialCommunityIcons name={'check-bold'} size={18} color={colors.green[300]} />}
-      onPress={handleFinish}
-      style={styles.actionButton}
-    />
+    <TouchableOpacity onPress={handleFinish} style={styles.actionButton}>
+      <MaterialCommunityIcons name="check-bold" size={18} color={colors.success} />
+    </TouchableOpacity>
   );
 
   const handleEdit = () => {
@@ -138,11 +133,9 @@ export default function ContentHomeScreen(): React.ReactElement {
   };
 
   const EditAction = () => (
-    <TopNavigationAction
-      icon={(props) => <MaterialCommunityIcons name={'pencil'} size={18} />}
-      onPress={handleEdit}
-      style={styles.actionButton}
-    />
+    <TouchableOpacity onPress={handleEdit} style={styles.actionButton}>
+      <MaterialCommunityIcons name="pencil" size={18} color={colors.text} />
+    </TouchableOpacity>
   );
 
   return (
@@ -168,7 +161,7 @@ export default function ContentHomeScreen(): React.ReactElement {
           icon="check-bold"
           onPress={handleFinish}
           positioning={false}
-          color={colors.green[400]}
+          color={colors.success}
         />}
       </View>
 
@@ -188,7 +181,7 @@ export default function ContentHomeScreen(): React.ReactElement {
               }}
               style={{ paddingVertical: 12, paddingHorizontal: 8, borderRadius: 4 }}
             >
-              <Text style={{ fontSize: 16, color: currPage === index ? colors.blue[500] : colors.grey[500] }}>
+              <Text style={{ fontSize: 16, color: currPage === index ? colors.primaryDark : colors.text }}>
                 {item}
               </Text>
             </Pressable>
@@ -199,9 +192,9 @@ export default function ContentHomeScreen(): React.ReactElement {
                 setMenuVisible(false);
                 router.push(`/quiz/${mid}`);
               }}
-              style={{ paddingVertical: 12, paddingHorizontal: 8, borderRadius: 4, borderTopWidth: 1, borderTopColor: colors.grey[200] }}
+              style={{ paddingVertical: 12, paddingHorizontal: 8, borderRadius: 4, borderTopWidth: 1, borderTopColor: colors.border }}
             >
-              <Text style={{ fontSize: 16, color: colors.grey[500] }}>Quiz</Text>
+              <Text style={{ fontSize: 16, color: colors.text }}>Quiz</Text>
             </Pressable>
           )}
         </View>
@@ -217,15 +210,15 @@ export default function ContentHomeScreen(): React.ReactElement {
           <Text style={styles.popupTitle}>Are you ready for your quiz?</Text>
           <Text style={styles.popupSubtitle}>You cannot exit the quiz after starting</Text>
           <View style={styles.homePopupButtonView}>
-            <Button
+            <AppButton
               appearance="outline"
               status="danger"
               style={{ flex: 1 }}
               onPress={() => setVisible(false)}
             >
               No
-            </Button>
-            <Button
+            </AppButton>
+            <AppButton
               appearance="outline"
               style={{ flex: 1, marginLeft: 20 }}
               onPress={() => {
@@ -234,7 +227,7 @@ export default function ContentHomeScreen(): React.ReactElement {
               }}
             >
               Yes
-            </Button>
+            </AppButton>
           </View>
         </View>
       </Popup>

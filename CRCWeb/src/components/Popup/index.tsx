@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Animated, TouchableOpacity, Keyboard, Easing, ScrollView } from 'react-native';
-import { Modal } from '@ui-kitten/components';
-import styles from './style';
+import { AppModal } from '@/src/components/ui';
+import getStyles from './style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from '@/theme/colors';
 import type { ReactNode } from 'react';
+import { useColors } from '@/hooks/useColors';
 
 interface PopupProps {
   children?: ReactNode;
@@ -24,6 +24,8 @@ export default function Popup({
 }: PopupProps): React.ReactElement {
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const keyboardOffset = useRef(new Animated.Value(0)).current;
+  const colors = useColors();
+  const styles = getStyles(colors);
 
   useEffect(() => {
     const keyboardShowListener = Keyboard.addListener('keyboardWillShow', (e) => {
@@ -64,12 +66,12 @@ export default function Popup({
 
   return (
     <View style={{ flex: 1 }}>
-      <Modal visible={visible} onBackdropPress={handleClose} backdropStyle={styles.backdrop}>
+      <AppModal visible={visible} onBackdropPress={handleClose} backdropStyle={styles.backdrop}>
         <Animated.View style={[styles.centeredView, { transform: [{ translateY: keyboardOffset }] }]}>
           <Animated.View style={[styles.modalView, { transform: [{ scale: scaleAnim }] }]}>
             {closeIcon && (
               <TouchableOpacity onPress={handleClose} style={styles.iconButton}>
-                <MaterialCommunityIcons name="close" size={22} color={colors.grey[300]} />
+                <MaterialCommunityIcons name="close" size={22} color={colors.icon} />
               </TouchableOpacity>
             )}
             <ScrollView style={{ ...styles.childrenView, marginTop: closeIcon ? 30 : 0 } as object}>
@@ -77,7 +79,7 @@ export default function Popup({
             </ScrollView>
           </Animated.View>
         </Animated.View>
-      </Modal>
+      </AppModal>
     </View>
   );
 }

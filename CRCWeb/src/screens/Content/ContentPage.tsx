@@ -6,19 +6,19 @@ import { useEffect, useState, useCallback } from "react";
 import RichText from "@/src/components/RichText";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import WhiteSpace from "@/src/components/WhiteSpace";
-import colors from "@/theme/colors";
-import { Input } from "@ui-kitten/components";
+import { AppInput } from "@/src/components/ui";
 import { canEdit } from "@/utils/user";
 import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useColors } from "@/hooks/useColors";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
 export default function ContentPageScreen(): React.ReactElement {
   const { cid, mid } = useLocalSearchParams<{ cid: string; mid: string }>();
   const navigation = useNavigation();
-
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const user = useSelector((state: RootState) => state.user);
 
   const dispatch = useDispatch();
@@ -154,7 +154,7 @@ export default function ContentPageScreen(): React.ReactElement {
           <TouchableOpacity
             onPress={handleEdit}
           >
-            <MaterialCommunityIcons name={edit ? "check-bold" : "pencil"} size={20} color={edit ? colors.green[400] : colors.grey[500]} style={{ padding: 10 }} />
+            <MaterialCommunityIcons name={edit ? "check-bold" : "pencil"} size={20} color={edit ? colors.success : colors.text} style={{ padding: 10 }} />
           </TouchableOpacity> : null
       ),
     });
@@ -176,7 +176,7 @@ export default function ContentPageScreen(): React.ReactElement {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.contentPageView}
         >
-          <Input
+          <AppInput
             value={editTitle}
             onChangeText={setEditTitle}
             style={[styles.textInput, { marginBottom: 10 }]}

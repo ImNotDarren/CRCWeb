@@ -1,19 +1,19 @@
-import { Text, View } from 'react-native';
-import styles from './style';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { isAdmin } from '@/utils/user';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from '@/theme/colors';
-import { TouchableOpacity } from 'react-native';
 import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { alert } from '@/utils/alert';
 import type { RootState } from '@/src/types/store';
 import type { CRCVersion } from '@/src/types/crc';
 import { useVersions } from '@/hooks/api';
+import { ThemedView } from '@/src/components/ThemedView';
+import versionSelectionStyles from './VersionSelectionStyle';
 
 export default function VersionSelection(): React.ReactElement {
   const router = useRouter();
+  const styles = versionSelectionStyles;
   const versions = useSelector((state: RootState) => state.version.versions);
   const user = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ export default function VersionSelection(): React.ReactElement {
   const userWithFeatures = user as (typeof user) & { featureUsers?: Array<{ role?: string }> };
 
   return (
-    <View style={styles.grid}>
+    <ThemedView style={styles.grid}>
       {versions.map((v) => (
         <TouchableOpacity
           activeOpacity={0.8}
@@ -66,9 +66,9 @@ export default function VersionSelection(): React.ReactElement {
       ))}
       {isAdmin(userWithFeatures?.featureUsers?.[4]?.role) && (
         <TouchableOpacity activeOpacity={0.8} style={styles.addCell}>
-          <MaterialCommunityIcons name="plus" color={colors.blue[400]} size={40} />
+          <MaterialCommunityIcons name="plus" color="#a3a3a3" size={40} />
         </TouchableOpacity>
       )}
-    </View>
+    </ThemedView>
   );
 }

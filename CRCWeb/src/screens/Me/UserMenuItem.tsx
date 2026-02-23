@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { MenuItem } from '@ui-kitten/components';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Expand from '@/src/components/Expand';
-import colors from '@/theme/colors';
 import { useSelector } from 'react-redux';
 import getStyles from './style';
 import { alert } from '@/utils/alert';
 import type { RootState } from '@/src/types/store';
+import { useColors } from '@/hooks/useColors';
+import { AppMenuItem } from '@/src/components/ui';
 
 interface UserMenuItemProps {
   title: string;
@@ -17,7 +17,8 @@ interface UserMenuItemProps {
 
 export function UserMenuItem({ title, icon, onNavigate }: UserMenuItemProps): React.ReactElement {
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const colors = useColors();
+  const styles = getStyles(fontSize, colors);
 
   const handlePress = (): void => {
     if (onNavigate) return onNavigate();
@@ -25,35 +26,35 @@ export function UserMenuItem({ title, icon, onNavigate }: UserMenuItemProps): Re
   };
 
   return (
-    <MenuItem
-      title={() => (
+    <AppMenuItem
+      title={
         <Text
           style={
-            !onNavigate ? { ...styles.MenuItemTitle, color: colors.grey[300] } : styles.MenuItemTitle
+            !onNavigate ? { ...styles.MenuItemTitle, color: colors.mutedText } : styles.MenuItemTitle
           }
         >
           {title}
         </Text>
-      )}
-      accessoryLeft={() => (
+      }
+      accessoryLeft={
         <MaterialCommunityIcons
           name={icon as 'cog'}
           size={18 + fontSize}
-          color={!onNavigate ? colors.grey[300] : undefined}
+          color={!onNavigate ? colors.mutedText : colors.text}
         />
-      )}
-      accessoryRight={() => (
+      }
+      accessoryRight={
         <>
           <Expand />
           <MaterialCommunityIcons
             name="chevron-right"
             size={22 + fontSize}
-            color={!onNavigate ? colors.grey[300] : undefined}
+            color={!onNavigate ? colors.mutedText : colors.text}
           />
         </>
-      )}
-      style={styles.menuItem}
+      }
       onPress={handlePress}
+      style={styles.menuItem}
     />
   );
 }

@@ -14,11 +14,17 @@ module.exports = ({ config }) => ({
     scheme: 'crcdata',
     newArchEnabled: true,
     orientation: 'portrait',
+    userInterfaceStyle: 'automatic',
+    splash: {
+      ...config.expo?.splash,
+      backgroundColor: '#0a0a0a',
+    },
     updates: {
       enabled: false,
     },
     ios: {
       ...config.expo?.ios,
+      userInterfaceStyle: 'automatic',
       bundleIdentifier: 'com.anonymous.CRCData',
       supportsTablet: true,
       buildNumber: '1',
@@ -44,8 +50,9 @@ module.exports = ({ config }) => ({
         ITSAppUsesNonExemptEncryption: false,
         LSApplicationQueriesSchemes: ['fb', 'whatsapp', 'sms', 'mailto'],
         UIRequiresFullScreen: false,
-        UIViewControllerBasedStatusBarAppearance: false,
+        UIViewControllerBasedStatusBarAppearance: true,
         UISupportedInterfaceOrientations: ['UIInterfaceOrientationPortrait'],
+        UIUserInterfaceStyle: 'Automatic',
         'UISupportedInterfaceOrientations~ipad': [
           'UIInterfaceOrientationLandscapeLeft',
           'UIInterfaceOrientationLandscapeRight',
@@ -56,6 +63,7 @@ module.exports = ({ config }) => ({
     },
     android: {
       ...config.expo?.android,
+      userInterfaceStyle: 'automatic',
       package: 'com.anonymous.CRCData',
       versionCode: 3,
       permissions: [

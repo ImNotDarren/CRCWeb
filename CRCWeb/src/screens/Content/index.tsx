@@ -2,7 +2,7 @@ import { Linking, RefreshControl, View, ScrollView } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
-import { Button, Spinner } from "@ui-kitten/components";
+import { AppButton, AppSpinner } from "@/src/components/ui";
 import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
 import { useEffect, useState, useCallback } from "react";
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
@@ -12,12 +12,14 @@ import { canEdit } from "@/utils/user";
 import { useRouter } from "expo-router";
 import type { CRCModule } from "@/src/types/crc";
 import { useModulesByRole } from "@/hooks/api";
+import { useColors } from "@/hooks/useColors";
+import { ThemedScrollView } from "@/src/components/ThemedScrollView";
 
 export default function ContentScreen(): React.ReactElement {
   const router = useRouter();
-
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
 
   const user = useSelector((state: RootState) => state.user);
   const modules = useSelector((state: RootState) => state.module.modules);
@@ -68,14 +70,14 @@ export default function ContentScreen(): React.ReactElement {
   if (loading && params)
     return (
       <View style={styles.spinnerView}>
-        <Spinner size="giant" status="info" />
+        <AppSpinner size="large" />
       </View>
     );
 
   if (!loading && modules.length === 0) {
     return (
       <NoContent action={(
-        <Button onPress={handleRefresh}>Refresh</Button>
+        <AppButton onPress={handleRefresh}>Refresh</AppButton>
       )} />
     );
   }
@@ -83,7 +85,7 @@ export default function ContentScreen(): React.ReactElement {
   return (
     <GestureHandlerRootView style={[styles.container, { flex: 1 }]}>
       {!canEdit(user) ? (
-        <ScrollView style={styles.container} refreshControl={
+        <ThemedScrollView style={styles.container} refreshControl={
           <RefreshControl refreshing={loading} onRefresh={handleRefresh} />
         }>
           {modules.map((m, idx) => (
@@ -95,7 +97,7 @@ export default function ContentScreen(): React.ReactElement {
               onNavigate={() => router.push(`/content-home/${m.id}`)}
             />
           ))}
-        </ScrollView>
+        </ThemedScrollView>
       ) : (
         <DraggableFlatList
           data={modules}

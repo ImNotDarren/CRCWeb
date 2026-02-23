@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import getStyles from '../style';
-import { Button } from '@ui-kitten/components';
+import { AppButton } from '@/src/components/ui';
 import { Linking } from 'react-native';
 import { getDailyActivitySummary, refreshToken } from '@/utils/fitbit';
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressBar from '@/src/components/ProgressBar';
 import Expand from '@/src/components/Expand';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from '@/theme/colors';
 import { alert } from '@/utils/alert';
 import type { RootState } from '@/src/types/store';
 import type { FitbitAccessToken } from '@/utils/fitbit';
+import { useColors } from '@/hooks/useColors';
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 const FITBIT_OAUTH_REDIRECT_URL = process.env.EXPO_PUBLIC_FITBIT_OAUTH_REDIRECT_URL || '';
@@ -38,7 +38,8 @@ export default function FitbitPanel(): React.ReactElement {
   const rotateAnimation = useState(new Animated.Value(0))[0];
   const user = useSelector((state: RootState) => state.user);
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const colors = useColors();
+  const styles = getStyles(fontSize, colors);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -139,7 +140,7 @@ export default function FitbitPanel(): React.ReactElement {
               <Text style={styles.topBarTitle}>Today</Text>
               <TouchableOpacity onPress={handleAuth}>
                 <Animated.View style={[styles.iconStyle, { transform: [{ rotate: rotation }] }]}>
-                  <MaterialCommunityIcons name="refresh" size={25} color={colors.grey[300]} />
+                  <MaterialCommunityIcons name="refresh" size={25} color={colors.icon} />
                 </Animated.View>
               </TouchableOpacity>
             </View>
@@ -155,9 +156,9 @@ export default function FitbitPanel(): React.ReactElement {
           </>
         ) : (
           <View style={styles.connectFitbitContainer}>
-            <Button onPress={handleAuth} size="large" appearance="outline" status="info">
+            <AppButton onPress={handleAuth} appearance="outline">
               Connect Fitbit
-            </Button>
+            </AppButton>
           </View>
         )}
       </View>

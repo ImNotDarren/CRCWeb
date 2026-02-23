@@ -3,13 +3,13 @@ import { View, Text, BackHandler, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
 import getStyles from "./style";
-import { Button, Radio, RadioGroup, Spinner } from "@ui-kitten/components";
+import { AppButton, AppRadio, AppSpinner } from "@/src/components/ui";
 import Expand from "@/src/components/Expand";
-import colors from "@/theme/colors";
 import RichText from "@/src/components/RichText";
 import Popup from "@/src/components/Popup";
 import { alert } from "@/utils/alert";
 import { useLocalSearchParams, useRouter, useNavigation } from "expo-router";
+import { useColors } from "@/hooks/useColors";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
@@ -17,11 +17,11 @@ export default function QuizScreen(): React.ReactElement {
   const { mid } = useLocalSearchParams<{ mid: string }>();
   const router = useRouter();
   const navigation = useNavigation();
-
+  const colors = useColors();
   const user = useSelector((state: RootState) => state.user.user);
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
   const modules = useSelector((state: RootState) => state.module.modules);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
 
   const dispatch = useDispatch();
 
@@ -148,7 +148,7 @@ export default function QuizScreen(): React.ReactElement {
   if (!choices)
     return (
       <View style={styles.spinnerView}>
-        <Spinner size="giant" status="info" />
+        <AppSpinner size="large" />
       </View>
     );
 
@@ -169,80 +169,80 @@ export default function QuizScreen(): React.ReactElement {
               : `Your final score is ${((score / choices.length) * 100).toFixed(1)}%, you need to score at least 80% to pass the quiz.`
           }
         </Text>
-        <Button onPress={() => router.push('/(tabs)')}>Confirm</Button>
+        <AppButton onPress={() => router.push('/(tabs)')}>Confirm</AppButton>
       </Popup>
       <Text style={styles.quizQuestion}>
         ({currQuestion + 1}/{choices.length}) {curr?.question}
       </Text>
       <View style={{ marginTop: 25 }}>
         {curr?.A ?
-          <Radio
+          <AppRadio
             checked={selected === 'A'}
             onChange={() => confirmed ? null : setSelected('A')}
             style={styles.radio}
           >
-            {() => <Text
-              style={[styles.multipleChoice, { color: curr.answer === 'A' && confirmed ? colors.green[400] : curr.answer !== 'A' && selected === 'A' && confirmed ? colors.red[300] : 'black' }]}
+            <Text
+              style={[styles.multipleChoice, { color: curr.answer === 'A' && confirmed ? colors.success : curr.answer !== 'A' && selected === 'A' && confirmed ? colors.error : colors.text }]}
             >
               {curr.A}
-            </Text>}
-          </Radio> : null
+            </Text>
+          </AppRadio> : null
         }
         {curr?.B ?
-          <Radio
+          <AppRadio
             checked={selected === 'B'}
             onChange={() => confirmed ? null : setSelected('B')}
             style={styles.radio}
           >
-            {() => <Text
-              style={[styles.multipleChoice, { color: curr.answer === 'B' && confirmed ? colors.green[400] : curr.answer !== 'B' && selected === 'B' && confirmed ? colors.red[300] : 'black' }]}
+            <Text
+              style={[styles.multipleChoice, { color: curr.answer === 'B' && confirmed ? colors.success : curr.answer !== 'B' && selected === 'B' && confirmed ? colors.error : colors.text }]}
             >
               {curr.B}
-            </Text>}
-          </Radio> : null
+            </Text>
+          </AppRadio> : null
         }
         {curr?.C ?
-          <Radio
+          <AppRadio
             checked={selected === 'C'}
             onChange={() => confirmed ? null : setSelected('C')}
             style={styles.radio}
           >
-            {() => <Text
-              style={[styles.multipleChoice, { color: curr.answer === 'C' && confirmed ? colors.green[400] : curr.answer !== 'C' && selected === 'C' && confirmed ? colors.red[300] : 'black' }]}
+            <Text
+              style={[styles.multipleChoice, { color: curr.answer === 'C' && confirmed ? colors.success : curr.answer !== 'C' && selected === 'C' && confirmed ? colors.error : colors.text }]}
             >
               {curr.C}
-            </Text>}
-          </Radio> : null
+            </Text>
+          </AppRadio> : null
         }
         {curr?.D ?
-          <Radio
+          <AppRadio
             checked={selected === 'D'}
             onChange={() => confirmed ? null : setSelected('D')}
             style={styles.radio}
           >
-            {() => <Text
-              style={[styles.multipleChoice, { color: curr.answer === 'D' && confirmed ? colors.green[400] : curr.answer !== 'D' && selected === 'D' && confirmed ? colors.red[300] : 'black' }]}
+            <Text
+              style={[styles.multipleChoice, { color: curr.answer === 'D' && confirmed ? colors.success : curr.answer !== 'D' && selected === 'D' && confirmed ? colors.error : colors.text }]}
             >
               {curr.D}
-            </Text>}
-          </Radio> : null
+            </Text>
+          </AppRadio> : null
         }
       </View>
 
       {confirmed && curr && <View>
-        <RichText text={curr.explanation || ''} fontSize={18 + fontSize} color={colors.red[300]} />
+        <RichText text={curr.explanation || ''} fontSize={18 + fontSize} color={colors.error} />
       </View>}
 
       {selected &&
         <View style={[styles.buttonView, { marginTop: 20 }]}>
           <Expand />
-          <Button
+          <AppButton
             appearance='outline'
             style={{ width: 100, flexWrap: 'nowrap' }}
             onPress={handleNext}
           >
             {confirmed ? 'Next' : 'Submit'}
-          </Button>
+          </AppButton>
         </View>}
     </ScrollView>
   );

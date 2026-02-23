@@ -6,20 +6,20 @@ import { useEffect, useState, useCallback } from "react";
 import RichText from "@/src/components/RichText";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import WhiteSpace from "@/src/components/WhiteSpace";
-import colors from "@/theme/colors";
-import { Button, Input } from "@ui-kitten/components";
+import { AppButton, AppInput } from "@/src/components/ui";
 import { alert } from "@/utils/alert";
 import { showMessage } from "react-native-flash-message";
 import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useColors } from "@/hooks/useColors";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
 export default function ActivityPageScreen(): React.ReactElement {
   const { aid, mid } = useLocalSearchParams<{ aid: string; mid: string }>();
   const navigation = useNavigation();
-
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const user = useSelector((state: RootState) => state.user.user);
 
   const dispatch = useDispatch();
@@ -133,7 +133,7 @@ export default function ActivityPageScreen(): React.ReactElement {
           <TouchableOpacity
             onPress={handleEdit}
           >
-            <MaterialCommunityIcons name={edit ? "check-bold" : "pencil"} size={20} color={edit ? colors.green[400] : colors.grey[500]} style={{ padding: 10 }} />
+            <MaterialCommunityIcons name={edit ? "check-bold" : "pencil"} size={20} color={edit ? colors.success : colors.text} style={{ padding: 10 }} />
           </TouchableOpacity> : null
       ),
     });
@@ -179,14 +179,14 @@ export default function ActivityPageScreen(): React.ReactElement {
               style={styles.evaluateButton}
               onPress={handleReaction(true)}
             >
-              <MaterialCommunityIcons name="thumb-up" size={40} color={thumbDownSelected ? colors.grey[200] : colors.green[400]} />
+              <MaterialCommunityIcons name="thumb-up" size={40} color={thumbDownSelected ? colors.border : colors.success} />
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.6}
               style={styles.evaluateButton}
               onPress={handleReaction(false)}
             >
-              <MaterialCommunityIcons name="thumb-down" size={40} color={thumbUpSelected ? colors.grey[200] : colors.red[400]} />
+              <MaterialCommunityIcons name="thumb-down" size={40} color={thumbUpSelected ? colors.border : colors.error} />
             </TouchableOpacity>
           </View>
           <WhiteSpace />
@@ -196,7 +196,7 @@ export default function ActivityPageScreen(): React.ReactElement {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.contentPageView}
         >
-          <Input
+          <AppInput
             value={editTitle}
             onChangeText={setEditTitle}
             style={[styles.textInput, { marginBottom: 10 }]}

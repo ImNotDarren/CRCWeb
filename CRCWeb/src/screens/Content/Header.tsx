@@ -1,8 +1,8 @@
-import { TopNavigation } from "@ui-kitten/components";
-import { Text } from "react-native";
-import getStyles from "./style";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/src/types/store";
+import getStyles from './style';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/src/types/store';
+import { useColors } from '@/hooks/useColors';
+import { TopBar } from '@/src/components/ui';
 
 type ContentHeaderProps = {
   title: string;
@@ -12,14 +12,15 @@ type ContentHeaderProps = {
 
 export default function ContentHeader({ title, backAction, forwardAction }: ContentHeaderProps): React.ReactElement {
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const colors = useColors();
+  const styles = getStyles(fontSize, colors);
 
   return (
-    <TopNavigation
-      title={() => <Text style={styles.title}>{title}</Text>}
-      alignment="center"
-      accessoryLeft={backAction != null ? () => backAction : undefined}
-      accessoryRight={forwardAction != null ? () => forwardAction : undefined}
+    <TopBar
+      title={title}
+      accessoryLeft={backAction ?? undefined}
+      accessoryRight={forwardAction ?? undefined}
+      titleStyle={styles.title}
     />
   );
 }

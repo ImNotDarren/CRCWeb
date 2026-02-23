@@ -1,16 +1,16 @@
 import { StyleSheet } from 'react-native';
-import colors from '@/theme/colors';
+import type { ThemeColors } from '@/constants/Colors';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.red[400],
-    position: 'absolute',
-    top: 0,
-    right: 5,
-    height: 10,
-    width: 10,
-    borderRadius: 5,
-  },
-});
-
-export default styles;
+export function getBadgeStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    container: {
+      backgroundColor: colors.error,
+      position: 'absolute',
+      top: 0,
+      right: 5,
+      height: 10,
+      width: 10,
+      borderRadius: 5,
+    },
+  });
+}

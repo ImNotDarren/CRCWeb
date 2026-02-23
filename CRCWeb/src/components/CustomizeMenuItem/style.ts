@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import colors from '@/theme/colors';
+import type { ThemeColors } from '@/constants/Colors';
 
-const getStyles = (fontSize: number) =>
-  StyleSheet.create({
+export default function getStyles(fontSize: number, colors: ThemeColors) {
+  return StyleSheet.create({
     menu: {
       backgroundColor: 'transparent',
       padding: 20,
@@ -31,7 +31,7 @@ const getStyles = (fontSize: number) =>
     },
     MenuItemSubtitle: {
       fontSize: 15 + fontSize,
-      color: colors.grey[300],
+      color: colors.mutedText,
       marginTop: 3,
     },
     progressBar: {
@@ -40,5 +40,4 @@ const getStyles = (fontSize: number) =>
       height: 40,
     },
   });
-
-export default getStyles;
+}

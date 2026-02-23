@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
 import { extractUrl, openURL, removeUrls } from "@/utils/url";
 import WhiteSpace from "@/src/components/WhiteSpace";
-import { Spinner } from "@ui-kitten/components";
+import { AppSpinner } from "@/src/components/ui";
+import { useColors } from "@/hooks/useColors";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
@@ -16,8 +17,9 @@ type ResourcesScreenProps = {
 
 export default function ResourcesScreen({ mid }: ResourcesScreenProps): React.ReactElement {
   const dispatch = useDispatch();
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const modules = useSelector((state: RootState) => state.module.modules);
 
   const [module, setModule] = useState<Record<string, unknown>>(JSON.parse(JSON.stringify(modules.find((m) => String(m.id) === String(mid)))));
@@ -60,7 +62,7 @@ export default function ResourcesScreen({ mid }: ResourcesScreenProps): React.Re
   if (!module?.crcWebResources)
     return (
       <View style={styles.spinnerView}>
-        <Spinner size="giant" status="info" />
+        <AppSpinner size="large" />
       </View>
     );
 

@@ -1,13 +1,13 @@
-import { Dimensions, StyleSheet } from "react-native";
-import colors from "@/theme/colors";
+import { Dimensions, StyleSheet } from 'react-native';
+import type { ThemeColors } from '@/constants/Colors';
 
-const getStyles = (fontSize: number) => {
+export default function getStyles(fontSize: number, colors: ThemeColors) {
   return StyleSheet.create({
     container: {
       justifyContent: 'center',
     },
     lectureCard: {
-      backgroundColor: colors.white,
+      backgroundColor: colors.cardBackground,
       marginVertical: 10,
       padding: 20,
       borderRadius: 10,
@@ -35,9 +35,9 @@ const getStyles = (fontSize: number) => {
       flex: 1,
     },
     error: {
-      color: colors.red[400],
+      color: colors.error,
       fontSize: 16 + fontSize,
-      paddingHorizontal: 5
+      paddingHorizontal: 5,
     },
     resourcesTitle: {
       fontSize: 18 + fontSize,
@@ -45,6 +45,4 @@ const getStyles = (fontSize: number) => {
       margin: 20,
     },
   });
-};
-
-export default getStyles;
+}

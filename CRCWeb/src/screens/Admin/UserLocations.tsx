@@ -2,26 +2,28 @@ import { ScrollView, View } from "react-native";
 import getStyles from "./style";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
-import { Spinner } from "@ui-kitten/components";
+import { AppSpinner } from "@/src/components/ui";
 import { useLocalSearchParams } from "expo-router";
 import { useLocationsByUser } from "@/hooks/api";
+import { useColors } from "@/hooks/useColors";
+import { ThemedScrollView } from "@/src/components/ThemedScrollView";
 
 export default function UserLocationsScreen(): React.ReactElement {
   const { userId } = useLocalSearchParams<{ userId: string }>();
   const uid = userId ? Number(userId) : null;
-
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const colors = useColors();
+  const styles = getStyles(fontSize, colors);
 
   const { locations, loading } = useLocationsByUser(uid);
 
   return (
     <>
-      <ScrollView style={[styles.container, { paddingHorizontal: 20 }]}>
+      <ThemedScrollView style={[styles.container, { paddingHorizontal: 20 }]}>
         {/* <CustomMapView locations={locations} /> */}
-      </ScrollView>
+      </ThemedScrollView>
       {loading && <View style={styles.loadingContainer}>
-        <Spinner size='giant' />
+        <AppSpinner size="large" />
       </View>}
     </>
   );

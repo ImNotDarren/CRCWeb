@@ -1,17 +1,20 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import getStyles from './style';
-import { ScrollView, Text } from 'react-native';
+import { Text } from 'react-native';
 import RichText from '@/src/components/RichText';
 import WhiteSpace from '@/src/components/WhiteSpace';
 import type { RootState } from '@/src/types/store';
+import { useColors } from '@/hooks/useColors';
+import { ThemedScrollView } from '@/src/components/ThemedScrollView';
 
 export default function ContactScreen(): React.ReactElement {
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const colors = useColors();
+  const styles = getStyles(fontSize, colors);
 
   return (
-    <ScrollView style={styles.container}>
+    <ThemedScrollView style={styles.container}>
       <Text style={[styles.title, { marginTop: 0 }]}>About Us</Text>
       <RichText
         text="We are cancer researchers from the Nell Hodgson Woodruff School of Nursing, School of Medicine, and the Winship Cancer Institute of Emory University. The project is funded by the Heilbrunn Nurse Scholar Award. We aim to conduct a clinical trial to assess the feasibility and acceptability of a technology-based intervention to promote mental health for patients with colorectal cancer receiving chemotherapy."
@@ -31,6 +34,6 @@ export default function ContactScreen(): React.ReactElement {
       <Text style={styles.title}>Contact Email</Text>
       <RichText text="canbewell@emory.edu" fontSize={18} />
       <WhiteSpace />
-    </ScrollView>
+    </ThemedScrollView>
   );
 }

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import colors from '@/theme/colors';
+import type { ThemeColors } from '@/constants/Colors';
 
-const getStyles = (fontSize: number) => {
+export default function getStyles(fontSize: number, colors: ThemeColors) {
   const base = StyleSheet.create({
     container: { justifyContent: 'center' },
     userinfoContainer: {
@@ -11,13 +11,13 @@ const getStyles = (fontSize: number) => {
       margin: 20,
     },
     divider: {
-      borderBottomColor: colors.grey[200],
+      borderBottomColor: colors.border,
       borderBottomWidth: 1,
       marginBottom: 20,
     },
     username: { fontSize: 22 + fontSize, marginBottom: 5 },
-    email: { fontSize: 15 + fontSize, color: colors.grey[300] },
-    role: { fontSize: 15 + fontSize, color: colors.grey[300], marginBottom: 2 },
+    email: { fontSize: 15 + fontSize, color: colors.mutedText },
+    role: { fontSize: 15 + fontSize, color: colors.mutedText, marginBottom: 2 },
     editButton: { marginHorizontal: 20 },
     menu: { backgroundColor: 'transparent', height: '100%' },
     menuContainer: { display: 'flex', justifyContent: 'flex-start' },
@@ -39,6 +39,4 @@ const getStyles = (fontSize: number) => {
       height: size,
     }),
   };
-};
-
-export default getStyles;
+}

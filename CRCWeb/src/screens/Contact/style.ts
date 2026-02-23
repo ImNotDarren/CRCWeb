@@ -1,16 +1,15 @@
 import { StyleSheet } from 'react-native';
-import colors from '@/theme/colors';
+import type { ThemeColors } from '@/constants/Colors';
 
-const getStyles = (fontSize: number) =>
-  StyleSheet.create({
+export default function getStyles(fontSize: number, colors: ThemeColors) {
+  return StyleSheet.create({
     container: { padding: 20 },
     title: {
       fontSize: 22 + fontSize,
       fontWeight: 'bold',
       marginTop: 20,
       marginBottom: 10,
-      color: colors.grey[500],
+      color: colors.text,
     },
   });
-
-export default getStyles;
+}

@@ -5,11 +5,11 @@ import type { RootState } from "@/src/types/store";
 import { useEffect, useState } from "react";
 import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
 import Popup from "@/src/components/Popup";
-import { Button, Spinner } from "@ui-kitten/components";
+import { AppButton, AppSpinner } from "@/src/components/ui";
 import { openURL } from "@/utils/url";
 import WhiteSpace from "@/src/components/WhiteSpace";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from "@/theme/colors";
+import { useColors } from "@/hooks/useColors";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
@@ -20,8 +20,9 @@ type ContentsScreenProps = {
 
 export default function ContentsScreen({ mid, router }: ContentsScreenProps): React.ReactElement {
   const dispatch = useDispatch();
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const modules = useSelector((state: RootState) => state.module.modules);
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -92,7 +93,7 @@ export default function ContentsScreen({ mid, router }: ContentsScreenProps): Re
   if (!module?.crcContents)
     return (
       <View style={styles.spinnerView}>
-        <Spinner size="giant" status="info" />
+        <AppSpinner size="large" />
       </View>
     );
 
@@ -113,7 +114,7 @@ export default function ContentsScreen({ mid, router }: ContentsScreenProps): Re
                   <MaterialCommunityIcons
                     name='check-bold'
                     size={22 + fontSize}
-                    color={colors.green[400]}
+                    color={colors.success}
                   /> :
                   null
               }
@@ -126,21 +127,21 @@ export default function ContentsScreen({ mid, router }: ContentsScreenProps): Re
           setVisible={setVisible}
           animationTime={100}
         >
-          <Button
+          <AppButton
             appearance="outline"
             status="info"
             onPress={() => openURL(url1)}
             style={{ marginBottom: 20 }}
           >
             National Cancer Institue
-          </Button>
-          <Button
+          </AppButton>
+          <AppButton
             appearance="outline"
             status="info"
             onPress={() => openURL(url2)}
           >
             National Comprehensive Cancer Network
-          </Button>
+          </AppButton>
         </Popup>
         <WhiteSpace height={150} />
       </ScrollView>

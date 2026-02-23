@@ -1,17 +1,21 @@
 import { Text, TextInput, TouchableOpacity, View, Linking } from 'react-native';
-import styles from './style';
+import getStyles from './style';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, save } from '@/localStorage';
-import { Radio } from '@ui-kitten/components';
+import { AppRadio } from '@/src/components/ui';
 import { alert } from '@/utils/alert';
 import { useRouter } from 'expo-router';
 import type { RootState } from '@/src/types/store';
 import type { User } from '@/src/types/common';
 import { useLogin } from '@/hooks/api';
+import { useColors } from '@/hooks/useColors';
+import { ThemedView } from '@/src/components/ThemedView';
 
 export default function LoginScreen(): React.ReactElement {
   const router = useRouter();
+  const colors = useColors();
+  const styles = getStyles(colors);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useState(false);
@@ -59,7 +63,7 @@ export default function LoginScreen(): React.ReactElement {
   };
 
   return (
-    <View style={styles.outterBox}>
+    <ThemedView style={styles.outterBox}>
       <Text style={styles.title}>CRCWeb Login</Text>
       <TextInput
         style={styles.input}
@@ -76,9 +80,9 @@ export default function LoginScreen(): React.ReactElement {
         secureTextEntry
       />
       <View style={styles.checkboxView}>
-        <Radio status="info" checked={autoLogin} onChange={handleAutoLoginChange}>
-          Auto login
-        </Radio>
+        <AppRadio checked={autoLogin} onChange={handleAutoLoginChange}>
+          <Text style={styles.checkboxText}>Auto login</Text>
+        </AppRadio>
       </View>
       <TouchableOpacity style={styles.button} onPress={handleLogin(username, password)}>
         <Text style={styles.buttonText}>Login</Text>
@@ -86,6 +90,6 @@ export default function LoginScreen(): React.ReactElement {
       <TouchableOpacity style={styles.privacyLinkContainer} onPress={handleOpenPrivacyPolicy}>
         <Text style={styles.privacyLinkText}>Privacy Policy</Text>
       </TouchableOpacity>
-    </View>
+    </ThemedView>
   );
 }

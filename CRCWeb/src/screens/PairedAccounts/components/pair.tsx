@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
-import styles from '../style';
-import { Button, Input, Spinner } from '@ui-kitten/components';
+import { TouchableOpacity, View } from 'react-native';
+import getStyles from '../style';
+import { AppButton, AppInput, AppSpinner } from '@/src/components/ui';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from '@/theme/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { CustomizeMenuItem } from '@/src/components/CustomizeMenuItem';
 import type { RootState } from '@/src/types/store';
 import { useUserSearch, useCreatePair } from '@/hooks/api';
 import type { SearchUser } from '@/hooks/api';
+import { useColors } from '@/hooks/useColors';
+import { ThemedView } from '@/src/components/ThemedView';
+import { ThemedScrollView } from '@/src/components/ThemedScrollView';
 
 const getExpectedRoles = (role: string): string[] => {
   const adminRoles = ['admin', 'superadmin'];
@@ -25,6 +27,8 @@ const getExpectedRoles = (role: string): string[] => {
 export default function Pair(): React.ReactElement {
   const [value, setValue] = useState('');
   const [users, setUsers] = useState<SearchUser[]>([]);
+  const colors = useColors();
+  const styles = getStyles(colors);
   const user = useSelector((state: RootState) => state.user);
   const role = (user.user as { featureUsers?: Array<{ role: string }> })?.featureUsers?.[3]?.role ?? '';
   const expectedRoles = getExpectedRoles(role);
@@ -78,9 +82,9 @@ export default function Pair(): React.ReactElement {
   };
 
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
       <View style={styles.input}>
-        <Input
+        <AppInput
           value={value}
           style={{ flex: 1, marginRight: 10 }}
           textStyle={styles.inputText}
@@ -90,21 +94,21 @@ export default function Pair(): React.ReactElement {
               <MaterialCommunityIcons
                 name="close-circle"
                 size={20}
-                color={colors.grey[300]}
+                color={colors.icon}
               />
             </TouchableOpacity>
           )}
         />
-        <Button
+        <AppButton
           style={{ height: 51 }}
           disabled={searching}
           onPress={handleSearch}
-          accessoryLeft={() => (searching ? <Spinner size="small" status="info" /> : <View />)}
+          accessoryLeft={() => (searching ? <AppSpinner size="small" /> : undefined)}
         >
           Search
-        </Button>
+        </AppButton>
       </View>
-      <ScrollView style={{ marginTop: 20 }}>
+      <ThemedScrollView style={{ marginTop: 20 }}>
         {users.map((u) => (
           <CustomizeMenuItem
             key={u.id}
@@ -112,22 +116,19 @@ export default function Pair(): React.ReactElement {
             subtitle={u.email}
             icon="account"
             accessoryRight={
-              <Button
-                size="small"
+              <AppButton
                 appearance="outline"
                 onPress={handlePair(u)}
                 disabled={pairing}
                 style={{ marginRight: 10 }}
-                accessoryRight={() =>
-                  pairing ? <Spinner size="tiny" status="info" /> : <View />
-                }
+                accessoryLeft={() => (pairing ? <AppSpinner size="small" /> : undefined)}
               >
                 Pair
-              </Button>
+              </AppButton>
             }
           />
         ))}
-      </ScrollView>
-    </View>
+      </ThemedScrollView>
+    </ThemedView>
   );
 }

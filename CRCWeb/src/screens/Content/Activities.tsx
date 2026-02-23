@@ -5,9 +5,9 @@ import type { RootState } from "@/src/types/store";
 import { useEffect, useState } from "react";
 import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
 import WhiteSpace from "@/src/components/WhiteSpace";
-import { Spinner } from "@ui-kitten/components";
+import { AppSpinner } from "@/src/components/ui";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from "@/theme/colors";
+import { useColors } from "@/hooks/useColors";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
@@ -18,8 +18,9 @@ type ActivityScreenProps = {
 
 export default function ActivityScreen({ mid, router }: ActivityScreenProps): React.ReactElement {
   const dispatch = useDispatch();
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const modules = useSelector((state: RootState) => state.module.modules);
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -58,7 +59,7 @@ export default function ActivityScreen({ mid, router }: ActivityScreenProps): Re
   if (!module?.crcAssignments)
     return (
       <View style={styles.spinnerView}>
-        <Spinner size="giant" status="info" />
+        <AppSpinner size="large" />
       </View>
     );
 
@@ -79,7 +80,7 @@ export default function ActivityScreen({ mid, router }: ActivityScreenProps): Re
                   <MaterialCommunityIcons
                     name='check-bold'
                     size={22 + fontSize}
-                    color={colors.green[400]}
+                    color={colors.success}
                   />
                 ) : null
               }

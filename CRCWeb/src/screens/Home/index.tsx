@@ -1,16 +1,20 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import getStyles from './style';
 import { useSelector } from 'react-redux';
 import Swiper from './Swiper';
 import RichTextView from '@/src/components/RichText';
 import { useRouter } from 'expo-router';
 import type { RootState } from '@/src/types/store';
+import { useColors } from '@/hooks/useColors';
+import { ThemedScrollView } from '@/src/components/ThemedScrollView';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function HomeScreen(): React.ReactElement {
   const router = useRouter();
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
 
   return (
     <ScrollView style={styles.container}>

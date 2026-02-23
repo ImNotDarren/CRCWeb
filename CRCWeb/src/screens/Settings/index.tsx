@@ -2,16 +2,19 @@ import React from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import getStyles from './style';
-import { Button, ButtonGroup, Menu } from '@ui-kitten/components';
 import fontSizes from '@/theme/fontSizes';
 import { save } from '@/localStorage';
 import { CustomizeMenuItem } from '@/src/components/CustomizeMenuItem';
 import type { RootState } from '@/src/types/store';
 import type { FontSizeKey } from '@/src/types/crc';
+import { useColors } from '@/hooks/useColors';
+import { ThemedView } from '@/src/components/ThemedView';
+import { AppButton } from '@/src/components/ui';
 
 export default function SettingsScreen(): React.ReactElement {
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const colors = useColors();
+  const styles = getStyles(fontSize, colors);
   const dispatch = useDispatch();
 
   const handleFont = (fs: FontSizeKey) => (): void => {
@@ -20,28 +23,26 @@ export default function SettingsScreen(): React.ReactElement {
   };
 
   return (
-    <View>
-      <Menu style={styles.menu}>
+    <ThemedView>
+      <View style={styles.menu}>
         <CustomizeMenuItem
           title="Font size"
           icon="format-size"
           accessoryRight={
-            <View>
-              <ButtonGroup appearance="outline">
-                <Button disabled={fontSize === fontSizes.small} onPress={handleFont('small')}>
-                  S
-                </Button>
-                <Button disabled={fontSize === fontSizes.medium} onPress={handleFont('medium')}>
-                  M
-                </Button>
-                <Button disabled={fontSize === fontSizes.large} onPress={handleFont('large')}>
-                  L
-                </Button>
-              </ButtonGroup>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <AppButton disabled={fontSize === fontSizes.small} onPress={handleFont('small')} appearance="outline">
+                S
+              </AppButton>
+              <AppButton disabled={fontSize === fontSizes.medium} onPress={handleFont('medium')} appearance="outline">
+                M
+              </AppButton>
+              <AppButton disabled={fontSize === fontSizes.large} onPress={handleFont('large')} appearance="outline">
+                L
+              </AppButton>
             </View>
           }
         />
-      </Menu>
-    </View>
+      </View>
+    </ThemedView>
   );
 }

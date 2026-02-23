@@ -1,7 +1,7 @@
-import { Dimensions, StyleSheet } from "react-native";
-import colors from "@/theme/colors";
+import { StyleSheet } from 'react-native';
+import type { ThemeColors } from '@/constants/Colors';
 
-const getStyles = (fontSize: number) => {
+export default function getStyles(fontSize: number, colors: ThemeColors) {
   return StyleSheet.create({
     inputView: {
       marginHorizontal: 20,
@@ -32,7 +32,7 @@ const getStyles = (fontSize: number) => {
     },
     loginCount: {
       fontSize: 15,
-      color: colors.grey[300],
+      color: colors.mutedText,
     },
     addUserContainer: {
       padding: 20,
@@ -41,7 +41,7 @@ const getStyles = (fontSize: number) => {
       fontSize: 18,
       marginBottom: 10,
       marginLeft: 3,
-      color: colors.grey[400],
+      color: colors.secondaryText,
     },
     input: {
       marginBottom: 20,
@@ -64,6 +64,4 @@ const getStyles = (fontSize: number) => {
       height: 40,
     },
   });
-};
-
-export default getStyles;
+}

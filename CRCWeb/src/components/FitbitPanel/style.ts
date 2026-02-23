@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
-import colors from '@/theme/colors';
+import type { ThemeColors } from '@/constants/Colors';
 
-const getStyles = (fontSize: number) =>
-  StyleSheet.create({
+export default function getStyles(fontSize: number, colors: ThemeColors) {
+  return StyleSheet.create({
     container: { padding: 20 },
     fitbitPanelContainer: {
-      backgroundColor: colors.white,
+      backgroundColor: colors.cardBackground,
       justifyContent: 'center',
       borderRadius: 20,
       padding: 20,
@@ -19,7 +19,7 @@ const getStyles = (fontSize: number) =>
       alignItems: 'center',
       marginBottom: 20,
     },
-    topBarTitle: { fontSize: 25, color: colors.grey[500] },
+    topBarTitle: { fontSize: 25, color: colors.text },
     iconStyle: {},
     subProgresses: {
       display: 'flex',
@@ -41,5 +41,4 @@ const getStyles = (fontSize: number) =>
       marginTop: 20,
     },
   });
-
-export default getStyles;
+}

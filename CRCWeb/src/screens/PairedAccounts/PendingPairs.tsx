@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
-import styles from './style';
+import { Text, View } from 'react-native';
+import getStyles from './style';
 import { useSelector } from 'react-redux';
 import { getPendingPairs } from '@/utils/user';
-import { Button, Spinner } from '@ui-kitten/components';
+import { AppButton, AppSpinner } from '@/src/components/ui';
 import { CustomizeMenuItem } from '@/src/components/CustomizeMenuItem';
 import type { RootState } from '@/src/types/store';
+import { useColors } from '@/hooks/useColors';
+import { ThemedScrollView } from '@/src/components/ThemedScrollView';
 
 interface PendingPair {
   id?: number;
@@ -15,6 +17,8 @@ interface PendingPair {
 
 export default function PendingPairsScreen(): React.ReactElement {
   const user = useSelector((state: RootState) => state.user);
+  const colors = useColors();
+  const styles = getStyles(colors);
   const pending = getPendingPairs(user) as PendingPair[];
   const [pairing, setPairing] = useState(false);
 
@@ -23,7 +27,7 @@ export default function PendingPairsScreen(): React.ReactElement {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ThemedScrollView style={styles.container}>
       {pending.length > 0 ? (
         pending.map((pair) => (
           <CustomizeMenuItem
@@ -37,27 +41,25 @@ export default function PendingPairsScreen(): React.ReactElement {
             icon="account"
             accessoryRight={
               <View style={styles.buttonView}>
-                <Button
-                  size="small"
+                <AppButton
                   appearance="outline"
                   onPress={handlePair(pair, 'Confirmed')}
                   disabled={pairing}
                   style={{ marginRight: 10 }}
-                  accessoryRight={() => (pairing ? <Spinner size="tiny" status="info" /> : <View />)}
+                  accessoryLeft={() => (pairing ? <AppSpinner size="small" /> : undefined)}
                 >
                   Pair
-                </Button>
-                <Button
-                  size="small"
+                </AppButton>
+                <AppButton
                   appearance="outline"
                   status="danger"
                   onPress={handlePair(pair, 'Rejected')}
                   disabled={pairing}
                   style={{ marginRight: 10 }}
-                  accessoryRight={() => (pairing ? <Spinner size="tiny" status="info" /> : <View />)}
+                  accessoryLeft={() => (pairing ? <AppSpinner size="small" /> : undefined)}
                 >
                   Reject
-                </Button>
+                </AppButton>
               </View>
             }
           />
@@ -67,6 +69,6 @@ export default function PendingPairsScreen(): React.ReactElement {
           <Text style={styles.emptyText}>No pending pairs</Text>
         </View>
       )}
-    </ScrollView>
+    </ThemedScrollView>
   );
 }

@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { Text, StyleSheet, Linking, Image, TouchableOpacity, View } from 'react-native';
-import colors from '@/theme/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { alert } from '@/utils/alert';
+import { useColors } from '@/hooks/useColors';
 
 interface RichTextProps {
   text: string;
@@ -11,18 +11,19 @@ interface RichTextProps {
   lineHeight?: number;
 }
 
-const APP_TAGS = [
-  { tag: '[facebook]', name: 'Facebook', icon: 'facebook', color: colors.blue[400], appScheme: 'fb://' },
-  { tag: '[whatsapp]', name: 'WhatsApp', icon: 'whatsapp', color: colors.green[500], appScheme: 'whatsapp://send' },
-  { tag: '[sms]', name: 'Messages', icon: 'message', color: colors.green[400], appScheme: 'sms:' },
-];
-
 const RichText = ({
   text,
-  color = colors.grey[500],
+  color,
   fontSize = 14,
   lineHeight = 27,
 }: RichTextProps): React.ReactElement => {
+  const colors = useColors();
+  const textColor = color ?? colors.text;
+  const APP_TAGS = [
+    { tag: '[facebook]', name: 'Facebook', icon: 'facebook', color: colors.primary, appScheme: 'fb://' },
+    { tag: '[whatsapp]', name: 'WhatsApp', icon: 'whatsapp', color: colors.success, appScheme: 'whatsapp://send' },
+    { tag: '[sms]', name: 'Messages', icon: 'message', color: colors.success, appScheme: 'sms:' },
+  ];
   let imageCounter = 0;
   let linkCounter = 0;
   let textCounter = 0;
@@ -46,6 +47,18 @@ const RichText = ({
     'g'
   );
   const combinedRegex = new RegExp(`${tagRegex.source}|${linkImageRegex.source}|${iconRegex.source}`, 'g');
+
+  const styles = StyleSheet.create({
+    text: { color: textColor },
+    link: { color: colors.link, textDecorationLine: 'underline' as const },
+    bold: { fontWeight: 'bold' as const },
+    red: { color: colors.error },
+    blue: { color: colors.primary },
+    iconContainer: { height: 60, lineHeight: 60, justifyContent: 'center' as const, alignItems: 'center' as const },
+    imageContainer: { flex: 1, justifyContent: 'center' as const, alignItems: 'center' as const, margin: 10 },
+    image: { width: 250, height: 250 },
+    icon: { marginHorizontal: 5 },
+  });
 
   const parseText = (inputText: string, parentStyle: object = {}): ReactNode[] => {
     const output: ReactNode[] = [];
@@ -125,7 +138,7 @@ const RichText = ({
     <View>
       {groupedOutput.map((grp, index) =>
         (grp[0] as React.ReactElement & { type?: { displayName?: string } })?.type?.displayName === 'Text' ? (
-          <Text key={`group-${index}`} style={[styles.text, { color, fontSize, lineHeight }]}>
+          <Text key={`group-${index}`} style={[styles.text, { color: textColor, fontSize, lineHeight }]}>
             {grp}
           </Text>
         ) : (
@@ -137,17 +150,5 @@ const RichText = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  text: { color: 'grey' },
-  link: { color: 'blue', textDecorationLine: 'underline' },
-  bold: { fontWeight: 'bold' },
-  red: { color: 'red' },
-  blue: { color: colors.blue[300] },
-  iconContainer: { height: 60, lineHeight: 60, justifyContent: 'center', alignItems: 'center' },
-  imageContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', margin: 10 },
-  image: { width: 250, height: 250 },
-  icon: { marginHorizontal: 5 },
-});
 
 export default RichText;

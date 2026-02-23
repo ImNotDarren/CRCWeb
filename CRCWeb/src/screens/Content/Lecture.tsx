@@ -5,12 +5,12 @@ import type { RootState } from "@/src/types/store";
 import { useEffect, useState } from "react";
 import VimeoVideo from "@/src/components/VimeoVideo";
 import Expand from "@/src/components/Expand";
-import { Button, Divider, Spinner } from "@ui-kitten/components";
-import colors from "@/theme/colors";
+import { AppButton, AppSpinner } from "@/src/components/ui";
 import RichText from "@/src/components/RichText";
 import Popup from "@/src/components/Popup";
 import WhiteSpace from "@/src/components/WhiteSpace";
 import { openURL } from "@/utils/url";
+import { useColors } from "@/hooks/useColors";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 const GITHUB_BUCKET = process.env.EXPO_PUBLIC_GITHUB_BUCKET || '';
@@ -22,8 +22,9 @@ type LectureScreenProps = {
 
 export default function LectureScreen({ mid, router }: LectureScreenProps): React.ReactElement {
   const dispatch = useDispatch();
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const modules = useSelector((state: RootState) => state.module.modules);
 
   const found = modules.find((m) => String(m.id) === String(mid));
@@ -60,7 +61,7 @@ export default function LectureScreen({ mid, router }: LectureScreenProps): Reac
   if (!module?.crcLectures)
     return (
       <View style={styles.spinnerView}>
-        <Spinner size="giant" status="info" />
+        <AppSpinner size="large" />
       </View>
     );
 
@@ -73,44 +74,44 @@ export default function LectureScreen({ mid, router }: LectureScreenProps): Reac
               vimeoId={module.crcLectures[currVideo].link}
             />
             {module.crcLectures[currVideo].transcript && <View style={styles.buttonArea}>
-              <Button
+              <AppButton
                 appearance='outline'
                 status='basic'
                 style={styles.transcriptButton}
                 onPress={() => setVisible(true)}
               >
                 Transcript
-              </Button>
-              <Button
+              </AppButton>
+              <AppButton
                 appearance='outline'
                 status='info'
                 style={styles.slidesButton}
                 onPress={() => openURL(url)}
               >
                 Slides
-              </Button>
+              </AppButton>
             </View>}
-            <Divider style={{ backgroundColor: colors.grey[100], marginHorizontal: 20, marginBottom: 10, }} />
+            <View style={{ height: 1, backgroundColor: colors.borderLight, marginHorizontal: 20, marginBottom: 10 }} />
             <Text style={styles.lectureNote}>{module.crcLectures[currVideo].note}</Text>
             <View style={styles.buttonView}>
               {currVideo > 0 &&
-                <Button
+                <AppButton
                   appearance='outline'
                   status='warning'
                   style={{ width: 100, flexWrap: 'nowrap' }}
                   onPress={() => setCurrVideo(curr => curr - 1)}
                 >
                   Prev
-                </Button>}
+                </AppButton>}
               <Expand />
               {currVideo < module.crcLectures.length - 1 &&
-                <Button
+                <AppButton
                   appearance='outline'
                   style={{ width: 100, flexWrap: 'nowrap' }}
                   onPress={() => setCurrVideo(curr => curr + 1)}
                 >
                   Next
-                </Button>}
+                </AppButton>}
             </View>
             <WhiteSpace height={100} />
             <Popup

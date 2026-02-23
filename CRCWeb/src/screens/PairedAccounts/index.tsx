@@ -2,16 +2,14 @@ import React, { useEffect } from 'react';
 import {
   Alert,
   RefreshControl,
-  ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import styles from './style';
+import getStyles from './style';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from '@ui-kitten/components';
+import { AppButton } from '@/src/components/ui';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from '@/theme/colors';
 import Pair from './components/pair';
 import InitialsAvatar from '@/utils/avatar';
 import Expand from '@/src/components/Expand';
@@ -20,12 +18,16 @@ import Badge from '@/src/components/Badge';
 import { useRouter, useNavigation } from 'expo-router';
 import type { RootState } from '@/src/types/store';
 import { usePairsByUser, useDeletePair } from '@/hooks/api';
+import { useColors } from '@/hooks/useColors';
+import { ThemedScrollView } from '@/src/components/ThemedScrollView';
 
 const AVATAR_SIZE = 70;
 
 export default function PairedAccountsScreen(): React.ReactElement {
   const router = useRouter();
   const navigation = useNavigation();
+  const colors = useColors();
+  const styles = getStyles(colors);
   const user = useSelector((state: RootState) => state.user);
   const currentPair = getCurrentPair(user);
   const dispatch = useDispatch();
@@ -83,7 +85,7 @@ export default function PairedAccountsScreen(): React.ReactElement {
             <MaterialCommunityIcons
               name="bell-outline"
               size={20}
-              color={colors.blue[400]}
+            color={colors.primary}
               style={{ marginRight: 10 }}
             />
           </Badge>
@@ -110,7 +112,7 @@ export default function PairedAccountsScreen(): React.ReactElement {
   }
 
   return (
-    <ScrollView
+    <ThemedScrollView
       style={styles.container}
       refreshControl={<RefreshControl refreshing={loadingPairs} onRefresh={handleRefresh} />}
     >
@@ -130,11 +132,11 @@ export default function PairedAccountsScreen(): React.ReactElement {
         </View>
         <Expand />
         <View style={styles.unpairContainer}>
-          <Button appearance="outline" status="danger" size="small" onPress={handleUnpair}>
+          <AppButton appearance="outline" status="danger" onPress={handleUnpair}>
             Unpair
-          </Button>
+          </AppButton>
         </View>
       </View>
-    </ScrollView>
+    </ThemedScrollView>
   );
 }

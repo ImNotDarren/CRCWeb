@@ -4,18 +4,20 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
 import { useState } from "react";
 import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
-import { Input } from "@ui-kitten/components";
+import { AppInput } from "@/src/components/ui";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from "@/theme/colors";
 import FloatingActionButton from "@/src/components/FloatingActionButton";
 import { useRouter } from "expo-router";
 import { useFeatureUsers } from "@/hooks/api";
+import { useColors } from "@/hooks/useColors";
+import { ThemedScrollView } from "@/src/components/ThemedScrollView";
+import { ThemedView } from "@/src/components/ThemedView";
 
 export default function AdminScreen(): React.ReactElement {
   const router = useRouter();
-
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const [value, setValue] = useState("");
   const { users: allUsers, loading: refreshing, refetch } = useFeatureUsers(3);
   const currentUsers = value.length > 0
@@ -27,9 +29,9 @@ export default function AdminScreen(): React.ReactElement {
     : (allUsers as Array<{ id: number; username: string; firstName: string; lastName: string }>);
 
   return (
-    <>
+    <ThemedView style={{ flex: 1 }}>
       <View style={styles.inputView}>
-        <Input
+        <AppInput
           textStyle={styles.inputText}
           style={{ flex: 1 }}
           value={value}
@@ -40,12 +42,12 @@ export default function AdminScreen(): React.ReactElement {
                 setValue("");
               }}
             >
-              <MaterialCommunityIcons name='close-circle' size={20} color={colors.grey[300]} />
+              <MaterialCommunityIcons name='close-circle' size={20} color={colors.icon} />
             </TouchableOpacity>
           )}
         />
       </View>
-      <ScrollView
+      <ThemedScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void refetch()} />}
         style={styles.container}
       >
@@ -60,11 +62,11 @@ export default function AdminScreen(): React.ReactElement {
           ))
         }
         <View style={styles.bottomWhiteSpace} />
-      </ScrollView>
+      </ThemedScrollView>
       <FloatingActionButton
         icon='plus'
         onPress={() => router.push('/add-user')}
       />
-    </>
+    </ThemedView>
   );
 }

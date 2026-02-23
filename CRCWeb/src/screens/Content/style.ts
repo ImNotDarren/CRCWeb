@@ -1,7 +1,7 @@
-import { Dimensions, StyleSheet } from "react-native";
-import colors from "@/theme/colors";
+import { Dimensions, StyleSheet } from 'react-native';
+import type { ThemeColors } from '@/constants/Colors';
 
-const getStyles = (fontSize: number) => {
+export default function getStyles(fontSize: number, colors: ThemeColors) {
   return StyleSheet.create({
     navigationButtonView: {
       display: 'flex',
@@ -25,13 +25,13 @@ const getStyles = (fontSize: number) => {
     },
     popupTitle: {
       fontSize: 20 + fontSize,
-      textAlign: 'left'
+      textAlign: 'left',
     },
     popupSubtitle: {
       fontSize: 15 + fontSize,
       textAlign: 'left',
       marginTop: 10,
-      color: colors.grey[300],
+      color: colors.mutedText,
     },
     homePopupButtonView: {
       display: 'flex',
@@ -55,7 +55,7 @@ const getStyles = (fontSize: number) => {
       height: '100%',
     },
     divider: {
-      backgroundColor: colors.grey[200],
+      backgroundColor: colors.border,
       marginVertical: 10,
     },
     title: {
@@ -81,7 +81,7 @@ const getStyles = (fontSize: number) => {
     },
     lectureNote: {
       fontSize: 18 + fontSize,
-      color: colors.grey[300],
+      color: colors.mutedText,
       margin: 20,
       marginTop: 10,
     },
@@ -124,7 +124,7 @@ const getStyles = (fontSize: number) => {
       paddingVertical: 20,
     },
     disclosure: {
-      color: colors.grey[300],
+      color: colors.mutedText,
       padding: 25,
       fontSize: 16 + fontSize,
       lineHeight: 25 + fontSize * 2,
@@ -168,7 +168,7 @@ const getStyles = (fontSize: number) => {
       fontSize: 20 + fontSize,
       fontWeight: '500',
       marginVertical: 20,
-      color: colors.grey[500],
+      color: colors.text,
     },
     evaluateView: {
       display: 'flex',
@@ -177,11 +177,9 @@ const getStyles = (fontSize: number) => {
       marginHorizontal: 40,
     },
     evaluateButton: {
-      backgroundColor: colors.white,
+      backgroundColor: colors.cardBackground,
       padding: 20,
       borderRadius: 40,
     },
   });
-};
-
-export default getStyles;
+}

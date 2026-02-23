@@ -1,7 +1,7 @@
-import { Dimensions, StyleSheet } from 'react-native';
-import colors from '@/theme/colors';
+import { StyleSheet } from 'react-native';
+import type { ThemeColors } from '@/constants/Colors';
 
-const getStyles = () => {
+export default function getStyles(colors: ThemeColors) {
   const base = StyleSheet.create({
     container: { paddingVertical: 20, flex: 1 },
     input: {
@@ -18,14 +18,14 @@ const getStyles = () => {
       padding: 20,
       marginHorizontal: 20,
       borderRadius: 15,
-      backgroundColor: colors.white,
+      backgroundColor: colors.cardBackground,
     },
-    pairText: { fontSize: 25, color: colors.grey[400] },
+    pairText: { fontSize: 25, color: colors.secondaryText },
     username: { fontSize: 22, marginBottom: 5 },
-    email: { fontSize: 15, color: colors.grey[300] },
-    role: { fontSize: 15, color: colors.grey[300], marginBottom: 2 },
+    email: { fontSize: 15, color: colors.mutedText },
+    role: { fontSize: 15, color: colors.mutedText, marginBottom: 2 },
     unpairContainer: { justifyContent: 'center', alignItems: 'center', marginLeft: 20 },
-    pendingText: { color: colors.grey[200], fontSize: 18 },
+    pendingText: { color: colors.border, fontSize: 18 },
     buttonView: { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' },
     emptyView: {
       display: 'flex',
@@ -34,10 +34,10 @@ const getStyles = () => {
       alignItems: 'center',
       paddingBottom: 20,
       marginHorizontal: 20,
-      borderBottomColor: colors.grey[100],
+      borderBottomColor: colors.borderLight,
       borderBottomWidth: 1,
     },
-    emptyText: { fontSize: 20, color: colors.grey[400] },
+    emptyText: { fontSize: 20, color: colors.secondaryText },
   });
   return {
     ...base,
@@ -50,6 +50,4 @@ const getStyles = () => {
         height: size,
       }),
   };
-};
-
-export default getStyles();
+}

@@ -1,10 +1,9 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Switch, Text, View } from "react-native";
 import getStyles from "./style";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
 import { useEffect, useState } from "react";
 import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
-import { Toggle } from "@ui-kitten/components";
 import FitbitPanel from "@/src/components/FitbitPanel";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import {
@@ -14,13 +13,16 @@ import {
   useCreatePermission,
   useDeletePermission,
 } from "@/hooks/api";
+import { useColors } from "@/hooks/useColors";
+import { ThemedScrollView } from "@/src/components/ThemedScrollView";
 
 export default function UserInfoScreen(): React.ReactElement | null {
   const { userId } = useLocalSearchParams<{ userId: string }>();
   const navigation = useNavigation();
   const router = useRouter();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const colors = useColors();
+  const styles = getStyles(fontSize, colors);
   const uid = userId ? Number(userId) : null;
   const { user } = useUserById(uid);
   const { permissions: userPermissions, refetch: refetchPermissions } = usePermissionsByUser(user?.id as number | undefined);
@@ -91,7 +93,7 @@ export default function UserInfoScreen(): React.ReactElement | null {
   if (!user) return null;
 
   return (
-    <ScrollView style={styles.container}>
+    <ThemedScrollView style={styles.container}>
       <CustomizeMenuItem
         title="Login Count"
         icon="login"
@@ -103,9 +105,9 @@ export default function UserInfoScreen(): React.ReactElement | null {
         title="Physical Activity Permission"
         icon="run"
         accessoryRight={
-          <Toggle
-            checked={activityPermission}
-            onChange={handleActivityPermissionChange}
+          <Switch
+            value={activityPermission}
+            onValueChange={handleActivityPermissionChange}
           />
         }
       />
@@ -113,9 +115,9 @@ export default function UserInfoScreen(): React.ReactElement | null {
         title="Fitbit Permission"
         icon="run"
         accessoryRight={
-          <Toggle
-            checked={fitbitPermission}
-            onChange={handleFitbitPermissionChange}
+          <Switch
+            value={fitbitPermission}
+            onValueChange={handleFitbitPermissionChange}
           />
         }
       />
@@ -129,6 +131,6 @@ export default function UserInfoScreen(): React.ReactElement | null {
       >
         <FitbitPanel user={{ id: Number(user.id) }} />
       </View>
-    </ScrollView>
+    </ThemedScrollView>
   );
 }

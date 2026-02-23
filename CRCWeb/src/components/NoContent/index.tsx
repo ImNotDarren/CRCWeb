@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
-import colors from '@/theme/colors';
 import type { ReactNode } from 'react';
+import { useColors } from '@/hooks/useColors';
 
 interface NoContentProps {
   fontSize?: number;
@@ -13,9 +13,10 @@ export default function NoContent({
   content = 'No Content Available',
   action,
 }: NoContentProps): React.ReactElement {
+  const colors = useColors();
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize, color: colors.grey[300] }}>{content}</Text>
+      <Text style={{ fontSize, color: colors.mutedText }}>{content}</Text>
       {action}
     </View>
   );

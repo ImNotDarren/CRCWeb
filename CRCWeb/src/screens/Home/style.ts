@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import colors from '@/theme/colors';
+import type { ThemeColors } from '@/constants/Colors';
 
-const getStyles = (fontSize: number) =>
-  StyleSheet.create({
+export default function getStyles(fontSize: number, colors: ThemeColors) {
+  return StyleSheet.create({
     container: { flex: 1 },
     swiperView: {
       alignItems: 'center',
@@ -25,14 +25,13 @@ const getStyles = (fontSize: number) =>
       marginHorizontal: 20,
       marginBottom: 20,
       borderRadius: 15,
-      backgroundColor: '#fff',
+      backgroundColor: colors.cardBackground,
     },
     textButton: {
       fontSize: 20 + fontSize,
       fontWeight: 'bold',
       textAlign: 'center',
-      color: colors.grey[500],
+      color: colors.text,
     },
   });
-
-export default getStyles;
+}

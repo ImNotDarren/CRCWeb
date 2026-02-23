@@ -7,10 +7,12 @@ import { useNavigation } from 'expo-router';
 import { alert } from '@/utils/alert';
 import type { RootState } from '@/src/types/store';
 import { usePermissionsByUser } from '@/hooks/api';
+import { useColors } from '@/hooks/useColors';
 
 export default function TabsLayout(): React.ReactElement {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const colors = useColors();
   const currentVersion = useSelector((state: RootState) => state.version.currentVersion);
   const user = useSelector((state: RootState) => state.user);
   const fitbitPermission = user.permissions?.find((p) => p.type === 'fitbit');
@@ -34,7 +36,17 @@ export default function TabsLayout(): React.ReactElement {
   );
 
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs
+      screenOptions={
+        {
+          headerShown: false,
+          sceneContainerStyle: { backgroundColor: colors.background },
+          tabBarStyle: { backgroundColor: colors.cardBackground, borderTopColor: colors.cardBorder },
+          tabBarActiveTintColor: colors.tabIconSelected,
+          tabBarInactiveTintColor: colors.tabIconDefault,
+        } as object
+      }
+    >
       <Tabs.Screen
         name="index"
         options={{

@@ -5,9 +5,10 @@ import getStyles from "./style";
 import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
 import { useEffect, useState } from "react";
 import Popup from "@/src/components/Popup";
-import { Button, Input, Spinner } from "@ui-kitten/components";
+import { AppButton, AppInput, AppSpinner } from "@/src/components/ui";
 import { extractUrl, removeUrls } from "@/utils/url";
 import { useNavigation } from "expo-router";
+import { useColors } from "@/hooks/useColors";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
@@ -20,9 +21,9 @@ type ResourceItem = { id: number; content: string };
 
 export default function EditResource({ router, mid }: EditResourceProps): React.ReactElement {
   const navigation = useNavigation();
-
+  const colors = useColors();
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const modules = useSelector((state: RootState) => state.module.modules);
 
   const dispatch = useDispatch();
@@ -188,7 +189,7 @@ export default function EditResource({ router, mid }: EditResourceProps): React.
       >
         <View style={styles.popupContainer}>
           <Text style={styles.resourcesTitle}>Edit Content</Text>
-          <Input
+          <AppInput
             value={value}
             onChangeText={setValue}
             placeholder="Content"
@@ -199,26 +200,26 @@ export default function EditResource({ router, mid }: EditResourceProps): React.
           {error ? <Text style={styles.error}>{error}</Text> : null}
         </View>
         <View style={styles.buttonContainer}>
-          <Button
+          <AppButton
             appearance="outline"
             status="danger"
             style={[styles.button, { marginRight: 20 }]}
             onPress={handleDelete}
-            accessoryLeft={loading === "delete" ? () => <Spinner size="small" status="danger" /> : undefined}
+            accessoryLeft={loading === "delete" ? () => <AppSpinner size="small" /> : undefined}
             disabled={loading !== false}
           >
             Delete
-          </Button>
-          <Button
+          </AppButton>
+          <AppButton
             appearance="outline"
             status="primary"
             style={styles.button}
             onPress={selectedResource ? handleUpdate : handleCreate}
-            accessoryLeft={loading === "update" ? () => <Spinner size="small" status="info" /> : undefined}
+            accessoryLeft={loading === "update" ? () => <AppSpinner size="small" /> : undefined}
             disabled={loading !== false}
           >
             {selectedResource ? "Update" : "Create"}
-          </Button>
+          </AppButton>
         </View>
       </Popup>
     </View>

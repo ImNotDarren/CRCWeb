@@ -8,15 +8,19 @@ import { CustomizeMenuItem } from '@/src/components/CustomizeMenuItem';
 import { useRouter } from 'expo-router';
 import type { RootState } from '@/src/types/store';
 import { useUserById, usePermissionsByUser } from '@/hooks/api';
+import { useColors } from '@/hooks/useColors';
+import { ThemedView } from '@/src/components/ThemedView';
+import { ThemedScrollView } from '@/src/components/ThemedScrollView';
 
 const AVATAR_SIZE = 90;
 
 export default function MeScreen(): React.ReactElement {
   const router = useRouter();
+  const colors = useColors();
   const user = useSelector((state: RootState) => state.user);
   const userId = user.user?.id;
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const styles = getStyles(fontSize, colors);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const { refetch: refetchUser } = useUserById(userId);
@@ -60,7 +64,7 @@ export default function MeScreen(): React.ReactElement {
   const role = u?.featureUsers?.[3]?.role ?? '';
 
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
       <View style={styles.userinfoContainer}>
         <InitialsAvatar name={`${u?.firstName ?? ''} ${u?.lastName ?? ''}`} size={AVATAR_SIZE} />
         <View style={styles.userinfo(AVATAR_SIZE)}>
@@ -73,7 +77,7 @@ export default function MeScreen(): React.ReactElement {
           <Text style={styles.email}>{u?.email}</Text>
         </View>
       </View>
-      <ScrollView
+      <ThemedScrollView
         style={styles.menu}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
       >
@@ -110,7 +114,7 @@ export default function MeScreen(): React.ReactElement {
         />
         <CustomizeMenuItem title="Logout" icon="logout" onNavigate={handleLogout} />
         <View style={{ height: 100 }} />
-      </ScrollView>
-    </View>
+      </ThemedScrollView>
+    </ThemedView>
   );
 }

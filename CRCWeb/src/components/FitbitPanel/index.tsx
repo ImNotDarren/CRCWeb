@@ -6,11 +6,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { refreshToken, getDailyActivitySummary } from '@/utils/fitbit';
 import ProgressBar from '@/src/components/ProgressBar';
 import Expand from '@/src/components/Expand';
-import colors from '@/theme/colors';
 import getStyles from './style';
 import type { RootState } from '@/src/types/store';
 import type { FitbitAccessToken } from '@/utils/fitbit';
 import type { User } from '@/src/types/common';
+import { useColors } from '@/hooks/useColors';
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 const FITBIT_OAUTH_REDIRECT_URL = process.env.EXPO_PUBLIC_FITBIT_OAUTH_REDIRECT_URL || '';
@@ -41,7 +41,8 @@ export default function FitbitPanel({ user }: FitbitPanelProps): React.ReactElem
   const [accessToken, setAccessToken] = useState<FitbitAccessToken | null>(null);
   const rotateAnimation = useState(new Animated.Value(0))[0];
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const colors = useColors();
+  const styles = getStyles(fontSize, colors);
 
   useEffect(() => {
     if (isLoading) {
@@ -132,7 +133,7 @@ export default function FitbitPanel({ user }: FitbitPanelProps): React.ReactElem
               <Text style={styles.topBarTitle}>Today</Text>
               <TouchableOpacity onPress={handleAuth}>
                 <Animated.View style={[styles.iconStyle, { transform: [{ rotate: rotation }] }]}>
-                  <MaterialCommunityIcons name="refresh" size={25} color={colors.grey[300]} />
+                  <MaterialCommunityIcons name="refresh" size={25} color={colors.icon} />
                 </Animated.View>
               </TouchableOpacity>
             </View>

@@ -1,16 +1,18 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
-import getStyles from './style';
 import { useSelector } from 'react-redux';
+import getStyles from './style';
 import FitbitPanel from './components/FitbitPanel';
 import type { RootState } from '@/src/types/store';
+import { useColors } from '@/hooks/useColors';
+import { ThemedScrollView } from '@/src/components/ThemedScrollView';
 
 export default function FitbitScreen(): React.ReactElement {
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
-  const styles = getStyles(fontSize);
+  const colors = useColors();
+  const styles = getStyles(fontSize, colors);
   return (
-    <ScrollView style={styles.container}>
+    <ThemedScrollView style={styles.container}>
       <FitbitPanel />
-    </ScrollView>
+    </ThemedScrollView>
   );
 }

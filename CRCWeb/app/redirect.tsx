@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { extractCodeAndStateFromURL } from '@/utils/fitbit';
 import { alert } from '@/utils/alert';
 import type { RootState } from '@/src/types/store';
+import { useColors } from '@/hooks/useColors';
+import { ThemedView } from '@/src/components/ThemedView';
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 const FITBIT_CLIENT_ID = process.env.EXPO_PUBLIC_FITBIT_CLIENT_ID || '';
@@ -15,6 +17,7 @@ export default function RedirectScreen(): React.ReactElement {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
+  const colors = useColors();
   const [status] = useState('Connecting Fitbit...');
 
   useEffect(() => {
@@ -72,9 +75,9 @@ export default function RedirectScreen(): React.ReactElement {
   }, [router, dispatch, user?.user?.id]);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+    <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size="large" />
-      <Text style={{ marginTop: 12, fontSize: 16 }}>{status}</Text>
-    </View>
+      <Text style={{ marginTop: 12, fontSize: 16, color: colors.text }}>{status}</Text>
+    </ThemedView>
   );
 }
