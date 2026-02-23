@@ -3,15 +3,70 @@
  * Backend: /Users/darren/Desktop/hulab-apps/server
  */
 
+// --- Nested types used by CRCModule and others ---
+
+export interface CRCContentPageSummary {
+  title: string;
+  content: string;
+  crcContentId?: number;
+}
+
+export interface CRCModuleContentItem {
+  id: number;
+  content: string;
+  completed?: boolean;
+  crcContentPage?: CRCContentPageSummary;
+}
+
+export interface CRCUserAssignmentContentValue {
+  value: boolean;
+}
+
+export interface CRCModuleAssignmentContentSummary {
+  id?: number;
+  title?: string;
+  content?: string;
+  crcUserAssignmentContents?: CRCUserAssignmentContentValue[];
+}
+
+export interface CRCModuleAssignmentItem {
+  id: number;
+  assignment: string;
+  crcAssignmentContent?: CRCModuleAssignmentContentSummary;
+}
+
+export interface CRCWebResourceItem {
+  id: number;
+  content: string;
+}
+
+export interface CRCLectureItem {
+  id: number;
+  title: string;
+  link: string;
+  transcript?: string | null;
+  note?: string | null;
+}
+
+export interface CRCModuleProgressSummary {
+  progress: number;
+}
+
+export interface CRCQuizUserScore {
+  score: number;
+}
+
+// --- Main CRC types ---
+
 export interface CRCModule {
   id: number;
   name: string;
-  crcContents?: Array<{ id: number; content: string; completed?: boolean; crcContentPage?: { title: string; content: string } }>;
-  crcAssignments?: Array<{ id: number; assignment: string; crcAssignmentContent?: { id?: number; title?: string; content?: string; crcUserAssignmentContents?: Array<{ value: boolean }> } }>;
-  crcWebResources?: Array<{ id: number; content: string }>;
-  crcLectures?: Array<{ id: number; title: string; link: string; transcript?: string | null; note?: string | null }>;
-  crcModuleProgresses?: Array<{ progress: number }>;
-  crcQuizUsers?: Array<{ score: number }>;
+  crcContents?: CRCModuleContentItem[];
+  crcAssignments?: CRCModuleAssignmentItem[];
+  crcWebResources?: CRCWebResourceItem[];
+  crcLectures?: CRCLectureItem[];
+  crcModuleProgresses?: CRCModuleProgressSummary[];
+  crcQuizUsers?: CRCQuizUserScore[];
   crcMultipleChoices?: unknown[];
 }
 
