@@ -3,8 +3,7 @@ import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import getStyles from '../style.js';
 import { Button } from '@ui-kitten/components';
 import { Linking } from 'react-native';
-import * as ExpoLinking from 'expo-linking';
-import { extractCodeAndStateFromURL, getActivitiesLogList, getDailyActivitySummary, refreshToken } from '../../../../utils/fitbit.js';
+import { getDailyActivitySummary, refreshToken } from '../../../../utils/fitbit.js';
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressBar from '../../../components/ProgressBar/index.js';
 import Expand from '../../../components/Expand/index.js';
@@ -12,7 +11,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from '../../../../theme/colors.js';
 import { alert } from '../../../../utils/alert.js';
 
-import { FITBIT_CLIENT_ID, FITBIT_CODE_VERIFIER, FITBIT_OAUTH_REDIRECT_URL, SERVER_URL } from '../../../../constants.js';
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
+const FITBIT_OAUTH_REDIRECT_URL = process.env.EXPO_PUBLIC_FITBIT_OAUTH_REDIRECT_URL || '';
 
 export default function FitbitPanel({ navigation }) {
 
@@ -90,72 +90,12 @@ export default function FitbitPanel({ navigation }) {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   const rotation = rotateAnimation.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'], // Rotate from 0 to 360 degrees
+    outputRange: ['0deg', '360deg'],
   });
-
-  useEffect(() => {
-    const handleDeepLink = (event) => {
-      const { code, state } = extractCodeAndStateFromURL(event.url);
-      // console.log(code, state);
-      fetch('https://api.fitbit.com/oauth2/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          client_id: FITBIT_CLIENT_ID,
-          grant_type: 'authorization_code',
-          redirect_uri: 'crcdata://redirect',
-          code: code,
-          code_verifier: FITBIT_CODE_VERIFIER,
-        }).toString()
-      })
-        .then(response => response.json())
-        .then(async (data) => {
-          // save access token in local storage
-          // save(`fitbitAccessToken-${user.id}`, data, data.expires_in);
-          if (data.errors)
-            return alert(data.errors[0].errorType, data.errors[0].message);
-
-          const res = await fetch(`${SERVER_URL}/cbw/accesstokens`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token: JSON.stringify(data), uid: user.user.id })
-          });
-
-          dispatch({ type: 'UPDATE_ACCESS_TOKEN', value: data })
-
-          const resData = await res.json();
-
-          if (resData.message)
-            return alert('Error', resData.message);
-
-          await getData(data);
-        })
-        .catch(error => console.error('Error:', error));
-    };
-
-    ExpoLinking.addEventListener('url', handleDeepLink);
-
-    // Handle the initial URL
-    ExpoLinking.getInitialURL().then((url) => {
-      if (url) {
-        handleDeepLink({ url });
-      }
-    });
-
-    return () => {
-      if (ExpoLinking.removeEventListener) {
-        ExpoLinking.removeEventListener('url', handleDeepLink);
-      }
-    };
-  }, []);
 
   useEffect(() => {
     if (Object.keys(activitySummary).length === 0

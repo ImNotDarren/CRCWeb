@@ -1,14 +1,16 @@
 import { ScrollView, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import getStyles from "./style";
-import { CustomizeMenuItem } from "../../../components/CustomizeMenuItem";
+import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
 import { useEffect, useState } from "react";
-import Popup from "../../../components/Popup";
+import Popup from "@/src/components/Popup";
 import { Button, Input, Spinner } from "@ui-kitten/components";
+import { useNavigation } from "expo-router";
 
-import { SERVER_URL } from "../../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function EditActivity({ navigation, mid }) {
+export default function EditActivity({ router, mid }) {
+  const navigation = useNavigation();
 
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);

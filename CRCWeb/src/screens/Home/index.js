@@ -1,13 +1,12 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import getStyles from "./style";
 import { useSelector } from "react-redux";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Swiper from "./Swiper";
-import RichTextView from "../../components/RichText";
+import RichTextView from "@/src/components/RichText";
+import { useRouter } from "expo-router";
 
-const Tab = createBottomTabNavigator();
-
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
+  const router = useRouter();
 
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);
@@ -21,14 +20,14 @@ export default function HomeScreen({ navigation }) {
         <TouchableOpacity
           activeOpacity={0.6}
           style={[styles.sectionContainer, { marginLeft: 0, flex: 1, justifyContent: 'center', alignItems: 'center' }]}
-          onPress={() => navigation.navigate('How To Navigate')}
+          onPress={() => router.push('/how-to-navigate')}
         >
           <Text style={styles.textButton}>How To Navigate?</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.6}
           style={[styles.sectionContainer, { marginHorizontal: 0, flex: 1, justifyContent: 'center', alignItems: 'center' }]}
-          onPress={() => navigation.navigate('FAQ')}
+          onPress={() => router.push('/faq')}
         >
           <Text style={styles.textButton}>FAQ</Text>
         </TouchableOpacity>
@@ -36,7 +35,7 @@ export default function HomeScreen({ navigation }) {
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.sectionContainer}
-        onPress={() => navigation.navigate('Content')}
+        onPress={() => router.push('/(tabs)/content')}
       >
         <RichTextView
           text='<b>CRCWeb</b> is an <b>evidence-based</b> online program designed for individuals with colorectal cancer. It helps patients cope with cancer and its symptoms while supporting <b>mental health</b> during treatment. The app can be used <b>anytime and anywhere</b> over the <b>3-month</b> study period. The program includes educational content, behavioral activities, timely recommendations, and self-report surveys.'

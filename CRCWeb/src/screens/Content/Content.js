@@ -1,18 +1,18 @@
-import { Text, ScrollView, TouchableOpacity, RefreshControl, View } from "react-native";
+import { ScrollView, RefreshControl, View } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { CustomizeMenuItem } from "../../components/CustomizeMenuItem";
 import Popup from "../../components/Popup";
-import { Button, Divider, Spinner } from "@ui-kitten/components";
+import { Button, Spinner } from "@ui-kitten/components";
 import { openURL } from "../../../utils/url";
 import WhiteSpace from "../../components/WhiteSpace";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from "../../../theme/colors";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function ContentsScreen({ mid, navigation }) {
+export default function ContentsScreen({ mid, router }) {
 
   
   const dispatch = useDispatch();
@@ -21,44 +21,12 @@ export default function ContentsScreen({ mid, navigation }) {
   const modules = useSelector((state) => state.module.modules);
   const user = useSelector((state) => state.user.user);
 
-  const module = modules.find((m) => m.id === mid);
+  const module = modules.find((m) => String(m.id) === String(mid));
   const [visible, setVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   const url1 = "https://www.cancer.gov/publications/patient-education";
   const url2 = "https://www.nccn.org/patientresources/patient-resources/guidelines-for-patients";
-
-  const getCompleteStatus = () => {
-    if (module?.crcContents) {
-      try {
-        const moduleCopy = JSON.parse(JSON.stringify(module));
-
-        module.crcContents.forEach(async (content) => {
-          const response = await fetch(`${SERVER_URL}/log/find/`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              condition: {
-                action: "Complete",
-                target: `CRCwebContentPage-${content.id}`,
-                userId: user.id,
-              }
-            }),
-          });
-          const data = await response.json();
-          moduleCopy.crcContents.find((c) => c.id === content.id).completed = data.length > 0;
-        });
-
-        const modulesCopy = JSON.parse(JSON.stringify(modules));
-        modulesCopy.find((m) => m.id === mid).crcContents = moduleCopy.crcContents;
-        dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
 
   const getData = () => {
     setRefreshing(true);
@@ -100,7 +68,7 @@ export default function ContentsScreen({ mid, navigation }) {
         // Update moduleCopy and modulesCopy with the new crcContents
         moduleCopy.crcContents = updatedCrcContents;
         const updatedModules = modulesCopy.map((m) =>
-          m.id === mid ? { ...m, crcContents: updatedCrcContents } : m
+          String(m.id) === String(mid) ? { ...m, crcContents: updatedCrcContents } : m
         );
   
         // Dispatch the updated state
@@ -139,7 +107,7 @@ export default function ContentsScreen({ mid, navigation }) {
             <CustomizeMenuItem
               title={content.content}
               key={index}
-              onNavigate={content ? () => navigation.navigate('ContentPage', { cid: content.id, mid: mid }) : { mid: mid }}
+              onNavigate={content ? () => router.push(`/content-page?cid=${content.id}&mid=${mid}`) : () => {}}
               accessoryRight={
                 content.completed ?
                   <MaterialCommunityIcons

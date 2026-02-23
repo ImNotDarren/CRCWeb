@@ -6,9 +6,8 @@ import { CustomizeMenuItem } from "../../components/CustomizeMenuItem";
 import { extractUrl, openURL, removeUrls } from "../../../utils/url";
 import WhiteSpace from "../../components/WhiteSpace";
 import { Spinner } from "@ui-kitten/components";
-import FloatingActionButton from "../../components/FloatingActionButton";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
 export default function ResourcesScreen({ mid }) {
 
@@ -19,7 +18,7 @@ export default function ResourcesScreen({ mid }) {
   const modules = useSelector((state) => state.module.modules);
   const user = useSelector((state) => state.user.user);
 
-  const [module, setModule] = useState(JSON.parse(JSON.stringify(modules.find((m) => m.id === mid))));
+  const [module, setModule] = useState(JSON.parse(JSON.stringify(modules.find((m) => String(m.id) === String(mid)))));
   const [refreshing, setRefreshing] = useState(false);
 
   const getData = () => {
@@ -33,7 +32,7 @@ export default function ResourcesScreen({ mid }) {
         moduleCopy['crcWebResources'] = data;
         setModule(moduleCopy);
         const modulesCopy = JSON.parse(JSON.stringify(modules));
-        modulesCopy.find((m) => m.id === mid).crcWebResources = data;
+        modulesCopy.find((m) => String(m.id) === String(mid)).crcWebResources = data;
         dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
         setRefreshing(false);
       })

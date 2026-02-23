@@ -2,24 +2,24 @@ import { ScrollView, View } from "react-native";
 import getStyles from "./style";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-// import CustomMapView from "../../components/Location/map";
 import { Spinner } from "@ui-kitten/components";
+import { useLocalSearchParams } from "expo-router";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function UserLocationsScreen({ navigation, route }) {
+export default function UserLocationsScreen() {
+  const { userId } = useLocalSearchParams();
 
-  const { user } = route.params;
-
-  const fontSize = useSelector(state => state.fontSize);
+  const fontSize = useSelector(state => state.font.fontSize);
   const styles = getStyles(fontSize);
 
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!userId) return;
     setLoading(true);
-    fetch(`${SERVER_URL}/crc/locations/findAllByUserId/${user.id}`)
+    fetch(`${SERVER_URL}/crc/locations/findAllByUserId/${userId}`)
       .then(response => response.json())
       .then(data => {
         if (data.err) return console.error(data.err);
@@ -30,7 +30,7 @@ export default function UserLocationsScreen({ navigation, route }) {
         console.error(err);
         setLoading(false);
       });
-  }, [user]);
+  }, [userId]);
 
   return (
     <>

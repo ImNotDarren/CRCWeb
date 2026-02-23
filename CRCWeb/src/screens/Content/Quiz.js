@@ -3,17 +3,19 @@ import { View, Text, BackHandler, ScrollView, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import getStyles from "./style";
 import { Button, Radio, RadioGroup, Spinner } from "@ui-kitten/components";
-import Expand from "../../components/Expand";
-import colors from "../../../theme/colors";
-import RichText from "../../components/RichText";
-import Popup from "../../components/Popup";
-import { alert } from "../../../utils/alert";
+import Expand from "@/src/components/Expand";
+import colors from "@/theme/colors";
+import RichText from "@/src/components/RichText";
+import Popup from "@/src/components/Popup";
+import { alert } from "@/utils/alert";
+import { useLocalSearchParams, useRouter, useNavigation } from "expo-router";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function QuizScreen({ route, navigation }) {
-
-  const { mid } = route.params;
+export default function QuizScreen() {
+  const { mid } = useLocalSearchParams();
+  const router = useRouter();
+  const navigation = useNavigation();
 
   
   const user = useSelector((state) => state.user.user);
@@ -43,8 +45,8 @@ export default function QuizScreen({ route, navigation }) {
         moduleCopy['crcMultipleChoices'] = data;
         setModule(moduleCopy);
         const modulesCopy = JSON.parse(JSON.stringify(modules));
-        modulesCopy.find((m) => m.id === mid).crcMultipleChoices = data;
-        dispatch({ type: 'UPDATE_CONTENTS', value: modulesCopy });
+        modulesCopy.find((m) => String(m.id) === String(mid)).crcMultipleChoices = data;
+        dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
         setRefreshing(false);
       })
       .catch(error => {
@@ -170,7 +172,7 @@ export default function QuizScreen({ route, navigation }) {
             score / module.crcMultipleChoices.length > 0.8 ? `Congradulations! You passed this quiz!\nYour final score is ${((score / module.crcMultipleChoices.length) * 100).toFixed(1)}%!` : `Your final score is ${((score / module.crcMultipleChoices.length) * 100).toFixed(1)}%, you need to score at least 80% to pass the quiz.`
           }
         </Text>
-        <Button onPress={() => navigation.navigate('Home')}>Confirm</Button>
+        <Button onPress={() => router.push('/(tabs)')}>Confirm</Button>
       </Popup>
       <Text style={styles.quizQuestion}>
         ({currQuestion + 1}/{module.crcMultipleChoices.length}) {module.crcMultipleChoices[currQuestion]?.question}

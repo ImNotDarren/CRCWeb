@@ -2,14 +2,16 @@ import { View, Text } from "react-native";
 import getStyles from "./style";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CustomizeMenuItem } from "../../../components/CustomizeMenuItem";
-import Popup from "../../../components/Popup";
+import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
+import Popup from "@/src/components/Popup";
 import { Button, Input, Spinner } from "@ui-kitten/components";
-import WhiteSpace from "../../../components/WhiteSpace";
+import WhiteSpace from "@/src/components/WhiteSpace";
+import { useNavigation } from "expo-router";
 
-import { SERVER_URL } from "../../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function EditLecture({ navigation, mid }) {
+export default function EditLecture({ router, mid }) {
+  const navigation = useNavigation();
 
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);

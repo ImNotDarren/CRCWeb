@@ -5,12 +5,14 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Button, Input, Select, SelectItem } from "@ui-kitten/components";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { showMessage } from "react-native-flash-message";
-import colors from '../../../../theme/colors';
-import { alert } from '../../../../utils/alert';
+import colors from '@/theme/colors';
+import { alert } from '@/utils/alert';
+import { useRouter } from 'expo-router';
 
-import { SERVER_URL } from '../../../../constants';
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function AddUser({ navigation }) {
+export default function AddUser() {
+  const router = useRouter();
 
   const fontSize = useSelector(state => state.font.fontSize);
   const styles = getStyles(fontSize);
@@ -76,7 +78,7 @@ export default function AddUser({ navigation }) {
             message: "Successfully created!",
             type: "success",
           });
-          return navigation.goBack();
+          return router.back();
         }
 
         showMessage({
@@ -143,7 +145,7 @@ export default function AddUser({ navigation }) {
           appearance="outline"
           status="danger"
           style={[styles.button, { marginRight: 20 }]}
-          onPress={() => navigation.goBack()}
+          onPress={() => router.back()}
         >
           Cancel
         </Button>

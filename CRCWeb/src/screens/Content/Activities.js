@@ -8,9 +8,9 @@ import { Spinner } from "@ui-kitten/components";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from "../../../theme/colors";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function ActivityScreen({ mid, navigation }) {
+export default function ActivityScreen({ mid, router }) {
 
   const dispatch = useDispatch();
   const fontSize = useSelector((state) => state.font.fontSize);
@@ -18,7 +18,7 @@ export default function ActivityScreen({ mid, navigation }) {
   const modules = useSelector((state) => state.module.modules);
   const user = useSelector((state) => state.user.user);
 
-  const module = modules.find((m) => m.id === mid);
+  const module = modules.find((m) => String(m.id) === String(mid));
   const [refreshing, setRefreshing] = useState(false);
 
   const getData = () => {
@@ -31,36 +31,7 @@ export default function ActivityScreen({ mid, navigation }) {
       .then(async data => {
         // Create deep copies of the state to avoid direct mutation
         const modulesCopy = JSON.parse(JSON.stringify(modules));
-        
-        // Fetch the completed status for each assignment
-        // const updatedCrcAssignments = await Promise.all(
-        //   data.map(async (assignment) => {
-        //     const response = await fetch(`${SERVER_URL}/log/find/`, {
-        //       method: 'POST',
-        //       headers: {
-        //         'Content-Type': 'application/json',
-        //       },
-        //       body: JSON.stringify({
-        //         condition: {
-        //           action: "Complete",
-        //           target: `CRCwebAssignmentContent-${assignment.id}`,
-        //           userId: user.id,
-        //         }
-        //       }),
-        //     });
-        //     const d = await response.json();
-        //     assignment.completed = d.length > 0;
-        //     return assignment;
-        //   })
-        // );
-  
-        // Update the moduleCopy and modulesCopy with the new crcAssignments
-        // moduleCopy.crcAssignments = updatedCrcAssignments;
-        // const updatedModules = modulesCopy.map((m) =>
-        //   m.id === mid ? { ...m, crcAssignments: updatedCrcAssignments } : m
-        // );
-
-        modulesCopy.find((m) => m.id === mid).crcAssignments = data;
+        modulesCopy.find((m) => String(m.id) === String(mid)).crcAssignments = data;
   
         // Dispatch the updated state
         dispatch({ type: 'UPDATE_MODULES', value: modulesCopy }); 
@@ -100,7 +71,7 @@ export default function ActivityScreen({ mid, navigation }) {
             <CustomizeMenuItem
               title={content.assignment.replace(/\n/g, '')}
               key={index}
-              onNavigate={content ? () => navigation.navigate('ActivityPage', { aid: content.id, mid: mid }) : { mid: mid }}
+              onNavigate={content ? () => router.push(`/activity-page?aid=${content.id}&mid=${mid}`) : () => {}}
               accessoryRight={
                 content?.crcAssignmentContent?.crcUserAssignmentContents?.length > 0 ?
                   <MaterialCommunityIcons

@@ -2,18 +2,20 @@ import { Alert, Platform, RefreshControl, ScrollView, Text, View } from "react-n
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Menu } from "@ui-kitten/components";
-import { remove } from "../../../localStorage";
-import InitialsAvatar from "../../components/Avatar";
+import { remove } from "@/localStorage";
+import InitialsAvatar from "@/src/components/Avatar";
 import { UserMenuItem } from "./UserMenuItem";
 import getStyles from "./style";
-import { CustomizeMenuItem } from "../../components/CustomizeMenuItem";
-import { alert } from "../../../utils/alert";
+import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
+import { alert } from "@/utils/alert";
+import { useRouter } from "expo-router";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
 const AVATAR_SIZE = 90;
 
-export default function MeScreen({ navigation }) {
+export default function MeScreen() {
+  const router = useRouter();
 
   const user = useSelector((state) => state.user);
   const fontSize = useSelector((state) => state.font.fontSize);
@@ -35,7 +37,7 @@ export default function MeScreen({ navigation }) {
         {
           text: 'OK', onPress: () => {
             remove('autoLogin');
-            navigation.replace('Login');
+            router.replace('/login');
             dispatch({ type: 'UPDATE_USER', value: {} });
             dispatch({ type: 'UPDATE_MODULES', value: [] });
           }
@@ -97,16 +99,16 @@ export default function MeScreen({ navigation }) {
         // onRefresh={handleRefresh}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
       >
-        {['admin', 'superadmin'].includes(user.user.featureUsers[3].role.toLowerCase()) && <CustomizeMenuItem title='Manage Accounts' icon='account-cog' onNavigate={() => navigation.navigate('Manage Accounts')} />}
-        <CustomizeMenuItem title='Settings' icon='cog' onNavigate={() => navigation.navigate('Settings')} />
-        <CustomizeMenuItem title='Paired Accounts' icon='account-multiple' onNavigate={() => navigation.navigate('PairedAccounts')} />
-        <CustomizeMenuItem title='Switch Version' icon='swap-horizontal-bold' onNavigate={() => navigation.replace('Versions')} />
+        {['admin', 'superadmin'].includes(user.user.featureUsers[3].role.toLowerCase()) && <CustomizeMenuItem title='Manage Accounts' icon='account-cog' onNavigate={() => router.push('/manage-accounts')} />}
+        <CustomizeMenuItem title='Settings' icon='cog' onNavigate={() => router.push('/settings')} />
+        <CustomizeMenuItem title='Paired Accounts' icon='account-multiple' onNavigate={() => router.push('/paired-accounts')} />
+        <CustomizeMenuItem title='Switch Version' icon='swap-horizontal-bold' onNavigate={() => router.replace('/versions')} />
         {Array.isArray(user?.permissions)
           && user.permissions.find(p => p.type === "activity") &&
           // Platform.OS === 'ios' &&
-          <CustomizeMenuItem title='Activity' icon='run' onNavigate={() => navigation.navigate('Activity')} />}
-        {/* <CustomizeMenuItem title='Discussion' icon='forum' onNavigate={() => navigation.navigate('Discussion')} /> */}
-        <CustomizeMenuItem title='Contact Us' icon='account-box' onNavigate={() => navigation.navigate('Contact')} />
+          <CustomizeMenuItem title='Activity' icon='run' onNavigate={() => router.push('/activity')} />}
+        {/* <CustomizeMenuItem title='Discussion' icon='forum' onNavigate={() => router.push('/discussion')} /> */}
+        <CustomizeMenuItem title='Contact Us' icon='account-box' onNavigate={() => router.push('/contact')} />
         <CustomizeMenuItem title='Logout' icon='logout' onNavigate={handleLogout} />
         <View style={{ height: 100 }} />
       </ScrollView>

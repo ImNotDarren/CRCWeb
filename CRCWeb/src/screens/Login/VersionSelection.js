@@ -1,15 +1,18 @@
 import { Text, View } from "react-native";
 import styles from "./style";
 import { useDispatch, useSelector } from "react-redux";
-import { isAdmin } from "../../../utils/user";
+import { isAdmin } from "@/utils/user";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from "../../../theme/colors";
+import colors from "@/theme/colors";
 import { TouchableOpacity } from "react-native";
 import { useEffect } from "react";
+import { useRouter } from "expo-router";
+import { alert } from "@/utils/alert";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function VersionSelection({ navigation }) {
+export default function VersionSelection() {
+  const router = useRouter();
 
   const versions = useSelector((state) => state.version.versions);
   const user = useSelector((state) => state.user.user);
@@ -18,7 +21,7 @@ export default function VersionSelection({ navigation }) {
 
   const handleSelect = (version) => {
     dispatch({ type: 'UPDATE_CURRENT_VERSION', value: version });
-    navigation.replace('TabNavigation', { screen: 'Home' });
+    router.replace('/(tabs)');
   };
 
   useEffect(() => {

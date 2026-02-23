@@ -5,15 +5,17 @@ import EditLecture from "./EditComponents/EditLecture";
 import EditContent from "./EditComponents/EditContent";
 import EditResource from "./EditComponents/EditResource";
 import EditActivity from "./EditComponents/EditActivity";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-export default function EditScreen({ navigation, route }) {
-  const { screen, mid } = route.params;
+export default function EditScreen() {
+  const { screen, mid } = useLocalSearchParams();
+  const router = useRouter();
 
   const screens = {
-    "lecture": <EditLecture navigation={navigation} mid={mid} />,
-    "content": <EditContent navigation={navigation} mid={mid} />,
-    "activities": <EditActivity navigation={navigation} mid={mid} />,
-    "resources": <EditResource navigation={navigation} mid={mid} />,
+    "lecture": <EditLecture router={router} mid={mid} />,
+    "content": <EditContent router={router} mid={mid} />,
+    "activities": <EditActivity router={router} mid={mid} />,
+    "resources": <EditResource router={router} mid={mid} />,
   }
 
   

@@ -4,19 +4,22 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@ui-kitten/components";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from "../../../theme/colors";
+import colors from "@/theme/colors";
 import Pair from "./components/pair";
-import InitialsAvatar from "../../../utils/avatar";
-import Expand from "../../components/Expand";
-import { getCurrentPair, getPendingPairs, oppositeRole, oppositeUser } from "../../../utils/user";
-import Badge from "../../components/Badge";
-import { alert } from "../../../utils/alert";
+import InitialsAvatar from "@/utils/avatar";
+import Expand from "@/src/components/Expand";
+import { getCurrentPair, getPendingPairs, oppositeRole, oppositeUser } from "@/utils/user";
+import Badge from "@/src/components/Badge";
+import { alert } from "@/utils/alert";
+import { useRouter, useNavigation } from "expo-router";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
 const AVATAR_SIZE = 70;
 
-export default function PairedAccountsScreen({ navigation }) {
+export default function PairedAccountsScreen() {
+  const router = useRouter();
+  const navigation = useNavigation();
 
   const user = useSelector((state) => state.user);
   
@@ -62,13 +65,13 @@ export default function PairedAccountsScreen({ navigation }) {
 
   useEffect(() => {
     fetchData();
-  }, [user.user, server]);
+  }, [user.user]);
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => navigation.navigate('PendingPairs')}
+          onPress={() => router.push('/pending-pairs')}
         >
           <Badge
             show={getPendingPairs(user).length > 0}

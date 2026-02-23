@@ -6,11 +6,10 @@ import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import usePersistReduxState from '../../../hooks/usePersistReduxState';
-import CustomMapView from './map';
 import { Accelerometer } from 'expo-sensors';
 import { alert } from '../../../utils/alert';
 
-import { SERVER_URL } from '../../../constants';
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
 const LOCATION_TASK_NAME = 'background-location-task';
 const TRACKING_INTERVAL = 5000;
@@ -183,10 +182,6 @@ export default function LocationComponent() {
       >
         {updating ? "Stop Location Updates" : "Start Location Updates"}
       </Button>
-
-      {/* <CustomMapView
-        locations={locations}
-      /> */}
     </View>
   );
 }

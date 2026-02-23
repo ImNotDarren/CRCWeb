@@ -1,65 +1,72 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, Pressable } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import LectureScreen from "./Lecture";
 import ContentHeader from "./Header";
 import { Button, TopNavigationAction } from "@ui-kitten/components";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from "../../../theme/colors";
+import colors from "@/theme/colors";
 import ContentsScreen from "./Content";
 import ResourcesScreen from "./Resources";
-import Popup from "../../components/Popup";
-import CustomOverflowMenu from "./CustomOverflowMenu";
-import FloatingActionButton from "../../components/FloatingActionButton";
+import Popup from "@/src/components/Popup";
+import FloatingActionButton from "@/src/components/FloatingActionButton";
 import ActivityScreen from "./Activities";
+import { canEdit, isAdmin } from "@/utils/user";
+import { useLocalSearchParams, useRouter, useNavigation } from "expo-router";
 
-import { canEdit, isAdmin } from "../../../utils/user";
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function ContentHomeScreen({ route, navigation }) {
+const MENU_ITEMS = ['Content', 'Activities', 'Resources', 'Lecture'];
 
+export default function ContentHomeScreen() {
+  const { mid } = useLocalSearchParams();
+  const router = useRouter();
+  const navigation = useNavigation();
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);
   const [currPage, setCurrPage] = useState(0);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const menuRef = useRef({ openMenu: () => {} });
+  menuRef.current.openMenu = () => setMenuVisible(true);
+
   const [visible, setVisible] = useState(false);
   const user = useSelector((state) => state.user);
-  
-
-  const { mid } = route.params;
-  const module = useSelector((state) => state.module.modules.find((m) => m.id === mid));
-  const modules = useSelector((state) => state.module.modules)
-
+  const module = useSelector((state) =>
+    state.module.modules.find((m) => String(m.id) === String(mid))
+  );
+  const modules = useSelector((state) => state.module.modules);
   const dispatch = useDispatch();
 
   const renderMap = {
-    // 'Slides': <SlideScreen mid={mid} navigation={navigation} />,
-    'Content': <ContentsScreen mid={mid} navigation={navigation} />,
-    'Activities': <ActivityScreen mid={mid} navigation={navigation} />,
-    'Resources': <ResourcesScreen mid={mid} navigation={navigation} />,
-    'Lecture': <LectureScreen mid={mid} navigation={navigation} />,
-  }
+    'Content': <ContentsScreen mid={mid} router={router} />,
+    'Activities': <ActivityScreen mid={mid} router={router} />,
+    'Resources': <ResourcesScreen mid={mid} router={router} />,
+    'Lecture': <LectureScreen mid={mid} router={router} />,
+  };
 
   useEffect(() => {
-    navigation.setOptions({
-      title: module?.name || 'Content',
-      headerRight: () => (
-        <CustomOverflowMenu
-          setPage={setCurrPage}
-          menuItems={Object.keys(renderMap)}
-          currPage={currPage}
-          navigation={navigation}
-          mid={mid}
-        />
-      ),
-    });
-  }, [module]);
+    const id = setTimeout(() => {
+      navigation.setOptions({
+        title: module?.name || 'Content',
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => menuRef.current.openMenu()}
+            style={{ padding: 10 }}
+          >
+            <MaterialCommunityIcons name="dots-vertical" size={24} color={colors.grey[800]} />
+          </TouchableOpacity>
+        ),
+      });
+    }, 0);
+    return () => clearTimeout(id);
+  }, [module?.name, mid, navigation]);
 
   useEffect(() => {
     if (module?.crcModuleProgresses?.length > 0 && renderMap) {
       const userProgress = module.crcModuleProgresses[0].progress
       if (userProgress > 0 && userProgress < 1) {
-        setCurrPage(Math.ceil(Object.keys(renderMap).length * userProgress))
+        setCurrPage(Math.ceil(MENU_ITEMS.length * userProgress))
       }
     }
 
@@ -67,8 +74,8 @@ export default function ContentHomeScreen({ route, navigation }) {
 
   useEffect(() => {
     // save progress
-    if (!isAdmin(user.user.featureUsers[3].role)) {
-      const currProgress = currPage / Object.keys(renderMap).length
+    if (!isAdmin(user.user?.featureUsers?.[3]?.role)) {
+      const currProgress = currPage / MENU_ITEMS.length
       if (currProgress === 0)
         return;
 
@@ -113,14 +120,14 @@ export default function ContentHomeScreen({ route, navigation }) {
   };
 
   const handleForward = () => {
-    setCurrPage(curr => curr === Object.keys(renderMap).length - 1 ? curr : curr + 1);
+    setCurrPage(curr => curr === MENU_ITEMS.length - 1 ? curr : curr + 1);
   };
 
   const handleFinish = () => {
     if (module?.crcQuizUsers?.length === 0 || module?.crcQuizUsers[module.crcQuizUsers.length - 1].score < 0.8)
       return setVisible(true);
 
-    navigation.navigate('Home');
+    router.push('/(tabs)');
   };
 
   const BackAction = () => (
@@ -148,7 +155,7 @@ export default function ContentHomeScreen({ route, navigation }) {
   );
 
   const handleEdit = () => {
-    navigation.navigate('Edit', { screen: Object.keys(renderMap)[currPage].toLowerCase(), mid: mid });
+    router.push(`/edit?screen=${MENU_ITEMS[currPage].toLowerCase()}&mid=${mid}`);
   };
 
   const EditAction = () => (
@@ -164,12 +171,10 @@ export default function ContentHomeScreen({ route, navigation }) {
   return (
     <View style={styles.outsideContainer}>
       <ContentHeader
-        title={Object.keys(renderMap)[currPage]}
-        // backAction={currPage > 0 ? BackAction : null}
-        // forwardAction={currPage < Object.keys(renderMap).length - 1 ? ForwardAction : FinishAction}
+        title={MENU_ITEMS[currPage]}
         forwardAction={canEdit(user) ? <EditAction /> : null}
       />
-      {renderMap[Object.keys(renderMap)[currPage]]}
+      {renderMap[MENU_ITEMS[currPage]]}
 
       <View style={styles.navigationButtonView}>
         {currPage > 0 ? <FloatingActionButton
@@ -177,18 +182,53 @@ export default function ContentHomeScreen({ route, navigation }) {
           onPress={handleBack}
           positioning={false}
         /> : <View style={{ width: 50 }} />}
-        {currPage < Object.keys(renderMap).length - 1 && <FloatingActionButton
+        {currPage < MENU_ITEMS.length - 1 && <FloatingActionButton
           icon="arrow-right"
           onPress={handleForward}
           positioning={false}
         />}
-        {currPage === Object.keys(renderMap).length - 1 && <FloatingActionButton
+        {currPage === MENU_ITEMS.length - 1 && <FloatingActionButton
           icon="check-bold"
           onPress={handleFinish}
           positioning={false}
           color={colors.green[400]}
         />}
       </View>
+
+      <Popup
+        visible={menuVisible}
+        setVisible={setMenuVisible}
+        animationTime={100}
+        closeIcon={true}
+      >
+        <View style={{ padding: 8, minWidth: 180 }}>
+          {MENU_ITEMS.map((item, index) => (
+            <Pressable
+              key={item}
+              onPress={() => {
+                setMenuVisible(false);
+                setCurrPage(index);
+              }}
+              style={{ paddingVertical: 12, paddingHorizontal: 8, borderRadius: 4 }}
+            >
+              <Text style={{ fontSize: 16, color: currPage === index ? colors.blue[500] : colors.grey[800] }}>
+                {item}
+              </Text>
+            </Pressable>
+          ))}
+          {user?.user?.featureUsers?.[3]?.role === 'admin' && (
+            <Pressable
+              onPress={() => {
+                setMenuVisible(false);
+                router.push(`/quiz/${mid}`);
+              }}
+              style={{ paddingVertical: 12, paddingHorizontal: 8, borderRadius: 4, borderTopWidth: 1, borderTopColor: colors.grey[200] }}
+            >
+              <Text style={{ fontSize: 16, color: colors.grey[800] }}>Quiz</Text>
+            </Pressable>
+          )}
+        </View>
+      </Popup>
 
       <Popup
         visible={visible}
@@ -213,7 +253,7 @@ export default function ContentHomeScreen({ route, navigation }) {
               style={{ flex: 1, marginLeft: 20 }}
               onPress={() => {
                 setVisible(false);
-                navigation.navigate('Quiz', { mid });
+                router.push(`/quiz/${mid}`);
               }}
             >
               Yes

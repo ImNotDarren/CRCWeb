@@ -2,17 +2,19 @@ import { ScrollView, View, Text, TouchableOpacity, RefreshControl } from "react-
 import getStyles from "./style";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { CustomizeMenuItem } from "../../components/CustomizeMenuItem";
+import { CustomizeMenuItem } from "@/src/components/CustomizeMenuItem";
 import { Input } from "@ui-kitten/components";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from "../../../theme/colors";
-import FloatingActionButton from "../../components/FloatingActionButton";
+import colors from "@/theme/colors";
+import FloatingActionButton from "@/src/components/FloatingActionButton";
+import { useRouter } from "expo-router";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function AdminScreen({ navigation }) {
+export default function AdminScreen() {
+  const router = useRouter();
 
-  const fontSize = useSelector(state => state.fontSize);
+  const fontSize = useSelector(state => state.font.fontSize);
   const styles = getStyles(fontSize);
   const [allUsers, setAllUsers] = useState([]);
   const [currentUsers, setCurrentUsers] = useState([]);
@@ -77,7 +79,7 @@ export default function AdminScreen({ navigation }) {
               key={user.id}
               title={`${user.firstName} ${user.lastName}`}
               subtitle={user.username}
-              onNavigate={() => navigation.navigate('UserInfo', { user })}
+              onNavigate={() => router.push(`/user-info/${user.id}`)}
             />
           ))
         }
@@ -85,7 +87,7 @@ export default function AdminScreen({ navigation }) {
       </ScrollView>
       <FloatingActionButton
         icon='plus'
-        onPress={() => navigation.navigate('Add User')}
+        onPress={() => router.push('/add-user')}
       />
     </>
   )

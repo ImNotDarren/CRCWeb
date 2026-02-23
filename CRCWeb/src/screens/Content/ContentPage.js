@@ -2,19 +2,20 @@ import { Alert, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, TextIn
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import RichText from "../../components/RichText";
+import RichText from "@/src/components/RichText";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import WhiteSpace from "../../components/WhiteSpace";
-import colors from "../../../theme/colors";
+import WhiteSpace from "@/src/components/WhiteSpace";
+import colors from "@/theme/colors";
 import { Input } from "@ui-kitten/components";
-import { alert } from "../../../utils/alert";
+import { alert } from "@/utils/alert";
+import { canEdit } from "@/utils/user";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 
-import { SERVER_URL } from "../../../constants";
-import { canEdit } from "../../../utils/user";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function ContentPageScreen({ route, navigation }) {
-
-  const { cid, mid } = route.params;
+export default function ContentPageScreen() {
+  const { cid, mid } = useLocalSearchParams();
+  const navigation = useNavigation();
 
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);
@@ -24,7 +25,7 @@ export default function ContentPageScreen({ route, navigation }) {
 
   
   const modules = useSelector((state) => state.module.modules);
-  const content = modules.find((m) => m.id === mid).crcContents.find((c) => c.id === cid);
+  const content = modules.find((m) => String(m.id) === String(mid)).crcContents.find((c) => String(c.id) === String(cid));
 
   const [edit, setEdit] = useState(false);
   const [editTitle, setEditTitle] = useState(content?.crcContentPage?.title || "");
@@ -67,7 +68,7 @@ export default function ContentPageScreen({ route, navigation }) {
         }),
       });
       const modulesCopy = JSON.parse(JSON.stringify(modules));
-      modulesCopy.find((m) => m.id === mid).crcContents.find((c) => c.id === cid).completed = true;
+      modulesCopy.find((m) => String(m.id) === String(mid)).crcContents.find((c) => String(c.id) === String(cid)).completed = true;
       dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
     } catch (error) {
       console.error(error);
@@ -96,9 +97,9 @@ export default function ContentPageScreen({ route, navigation }) {
           }),
         });
         const modulesCopy = JSON.parse(JSON.stringify(modules));
-        const moduleCopy = modulesCopy.find((m) => m.id === mid);
-        moduleCopy.crcContents.find((c) => c.id === cid).crcContentPage.content = editValue;
-        moduleCopy.crcContents.find((c) => c.id === cid).crcContentPage.title = editTitle;
+        const moduleCopy = modulesCopy.find((m) => String(m.id) === String(mid));
+        moduleCopy.crcContents.find((c) => String(c.id) === String(cid)).crcContentPage.content = editValue;
+        moduleCopy.crcContents.find((c) => String(c.id) === String(cid)).crcContentPage.title = editTitle;
         dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
       } else {
         await fetch(`${SERVER_URL}/crc/contentpages/create`, {
@@ -114,8 +115,8 @@ export default function ContentPageScreen({ route, navigation }) {
         });
 
         const modulesCopy = JSON.parse(JSON.stringify(modules));
-        const moduleCopy = modulesCopy.find((m) => m.id === mid);
-        moduleCopy.crcContents.find((c) => c.id === cid).crcContentPage = { content: editValue, title: editTitle, crcContentId: cid };
+        const moduleCopy = modulesCopy.find((m) => String(m.id) === String(mid));
+        moduleCopy.crcContents.find((c) => String(c.id) === String(cid)).crcContentPage = { content: editValue, title: editTitle, crcContentId: cid };
         dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
       }
     } catch (error) {

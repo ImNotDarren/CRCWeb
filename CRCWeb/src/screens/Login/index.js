@@ -2,13 +2,15 @@ import { Text, TextInput, TouchableOpacity, View, Linking } from "react-native";
 import styles from "./style";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { get, save } from "../../../localStorage";
+import { get, save } from "@/localStorage";
 import { Radio } from "@ui-kitten/components";
-import { alert } from "../../../utils/alert";
+import { alert } from "@/utils/alert";
+import { useRouter } from "expo-router";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useState(false);
@@ -58,7 +60,7 @@ export default function LoginScreen({ navigation }) {
             username: un,
             password: pwd,
           }));
-          navigation.replace('Versions');
+          router.replace('/versions');
         } else {
           alert('Login Failed', data.message);
         }

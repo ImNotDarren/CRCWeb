@@ -2,19 +2,20 @@ import { View, Text, ScrollView } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import ViemoVideo from "../../components/VimeoVideo";
-import Expand from "../../components/Expand";
+import VimeoVideo from "@/src/components/VimeoVideo";
+import Expand from "@/src/components/Expand";
 import { Button, Divider, Spinner } from "@ui-kitten/components";
-import colors from "../../../theme/colors";
-import RichText from "../../components/RichText";
-import Popup from "../../components/Popup";
-import FloatingActionButton from "../../components/FloatingActionButton";
-import { openURL } from "../../../utils/url";
-import WhiteSpace from "../../components/WhiteSpace";
+import colors from "@/theme/colors";
+import RichText from "@/src/components/RichText";
+import Popup from "@/src/components/Popup";
+import FloatingActionButton from "@/src/components/FloatingActionButton";
+import { openURL } from "@/utils/url";
+import WhiteSpace from "@/src/components/WhiteSpace";
 
-import { GITHUB_BUCKET, SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
+const GITHUB_BUCKET = process.env.EXPO_PUBLIC_GITHUB_BUCKET || '';
 
-export default function LectureScreen({ mid, navigation }) {
+export default function LectureScreen({ mid, router }) {
 
   
   const dispatch = useDispatch();
@@ -23,8 +24,7 @@ export default function LectureScreen({ mid, navigation }) {
   const modules = useSelector((state) => state.module.modules);
   const user = useSelector((state) => state.user.user);
 
-  // const [module, setModule] = useState(modules.find((m) => m.id === mid) ? JSON.parse(JSON.stringify(modules.find((m) => m.id === mid))) : {});
-  const module = modules.find((m) => m.id === mid) ? JSON.parse(JSON.stringify(modules.find((m) => m.id === mid))) : {};
+  const module = modules.find((m) => String(m.id) === String(mid)) ? JSON.parse(JSON.stringify(modules.find((m) => String(m.id) === String(mid)))) : {};
   const [currVideo, setCurrVideo] = useState(0);
   const [visible, setVisible] = useState(false);
 
@@ -42,7 +42,7 @@ export default function LectureScreen({ mid, navigation }) {
             moduleCopy['crcLectures'] = data;
             // setModule(moduleCopy);
             const modulesCopy = JSON.parse(JSON.stringify(modules));
-            modulesCopy.find((m) => m.id === mid).crcLectures = data;
+            modulesCopy.find((m) => String(m.id) === String(mid)).crcLectures = data;
             dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
           })
           .catch(error => console.error(error));
@@ -51,7 +51,7 @@ export default function LectureScreen({ mid, navigation }) {
   }, [mid, dispatch]);
 
   const handleEdit = () => {
-    navigation.navigate('Edit', { screen: "lecture", mid: mid });
+    router.push(`/edit?screen=lecture&mid=${mid}`);
   };
 
   if (!module?.crcLectures)
@@ -69,7 +69,7 @@ export default function LectureScreen({ mid, navigation }) {
 
         {(module?.crcLectures?.length > currVideo) && (
           <View>
-            <ViemoVideo
+            <VimeoVideo
               vimeoId={module.crcLectures[currVideo].link}
             />
             {module.crcLectures[currVideo].transcript && <View style={styles.buttonArea}>

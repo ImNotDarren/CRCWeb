@@ -9,7 +9,8 @@ import ProgressBar from '../ProgressBar/index.js';
 import Expand from '../Expand/index.js';
 import colors from '../../../theme/colors.js';
 
-import { FITBIT_OAUTH_REDIRECT_URL, SERVER_URL } from '../../../constants.js';
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
+const FITBIT_OAUTH_REDIRECT_URL = process.env.EXPO_PUBLIC_FITBIT_OAUTH_REDIRECT_URL || '';
 
 export default function FitbitPanel({ user }) {
 

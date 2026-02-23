@@ -2,19 +2,20 @@ import { Alert, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, 
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import RichText from "../../components/RichText";
+import RichText from "@/src/components/RichText";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import WhiteSpace from "../../components/WhiteSpace";
-import colors from "../../../theme/colors";
+import WhiteSpace from "@/src/components/WhiteSpace";
+import colors from "@/theme/colors";
 import { Button, Input } from "@ui-kitten/components";
-import { alert } from "../../../utils/alert";
+import { alert } from "@/utils/alert";
 import { showMessage } from "react-native-flash-message";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 
-import { SERVER_URL } from "../../../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
-export default function ActivityPageScreen({ route, navigation }) {
-
-  const { aid, mid } = route.params;
+export default function ActivityPageScreen() {
+  const { aid, mid } = useLocalSearchParams();
+  const navigation = useNavigation();
 
   const fontSize = useSelector((state) => state.font.fontSize);
   const styles = getStyles(fontSize);
@@ -24,7 +25,7 @@ export default function ActivityPageScreen({ route, navigation }) {
 
   
   const modules = useSelector((state) => state.module.modules);
-  const activity = modules.find((m) => m.id === mid).crcAssignments.find((a) => a.id === aid);
+  const activity = modules.find((m) => String(m.id) === String(mid)).crcAssignments.find((a) => String(a.id) === String(aid));
 
   const [edit, setEdit] = useState(false);
   const [editTitle, setEditTitle] = useState(activity?.crcAssignmentContent?.title || "");
@@ -68,9 +69,9 @@ export default function ActivityPageScreen({ route, navigation }) {
             type: "success",
           })
           const modulesCopy = JSON.parse(JSON.stringify(modules));
-          const moduleCopy = modulesCopy.find((m) => m.id === mid);
-          moduleCopy.crcAssignments.find((c) => c.id === aid).crcAssignmentContent.content = editValue;
-          moduleCopy.crcAssignments.find((c) => c.id === aid).crcAssignmentContent.title = editTitle;
+          const moduleCopy = modulesCopy.find((m) => String(m.id) === String(mid));
+          moduleCopy.crcAssignments.find((c) => String(c.id) === String(aid)).crcAssignmentContent.content = editValue;
+          moduleCopy.crcAssignments.find((c) => String(c.id) === String(aid)).crcAssignmentContent.title = editTitle;
           dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
         } else {
           showMessage({
@@ -94,8 +95,8 @@ export default function ActivityPageScreen({ route, navigation }) {
         });
 
         const modulesCopy = JSON.parse(JSON.stringify(modules));
-        const moduleCopy = modulesCopy.find((m) => m.id === mid);
-        moduleCopy.crcAssignments.find((a) => a.id === aid).crcAssignmentContent = { content: editValue, title: editTitle, crcAssignmentId: aid };
+        const moduleCopy = modulesCopy.find((m) => String(m.id) === String(mid));
+        moduleCopy.crcAssignments.find((a) => String(a.id) === String(aid)).crcAssignmentContent = { content: editValue, title: editTitle, crcAssignmentId: aid };
         dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
       }
     } catch (error) {
@@ -136,27 +137,6 @@ export default function ActivityPageScreen({ route, navigation }) {
     );
   };
 
-  // const handleSaveProgress = async () => {
-  //   try {
-  //     await fetch(`${SERVER_URL}/log/create`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         uid: user.id,
-  //         action: "Complete",
-  //         target: `CRCwebAssignmentContent-${aid}`,
-  //       }),
-  //     });
-  //     const modulesCopy = JSON.parse(JSON.stringify(modules));
-  //     modulesCopy.find((m) => m.id === mid).crcAssignments.find((c) => c.id === aid).completed = true;
-  //     dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   const handleReaction = (reaction) => async () => {
     try {
       const response = await fetch(`${SERVER_URL}/crc/assignmentcontents/createUserAssignmentContent`, {
@@ -172,8 +152,8 @@ export default function ActivityPageScreen({ route, navigation }) {
       });
       const data = await response.json();
       const modulesCopy = JSON.parse(JSON.stringify(modules));
-      const moduleCopy = modulesCopy.find((m) => m.id === mid);
-      moduleCopy.crcAssignments.find((c) => c.id === aid).crcAssignmentContent.crcUserAssignmentContents = [data];
+      const moduleCopy = modulesCopy.find((m) => String(m.id) === String(mid));
+      moduleCopy.crcAssignments.find((c) => String(c.id) === String(aid)).crcAssignmentContent.crcUserAssignmentContents = [data];
       dispatch({ type: 'UPDATE_MODULES', value: modulesCopy });
     } catch (error) {
       console.error(error);
@@ -189,13 +169,6 @@ export default function ActivityPageScreen({ route, navigation }) {
       {!edit ? (
         <ScrollView style={styles.contentPageView}>
           <RichText text={activity?.crcAssignmentContent?.content || ""} fontSize={20 + fontSize} lineHeight={27 + fontSize * 2} />
-          {/* <Button
-            status={activity.completed ? "success" : "primary"}
-            disabled={activity.completed}
-            onPress={activity.completed ? null : handleSaveProgress}
-          >
-            {activity.completed ? "Completed" : "Mark as Completed"}
-          </Button> */}
           <Text style={styles.question}>Was this intervention effective?</Text>
           <View style={styles.evaluateView}>
             <TouchableOpacity

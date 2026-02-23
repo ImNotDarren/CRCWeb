@@ -1,4 +1,5 @@
-import { FITBIT_CLIENT_ID, SERVER_URL } from "../constants";
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
+const FITBIT_CLIENT_ID = process.env.EXPO_PUBLIC_FITBIT_CLIENT_ID || '';
 
 export const refreshToken = async (user) => {
   if (!user.accessToken) return null;
