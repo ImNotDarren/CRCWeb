@@ -1,7 +1,6 @@
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View, Linking } from "react-native";
 import styles from "./style";
 import { useEffect, useState } from "react";
-// import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
 import { get, save } from "../../../localStorage";
 import { Radio } from "@ui-kitten/components";
@@ -31,10 +30,16 @@ export default function LoginScreen({ navigation }) {
     }
 
     getAutoLoginStatus();
-  }, [setAutoLogin]);
+  }, []); // Removed setAutoLogin from dependency array as it's a stable setter
 
   const handleAutoLoginChange = () => {
     setAutoLogin(curr => !curr);
+  };
+
+  const handleOpenPrivacyPolicy = () => {
+    // Replace with your actual Privacy Policy URL
+    const url = 'https://imnotdarren.github.io/CRCWeb/privacy-policy.html'; 
+    Linking.openURL(url).catch((err) => console.error("Couldn't load page", err));
   };
 
   const handleLogin = (un, pwd) => () => {
@@ -48,9 +53,7 @@ export default function LoginScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (!data.message) {
-          // update user in redux
           handleUpdateUser(data);
-          // save auto login status
           save('autoLogin', JSON.stringify({
             username: un,
             password: pwd,
@@ -66,22 +69,25 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    // <LinearGradient colors={['#d6fcff', '#bbe2fc', '#96b6ff']} style={styles.linearGradient}>
     <View style={styles.outterBox}>
       <Text style={styles.title}>CRCWeb Login</Text>
+      
       <TextInput
         style={styles.input}
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
+        autoCapitalize="none"
       />
+      
       <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry // Hide password input
+        secureTextEntry
       />
+
       <View style={styles.checkboxView}>
         <Radio
           status='info'
@@ -91,8 +97,16 @@ export default function LoginScreen({ navigation }) {
           Auto login
         </Radio>
       </View>
+
       <TouchableOpacity style={styles.button} onPress={handleLogin(username, password)}>
         <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.privacyLinkContainer} 
+        onPress={handleOpenPrivacyPolicy}
+      >
+        <Text style={styles.privacyLinkText}>Privacy Policy</Text>
       </TouchableOpacity>
     </View>
   );
