@@ -1,7 +1,7 @@
 {
   "name": "crcdata",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -49,9 +49,11 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@react-native-community/cli": "^15.0.0",
+    "@types/react": "~19.1.10",
     "babel-plugin-module-resolver": "^5.0.2",
     "dotenv": "^16.4.5",
-    "patch-package": "^8.0.1"
+    "patch-package": "^8.0.1",
+    "typescript": "~5.9.2"
   },
   "private": true
 }

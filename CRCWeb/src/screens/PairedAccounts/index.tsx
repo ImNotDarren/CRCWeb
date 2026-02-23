@@ -1,0 +1,140 @@
+import React, { useEffect } from 'react';
+import {
+  Alert,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import styles from './style';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@ui-kitten/components';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import colors from '@/theme/colors';
+import Pair from './components/pair';
+import InitialsAvatar from '@/utils/avatar';
+import Expand from '@/src/components/Expand';
+import { getCurrentPair, getPendingPairs, oppositeUser } from '@/utils/user';
+import Badge from '@/src/components/Badge';
+import { useRouter, useNavigation } from 'expo-router';
+import type { RootState } from '@/src/types/store';
+import { usePairsByUser, useDeletePair } from '@/hooks/api';
+
+const AVATAR_SIZE = 70;
+
+export default function PairedAccountsScreen(): React.ReactElement {
+  const router = useRouter();
+  const navigation = useNavigation();
+  const user = useSelector((state: RootState) => state.user);
+  const currentPair = getCurrentPair(user);
+  const dispatch = useDispatch();
+  const { loading: loadingPairs, refetch } = usePairsByUser(user.user?.id);
+  const { deletePair } = useDeletePair();
+
+  useEffect(() => {
+    if (user.user?.id) {
+      refetch().then((list) => {
+        dispatch({ type: 'UPDATE_PAIRED', value: list });
+      });
+    }
+  }, [user.user?.id, refetch, dispatch]);
+
+  const handleUnpair = (): void => {
+    if (!currentPair || !user.user?.id) return;
+    Alert.alert('Unpair', 'Are you sure you want to unpair?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Confirm',
+        onPress: async () => {
+          try {
+            const data = await deletePair({
+              [`${currentPair.role}Id`]: (currentPair as { id?: number }).id,
+              [`${oppositeUser(currentPair.role)}Id`]: user.user?.id,
+              fid: 3,
+            });
+            if (data.message === 'Pair deleted') {
+              const paired = user.paired as Array<Record<string, unknown>>;
+              dispatch({
+                type: 'UPDATE_PAIRED',
+                value: paired.filter(
+                  (p: Record<string, unknown>) =>
+                    p[`${currentPair.role}Id`] !== (currentPair as { id?: number }).id ||
+                    p[`${oppositeUser(currentPair.role)}Id`] !== user.user?.id
+                ),
+              });
+              Alert.alert('Success', data.message ?? '');
+              return;
+            }
+            if (data.message) Alert.alert('Error', data.message);
+          } catch (err) {
+            console.error(err);
+          }
+        },
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => router.push('/pending-pairs')}>
+          <Badge show={getPendingPairs(user).length > 0}>
+            <MaterialCommunityIcons
+              name="bell-outline"
+              size={20}
+              color={colors.blue[400]}
+              style={{ marginRight: 10 }}
+            />
+          </Badge>
+        </TouchableOpacity>
+      ),
+    });
+  }, [currentPair, user, navigation, router]);
+
+  const handleRefresh = (): void => {
+    refetch().then((list) => dispatch({ type: 'UPDATE_PAIRED', value: list }));
+  };
+
+  const pair = currentPair as {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    status?: string;
+    role: string;
+    id?: number;
+  };
+
+  if (user?.paired?.length === 0 || !currentPair) {
+    return <Pair />;
+  }
+
+  return (
+    <ScrollView
+      style={styles.container}
+      refreshControl={<RefreshControl refreshing={loadingPairs} onRefresh={handleRefresh} />}
+    >
+      <View style={styles.pairContainer}>
+        <InitialsAvatar
+          name={`${pair.firstName ?? ''} ${pair.lastName ?? ''}`}
+          size={AVATAR_SIZE}
+        />
+        <View style={styles.userinfo(AVATAR_SIZE)}>
+          <Text style={styles.username}>
+            {pair.firstName} {pair.lastName}
+            {pair.status === 'Pending' && (
+              <Text style={styles.pendingText}>  Pending</Text>
+            )}
+          </Text>
+          <Text style={styles.email}>{pair.email}</Text>
+        </View>
+        <Expand />
+        <View style={styles.unpairContainer}>
+          <Button appearance="outline" status="danger" size="small" onPress={handleUnpair}>
+            Unpair
+          </Button>
+        </View>
+      </View>
+    </ScrollView>
+  );
+}

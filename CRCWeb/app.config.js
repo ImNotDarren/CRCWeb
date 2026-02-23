@@ -105,7 +105,7 @@ module.exports = ({ config }) => ({
           },
         },
       ],
-      './plugins/withIosEntitlements.js',
+      './plugins/withIosEntitlements',
     ],
     extra: {
       ...config.expo?.extra,
