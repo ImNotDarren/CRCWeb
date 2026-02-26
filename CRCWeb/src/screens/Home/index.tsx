@@ -16,7 +16,7 @@ export default function HomeScreen(): React.ReactElement {
   const styles = getStyles(fontSize, colors);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
       <View>
         <Swiper />
       </View>

@@ -74,7 +74,7 @@ export default function Popup({
                 <MaterialCommunityIcons name="close" size={22} color={colors.icon} />
               </TouchableOpacity>
             )}
-            <ScrollView style={{ ...styles.childrenView, marginTop: closeIcon ? 30 : 0 } as object}>
+            <ScrollView style={{ ...styles.childrenView, marginTop: closeIcon ? 30 : 0 } as object} contentContainerStyle={{ paddingBottom: 100 }}>
               {children}
             </ScrollView>
           </Animated.View>

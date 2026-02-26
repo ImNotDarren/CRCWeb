@@ -168,6 +168,7 @@ export default function ContentPageScreen(): React.ReactElement {
           onScroll={handleScroll}
           scrollEventThrottle={16}
           style={styles.contentPageView}
+          contentContainerStyle={{ paddingBottom: 100 }}
         >
           <RichText text={content?.crcContentPage?.content || ""} fontSize={20 + fontSize} lineHeight={27 + fontSize * 2} />
           <WhiteSpace />

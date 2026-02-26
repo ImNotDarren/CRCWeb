@@ -6,7 +6,7 @@ import { text } from './text';
 
 export default function FAQScreen(): React.ReactElement {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
       <RichText text={text} fontSize={18} />
       <View style={styles.bottomWhiteSpace} />
     </ScrollView>

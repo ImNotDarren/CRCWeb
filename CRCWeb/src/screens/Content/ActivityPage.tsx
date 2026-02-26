@@ -171,7 +171,7 @@ export default function ActivityPageScreen(): React.ReactElement {
   return (
     <>
       {!edit ? (
-        <ScrollView style={styles.contentPageView}>
+        <ScrollView style={styles.contentPageView} contentContainerStyle={{ paddingBottom: 100 }}>
           <RichText text={activity?.crcAssignmentContent?.content || ""} fontSize={20 + fontSize} lineHeight={27 + fontSize * 2} />
           <Text style={styles.question}>Was this intervention effective?</Text>
           <View style={styles.evaluateView}>

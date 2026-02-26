@@ -155,7 +155,7 @@ export default function QuizScreen(): React.ReactElement {
   const curr = choices[currQuestion];
 
   return (
-    <ScrollView style={{ padding: 20 }}>
+    <ScrollView style={{ padding: 20 }} contentContainerStyle={{ paddingBottom: 100 }}>
       <Popup
         visible={visible}
         setVisible={setVisible}

@@ -68,6 +68,7 @@ export default function ActivityScreen({ mid, router }: ActivityScreenProps): Re
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getData} />}
         style={styles.contentsView}
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
         {module?.crcAssignments && module?.crcAssignments?.map((content: { id: number; assignment: string; crcAssignmentContent?: { crcUserAssignmentContents?: unknown[] } }, index: number) => {
           return (

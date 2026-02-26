@@ -5,7 +5,7 @@ import LocationComponent from '@/src/components/Location';
 
 export default function ActivityScreen(): React.ReactElement {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
       <LocationComponent />
     </ScrollView>
   );

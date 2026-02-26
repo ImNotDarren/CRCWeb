@@ -7,7 +7,7 @@ import { text } from './text';
 
 export default function HowToNavigateScreen(): React.ReactElement {
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
       <VimeoVideo vimeoId="1130343124" />
       <View style={styles.transcript}>
         <RichText text={text} fontSize={18} />
