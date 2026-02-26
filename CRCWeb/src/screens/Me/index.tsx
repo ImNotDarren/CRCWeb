@@ -90,6 +90,11 @@ export default function MeScreen(): React.ReactElement {
         )}
         <CustomizeMenuItem title="Settings" icon="cog" onNavigate={() => router.push('/settings')} />
         <CustomizeMenuItem
+          title="About"
+          icon="information-outline"
+          onNavigate={() => router.push('/about')}
+        />
+        <CustomizeMenuItem
           title="Paired Accounts"
           icon="account-multiple"
           onNavigate={() => router.push('/paired-accounts')}

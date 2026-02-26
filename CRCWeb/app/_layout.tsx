@@ -99,6 +99,7 @@ function ThemeWrapper(): React.ReactElement {
         <Stack.Screen name="manage-accounts" options={{ headerShown: true, title: 'Manage Accounts' }} />
         <Stack.Screen name="add-user" options={{ headerShown: true, title: 'Add User', headerBackTitleVisible: false } as object} />
         <Stack.Screen name="settings" options={{ headerShown: true, title: 'Settings' }} />
+        <Stack.Screen name="about" options={{ headerShown: true, title: 'About' }} />
         <Stack.Screen name="content-home/[mid]" options={{ headerShown: true, headerBackTitleVisible: false } as object} />
         <Stack.Screen name="content-page" options={{ headerShown: true, headerBackTitleVisible: false } as object} />
         <Stack.Screen name="activity-page" options={{ headerShown: true, headerBackTitleVisible: false } as object} />
