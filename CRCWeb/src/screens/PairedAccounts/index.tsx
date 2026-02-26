@@ -3,13 +3,11 @@ import {
   Alert,
   RefreshControl,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import getStyles from './style';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppButton } from '@/src/components/ui';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Pair from './components/pair';
 import InitialsAvatar from '@/utils/avatar';
 import Expand from '@/src/components/Expand';
@@ -20,6 +18,7 @@ import type { RootState } from '@/src/types/store';
 import { usePairsByUser, useDeletePair } from '@/hooks/api';
 import { useColors } from '@/hooks/useColors';
 import { ThemedScrollView } from '@/src/components/ThemedScrollView';
+import { IconButton } from '@/src/components/IconButton';
 
 const AVATAR_SIZE = 70;
 
@@ -80,16 +79,15 @@ export default function PairedAccountsScreen(): React.ReactElement {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => router.push('/pending-pairs')}>
+        <View style={{ position: 'relative' }}>
           <Badge show={getPendingPairs(user).length > 0}>
-            <MaterialCommunityIcons
-              name="bell-outline"
-              size={20}
-            color={colors.primary}
-              style={{ marginRight: 10 }}
+            <IconButton
+              icon="bell-outline"
+              onPress={() => router.push('/pending-pairs')}
+              color={colors.primary}
             />
           </Badge>
-        </TouchableOpacity>
+        </View>
       ),
     });
   }, [currentPair, user, navigation, router]);

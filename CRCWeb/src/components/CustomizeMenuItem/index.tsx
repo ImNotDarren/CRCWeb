@@ -34,7 +34,7 @@ export function CustomizeMenuItem({
 
   const menuItemStyle = [
     styles.menuItem,
-    { backgroundColor: colors.cardBackground, borderBottomWidth: 1, borderBottomColor: colors.cardBorder },
+    { backgroundColor: colors.cardBackground },
   ];
 
   return (

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import LectureScreen from "./Lecture";
 import ContentHeader from "./Header";
 import { AppButton } from "@/src/components/ui";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ContentsScreen from "./Content";
 import ResourcesScreen from "./Resources";
 import Popup from "@/src/components/Popup";
@@ -18,6 +17,7 @@ import { useSetModuleProgress } from "@/hooks/api";
 import { useColors } from "@/hooks/useColors";
 import ContextMenu from "@/src/components/ContextMenu";
 import type { ContextMenuAction } from "@/src/components/ContextMenu.web";
+import { IconButton } from "@/src/components/IconButton";
 
 const MENU_ITEMS = ['Content', 'Activities', 'Resources', 'Lecture'];
 
@@ -63,9 +63,7 @@ export default function ContentHomeScreen(): React.ReactElement {
               else router.push(`/quiz/${mid}`);
             }}
           >
-            <TouchableOpacity style={{ padding: 10 }}>
-              <MaterialCommunityIcons name="dots-vertical" size={24} color={colors.text} />
-            </TouchableOpacity>
+            <IconButton icon="dots-vertical" onPress={() => {}} />
           </ContextMenu>
         ),
       });
@@ -120,21 +118,15 @@ export default function ContentHomeScreen(): React.ReactElement {
   };
 
   const BackAction = () => (
-    <TouchableOpacity onPress={handleBack} style={styles.actionButton}>
-      <MaterialCommunityIcons name="arrow-left" size={20} color={colors.text} />
-    </TouchableOpacity>
+    <IconButton icon="arrow-left" onPress={handleBack} />
   );
 
   const ForwardAction = () => (
-    <TouchableOpacity onPress={handleForward} style={styles.actionButton}>
-      <MaterialCommunityIcons name="arrow-right" size={18} color={colors.text} />
-    </TouchableOpacity>
+    <IconButton icon="arrow-right" onPress={handleForward} />
   );
 
   const FinishAction = () => (
-    <TouchableOpacity onPress={handleFinish} style={styles.actionButton}>
-      <MaterialCommunityIcons name="check-bold" size={18} color={colors.success} />
-    </TouchableOpacity>
+    <IconButton icon="check-bold" onPress={handleFinish} color={colors.success} />
   );
 
   const handleEdit = () => {
@@ -142,9 +134,7 @@ export default function ContentHomeScreen(): React.ReactElement {
   };
 
   const EditAction = () => (
-    <TouchableOpacity onPress={handleEdit} style={styles.actionButton}>
-      <MaterialCommunityIcons name="pencil" size={18} color={colors.text} />
-    </TouchableOpacity>
+    <IconButton icon="pencil" onPress={handleEdit} />
   );
 
   return (

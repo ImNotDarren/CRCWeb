@@ -1,16 +1,16 @@
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
 import { useEffect, useState, useCallback } from "react";
 import RichText from "@/src/components/RichText";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import WhiteSpace from "@/src/components/WhiteSpace";
 import { AppButton, AppInput } from "@/src/components/ui";
 import { alert } from "@/utils/alert";
 import { showMessage } from "react-native-flash-message";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useColors } from "@/hooks/useColors";
+import { IconButton } from "@/src/components/IconButton";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
@@ -129,12 +129,13 @@ export default function ActivityPageScreen(): React.ReactElement {
     navigation.setOptions({
       title: activity?.crcAssignmentContent?.title || 'Content',
       headerRight: () => (
-        user?.featureUsers?.[3]?.role === 'admin' ?
-          <TouchableOpacity
+        user?.featureUsers?.[3]?.role === 'admin' ? (
+          <IconButton
+            icon={edit ? "check-bold" : "pencil"}
             onPress={handleEdit}
-          >
-            <MaterialCommunityIcons name={edit ? "check-bold" : "pencil"} size={20} color={edit ? colors.success : colors.text} style={{ padding: 10 }} />
-          </TouchableOpacity> : null
+            color={edit ? colors.success : undefined}
+          />
+        ) : null
       ),
     });
   }, [activity, user, handleEdit, edit, editValue, editTitle, navigation]);

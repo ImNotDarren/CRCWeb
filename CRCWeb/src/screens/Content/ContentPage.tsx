@@ -1,15 +1,15 @@
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
 import { useEffect, useState, useCallback } from "react";
 import RichText from "@/src/components/RichText";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import WhiteSpace from "@/src/components/WhiteSpace";
 import { AppInput } from "@/src/components/ui";
 import { canEdit } from "@/utils/user";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useColors } from "@/hooks/useColors";
+import { IconButton } from "@/src/components/IconButton";
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 
@@ -150,12 +150,13 @@ export default function ContentPageScreen(): React.ReactElement {
     navigation.setOptions({
       title: content?.crcContentPage?.title || 'Content',
       headerRight: () => (
-        canEdit(user) ?
-          <TouchableOpacity
+        canEdit(user) ? (
+          <IconButton
+            icon={edit ? "check-bold" : "pencil"}
             onPress={handleEdit}
-          >
-            <MaterialCommunityIcons name={edit ? "check-bold" : "pencil"} size={20} color={edit ? colors.success : colors.text} style={{ padding: 10 }} />
-          </TouchableOpacity> : null
+            color={edit ? colors.success : undefined}
+          />
+        ) : null
       ),
     });
   }, [content, user, handleEdit, edit, editValue, editTitle, navigation]);
