@@ -8,8 +8,11 @@ export type ThemedScrollViewProps = ScrollViewProps & {
   colorName?: SemanticColorKey;
 };
 
+const DEFAULT_CONTENT_BOTTOM_PADDING = 100;
+
 export function ThemedScrollView({
   style,
+  contentContainerStyle,
   lightColor,
   darkColor,
   colorName = 'background',
@@ -23,6 +26,10 @@ export function ThemedScrollView({
   return (
     <ScrollView
       style={[{ backgroundColor }, style]}
+      contentContainerStyle={[
+        { paddingBottom: DEFAULT_CONTENT_BOTTOM_PADDING },
+        contentContainerStyle,
+      ]}
       {...otherProps}
     />
   );

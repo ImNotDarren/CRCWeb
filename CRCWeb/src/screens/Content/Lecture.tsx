@@ -55,7 +55,8 @@ export default function LectureScreen({ mid, router }: LectureScreenProps): Reac
   }, [mid, dispatch]);
 
   const handleEdit = () => {
-    router.push(`/edit?screen=lecture&mid=${mid}`);
+    const midStr = typeof mid === 'string' ? mid : Array.isArray(mid) ? mid[0] ?? '' : String(mid ?? '');
+    if (midStr) router.push(`/edit/lecture/${midStr}`);
   };
 
   if (!module?.crcLectures)
@@ -67,7 +68,7 @@ export default function LectureScreen({ mid, router }: LectureScreenProps): Reac
 
   return (
     <>
-      <ScrollView style={styles.moduleContainer}>
+      <ScrollView style={styles.moduleContainer} contentContainerStyle={{ paddingBottom: 100 }}>
         {(module?.crcLectures?.length > currVideo) && (
           <View>
             <VimeoVideo
@@ -123,7 +124,7 @@ export default function LectureScreen({ mid, router }: LectureScreenProps): Reac
               <View>
                 <Text style={styles.transcriptTitleText}>Transcript</Text>
               </View>
-              <ScrollView style={styles.transcriptContent}>
+              <ScrollView style={styles.transcriptContent} contentContainerStyle={{ paddingBottom: 100 }}>
                 <RichText text={module.crcLectures[currVideo].transcript} fontSize={18 + fontSize} />
               </ScrollView>
             </Popup>

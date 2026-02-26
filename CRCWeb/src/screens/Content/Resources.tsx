@@ -71,6 +71,7 @@ export default function ResourcesScreen({ mid }: ResourcesScreenProps): React.Re
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getData} />}
         style={styles.contentsView}
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
         {(module?.crcWebResources as Array<{ content: string }>)?.map((content, index) => {
           if (extractUrl(content.content))

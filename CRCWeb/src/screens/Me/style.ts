@@ -15,7 +15,7 @@ export default function getStyles(fontSize: number, colors: ThemeColors) {
       borderBottomWidth: 1,
       marginBottom: 20,
     },
-    username: { fontSize: 22 + fontSize, marginBottom: 5 },
+    username: { fontSize: 22 + fontSize, marginBottom: 5, color: colors.text },
     email: { fontSize: 15 + fontSize, color: colors.mutedText },
     role: { fontSize: 15 + fontSize, color: colors.mutedText, marginBottom: 2 },
     editButton: { marginHorizontal: 20 },

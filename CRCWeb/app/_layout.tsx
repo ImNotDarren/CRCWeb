@@ -103,7 +103,7 @@ function ThemeWrapper(): React.ReactElement {
         <Stack.Screen name="content-page" options={{ headerShown: true, headerBackTitleVisible: false } as object} />
         <Stack.Screen name="activity-page" options={{ headerShown: true, headerBackTitleVisible: false } as object} />
         <Stack.Screen name="quiz/[mid]" options={{ headerShown: true, gestureEnabled: false, headerBackVisible: false, headerBackTitleVisible: false } as object} />
-        <Stack.Screen name="edit" options={{ headerShown: true, headerBackTitleVisible: false, presentation: 'modal' } as object} />
+        <Stack.Screen name="edit/[type]/[mid]" options={{ headerShown: true, headerBackTitleVisible: false, presentation: 'modal' } as object} />
         <Stack.Screen name="user-info/[userId]" options={{ headerShown: true, headerBackTitleVisible: false, title: 'User Info' } as object} />
         <Stack.Screen name="user-locations" options={{ headerShown: true, headerBackTitleVisible: false, title: 'Locations' } as object} />
         <Stack.Screen name="activity" options={{ headerShown: true, headerBackTitleVisible: false, title: 'Physical Activity' } as object} />

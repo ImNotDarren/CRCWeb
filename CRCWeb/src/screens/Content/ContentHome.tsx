@@ -117,20 +117,10 @@ export default function ContentHomeScreen(): React.ReactElement {
     router.push('/(tabs)');
   };
 
-  const BackAction = () => (
-    <IconButton icon="arrow-left" onPress={handleBack} />
-  );
-
-  const ForwardAction = () => (
-    <IconButton icon="arrow-right" onPress={handleForward} />
-  );
-
-  const FinishAction = () => (
-    <IconButton icon="check-bold" onPress={handleFinish} color={colors.success} />
-  );
-
   const handleEdit = () => {
-    router.push(`/edit?screen=${MENU_ITEMS[currPage].toLowerCase()}&mid=${mid}`);
+    const screen = MENU_ITEMS[currPage].toLowerCase();
+    const midStr = typeof mid === 'string' ? mid : Array.isArray(mid) ? mid[0] ?? '' : String(mid ?? '');
+    if (midStr) router.push(`/edit/${screen}/${midStr}`);
   };
 
   const EditAction = () => (

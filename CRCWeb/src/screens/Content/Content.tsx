@@ -102,6 +102,7 @@ export default function ContentsScreen({ mid, router }: ContentsScreenProps): Re
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getData} />}
         style={styles.contentsView}
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
         {module?.crcContents?.map((content: { id: number; content: string; completed?: boolean }, index: number) => {
           return (
