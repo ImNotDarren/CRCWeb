@@ -47,7 +47,7 @@ export default function getStyles(fontSize: number, colors: ThemeColors) {
       alignItems: 'center',
     },
     container: {
-      paddingVertical: 20,
+      paddingVertical: 10,
       backgroundColor: 'transparent',
       height: '100%',
     },

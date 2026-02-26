@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { useColorScheme } from '@/hooks/useColorScheme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from '@react-navigation/native';
 import { LightNavTheme, DarkNavTheme } from '@/constants/Theme';
