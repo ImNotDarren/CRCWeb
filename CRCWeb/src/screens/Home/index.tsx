@@ -7,7 +7,6 @@ import RichTextView from '@/src/components/RichText';
 import { useRouter } from 'expo-router';
 import type { RootState } from '@/src/types/store';
 import { useColors } from '@/hooks/useColors';
-import { ThemedScrollView } from '@/src/components/ThemedScrollView';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function HomeScreen(): React.ReactElement {

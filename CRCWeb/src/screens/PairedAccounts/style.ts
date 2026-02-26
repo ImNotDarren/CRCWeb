@@ -21,7 +21,7 @@ export default function getStyles(colors: ThemeColors) {
       backgroundColor: colors.cardBackground,
     },
     pairText: { fontSize: 25, color: colors.secondaryText },
-    username: { fontSize: 22, marginBottom: 5 },
+    username: { fontSize: 22, marginBottom: 5, color: colors.text },
     email: { fontSize: 15, color: colors.mutedText },
     role: { fontSize: 15, color: colors.mutedText, marginBottom: 2 },
     unpairContainer: { justifyContent: 'center', alignItems: 'center', marginLeft: 20 },

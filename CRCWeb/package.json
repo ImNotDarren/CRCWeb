@@ -9,6 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@radix-ui/react-context-menu": "^2.2.16",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@reduxjs/toolkit": "^2.2.1",
     "expo": "~54.0.0",
@@ -29,6 +31,7 @@
     "react-native": "0.81.5",
     "react-native-background-fetch": "^4.2.2",
     "react-native-circular-progress": "^1.4.0",
+    "react-native-context-menu-view": "^1.21.0",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-flash-message": "^0.4.2",
     "react-native-gesture-handler": "~2.28.0",

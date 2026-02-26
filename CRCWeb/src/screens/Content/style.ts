@@ -26,6 +26,7 @@ export default function getStyles(fontSize: number, colors: ThemeColors) {
     popupTitle: {
       fontSize: 20 + fontSize,
       textAlign: 'left',
+      color: colors.text,
     },
     popupSubtitle: {
       fontSize: 15 + fontSize,
@@ -61,6 +62,7 @@ export default function getStyles(fontSize: number, colors: ThemeColors) {
     title: {
       fontSize: 18 + fontSize,
       fontWeight: 'bold',
+      color: colors.text,
     },
     actionButton: {
       padding: 10,
@@ -107,6 +109,7 @@ export default function getStyles(fontSize: number, colors: ThemeColors) {
       margin: 10,
       width: '100%' as const,
       textAlign: 'center',
+      color: colors.text,
     },
     transcriptContent: {
       marginTop: 10,
@@ -138,15 +141,20 @@ export default function getStyles(fontSize: number, colors: ThemeColors) {
       lineHeight: 27 + fontSize * 2,
       borderRadius: 10,
       marginBottom: 100,
+      color: colors.text,
+      backgroundColor: colors.inputBackground,
+      padding: 12,
     },
     resourcesTitle: {
       fontSize: 18 + fontSize,
       fontWeight: 'bold',
       margin: 20,
+      color: colors.text,
     },
     quizQuestion: {
       fontSize: 25 + fontSize,
       fontWeight: 'bold',
+      color: colors.text,
     },
     radio: {
       marginBottom: 25,
@@ -155,6 +163,7 @@ export default function getStyles(fontSize: number, colors: ThemeColors) {
       fontSize: 20 + fontSize,
       marginLeft: 15,
       lineHeight: 30 + fontSize * 2,
+      color: colors.text,
     },
     quizPopupTitle: {
       fontSize: 20 + fontSize,
@@ -163,6 +172,7 @@ export default function getStyles(fontSize: number, colors: ThemeColors) {
       fontWeight: 'bold',
       lineHeight: 30 + fontSize * 2,
       marginBottom: 30,
+      color: colors.text,
     },
     question: {
       fontSize: 20 + fontSize,

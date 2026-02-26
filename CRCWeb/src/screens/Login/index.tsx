@@ -19,7 +19,6 @@ export default function LoginScreen(): React.ReactElement {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useState(false);
-  const versions = useSelector((state: RootState) => state.version.versions);
   const dispatch = useDispatch();
   const { login } = useLogin();
 
@@ -68,6 +67,7 @@ export default function LoginScreen(): React.ReactElement {
       <TextInput
         style={styles.input}
         placeholder="Username"
+        placeholderTextColor={colors.inputPlaceholder}
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
@@ -75,6 +75,7 @@ export default function LoginScreen(): React.ReactElement {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor={colors.inputPlaceholder}
         value={password}
         onChangeText={setPassword}
         secureTextEntry

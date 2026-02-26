@@ -8,12 +8,14 @@ import { alert } from '@/utils/alert';
 import type { RootState } from '@/src/types/store';
 import type { CRCVersion } from '@/src/types/crc';
 import { useVersions } from '@/hooks/api';
+import { useColors } from '@/hooks/useColors';
 import { ThemedView } from '@/src/components/ThemedView';
-import versionSelectionStyles from './VersionSelectionStyle';
+import getVersionSelectionStyles from './VersionSelectionStyle';
 
 export default function VersionSelection(): React.ReactElement {
   const router = useRouter();
-  const styles = versionSelectionStyles;
+  const colors = useColors();
+  const styles = getVersionSelectionStyles(colors);
   const versions = useSelector((state: RootState) => state.version.versions);
   const user = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
@@ -66,7 +68,7 @@ export default function VersionSelection(): React.ReactElement {
       ))}
       {isAdmin(userWithFeatures?.featureUsers?.[4]?.role) && (
         <TouchableOpacity activeOpacity={0.8} style={styles.addCell}>
-          <MaterialCommunityIcons name="plus" color="#a3a3a3" size={40} />
+          <MaterialCommunityIcons name="plus" color={colors.secondaryText} size={40} />
         </TouchableOpacity>
       )}
     </ThemedView>

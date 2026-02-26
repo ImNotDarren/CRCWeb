@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { ThemeProvider } from '@react-navigation/native';
+import { LightNavTheme, DarkNavTheme } from '@/constants/Theme';
 import { Stack, useRouter } from 'expo-router';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
@@ -70,7 +71,7 @@ function FitbitRedirectListener(): null {
 
 function ThemeWrapper(): React.ReactElement {
   const colorScheme = useColorScheme();
-  const navTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme;
+  const navTheme = colorScheme === 'dark' ? DarkNavTheme : LightNavTheme;
   const theme: ColorScheme = colorScheme === 'dark' ? 'dark' : 'light';
   const backgroundColor = Colors[theme].background;
 
@@ -80,7 +81,6 @@ function ThemeWrapper(): React.ReactElement {
 
   return (
     <ThemeProvider value={navTheme}>
-      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       <FitbitRedirectListener />
       <Stack
           screenOptions={{

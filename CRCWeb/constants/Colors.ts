@@ -3,12 +3,12 @@
  */
 
 const tintLight = '#2462f2';
-const tintDark = '#a78bfa'; // violet-400, modern dark accent
+const tintDark = '#5b8af5'; // blue accent for dark mode
 
 export const Colors = {
   light: {
-    background: '#F9FAFB',
-    back: '#F3F4F6',
+    background: '#F2F2F7',
+    back: '#F2F2F7',
     cardBackground: '#ffffff',
     cardBorder: '#e5e7eb',
     text: '#212121',
@@ -45,17 +45,17 @@ export const Colors = {
     border: '#404040',
     borderLight: '#262626',
     divider: '#404040',
-    primary: '#a78bfa',
-    primaryLight: '#2e106b',
-    primaryDark: '#7c3aed',
+    primary: '#5b8af5',
+    primaryLight: '#0d1f4a',
+    primaryDark: '#2f64e3',
     link: tintDark,
     tabIconDefault: '#71717a',
-    tabIconSelected: '#a3a3a3',
+    tabIconSelected: tintDark,
     inputBackground: '#262626',
     inputPlaceholder: '#71717a',
     success: '#4ade80',
     error: '#f87171',
-    floatingActionButton: '#7c3aed',
+    floatingActionButton: '#2f64e3',
     icon: '#a3a3a3',
     onPrimary: '#ffffff',
     inputOverlay: 'rgba(255,255,255,0.12)',

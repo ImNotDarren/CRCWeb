@@ -1,8 +1,8 @@
-import { View, Text, TouchableOpacity, Pressable } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import LectureScreen from "./Lecture";
 import ContentHeader from "./Header";
 import { AppButton } from "@/src/components/ui";
@@ -16,6 +16,8 @@ import { canEdit, isAdmin } from "@/utils/user";
 import { useLocalSearchParams, useRouter, useNavigation } from "expo-router";
 import { useSetModuleProgress } from "@/hooks/api";
 import { useColors } from "@/hooks/useColors";
+import ContextMenu from "@/src/components/ContextMenu";
+import type { ContextMenuAction } from "@/src/components/ContextMenu.web";
 
 const MENU_ITEMS = ['Content', 'Activities', 'Resources', 'Lecture'];
 
@@ -27,10 +29,6 @@ export default function ContentHomeScreen(): React.ReactElement {
   const fontSize = useSelector((state: RootState) => state.font.fontSize);
   const styles = getStyles(fontSize, colors);
   const [currPage, setCurrPage] = useState(0);
-  const [menuVisible, setMenuVisible] = useState(false);
-  const menuRef = useRef({ openMenu: () => {} });
-  menuRef.current.openMenu = () => setMenuVisible(true);
-
   const [visible, setVisible] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const module = useSelector((state: RootState) =>
@@ -48,21 +46,32 @@ export default function ContentHomeScreen(): React.ReactElement {
   };
 
   useEffect(() => {
+    const userRole = user?.user?.featureUsers?.[3]?.role;
+    const actions: ContextMenuAction[] = [
+      ...MENU_ITEMS.map((item, i) => ({ title: item, selected: i === currPage })),
+      ...(userRole === 'admin' ? [{ title: 'Quiz' }] : []),
+    ];
     const id = setTimeout(() => {
       navigation.setOptions({
         title: module?.name || 'Content',
         headerRight: () => (
-          <TouchableOpacity
-            onPress={() => menuRef.current.openMenu()}
-            style={{ padding: 10 }}
+          <ContextMenu
+            dropdownMenuMode
+            actions={actions}
+            onPress={(index) => {
+              if (index < MENU_ITEMS.length) setCurrPage(index);
+              else router.push(`/quiz/${mid}`);
+            }}
           >
-            <MaterialCommunityIcons name="dots-vertical" size={24} color={colors.text} />
-          </TouchableOpacity>
+            <TouchableOpacity style={{ padding: 10 }}>
+              <MaterialCommunityIcons name="dots-vertical" size={24} color={colors.text} />
+            </TouchableOpacity>
+          </ContextMenu>
         ),
       });
     }, 0);
     return () => clearTimeout(id);
-  }, [module?.name, mid, navigation]);
+  }, [module?.name, mid, navigation, user?.user?.featureUsers?.[3]?.role, currPage]);
 
   useEffect(() => {
     if (module?.crcModuleProgresses?.length && renderMap) {
@@ -164,41 +173,6 @@ export default function ContentHomeScreen(): React.ReactElement {
           color={colors.success}
         />}
       </View>
-
-      <Popup
-        visible={menuVisible}
-        setVisible={setMenuVisible}
-        animationTime={100}
-        closeIcon={true}
-      >
-        <View style={{ padding: 8, minWidth: 180 }}>
-          {MENU_ITEMS.map((item, index) => (
-            <Pressable
-              key={item}
-              onPress={() => {
-                setMenuVisible(false);
-                setCurrPage(index);
-              }}
-              style={{ paddingVertical: 12, paddingHorizontal: 8, borderRadius: 4 }}
-            >
-              <Text style={{ fontSize: 16, color: currPage === index ? colors.primaryDark : colors.text }}>
-                {item}
-              </Text>
-            </Pressable>
-          ))}
-          {user?.user?.featureUsers?.[3]?.role === 'admin' && (
-            <Pressable
-              onPress={() => {
-                setMenuVisible(false);
-                router.push(`/quiz/${mid}`);
-              }}
-              style={{ paddingVertical: 12, paddingHorizontal: 8, borderRadius: 4, borderTopWidth: 1, borderTopColor: colors.border }}
-            >
-              <Text style={{ fontSize: 16, color: colors.text }}>Quiz</Text>
-            </Pressable>
-          )}
-        </View>
-      </Popup>
 
       <Popup
         visible={visible}

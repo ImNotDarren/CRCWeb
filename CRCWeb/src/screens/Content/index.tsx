@@ -13,6 +13,7 @@ import { useRouter } from "expo-router";
 import type { CRCModule } from "@/src/types/crc";
 import { useModulesByRole } from "@/hooks/api";
 import { useColors } from "@/hooks/useColors";
+import { ThemedView } from "@/src/components/ThemedView";
 import { ThemedScrollView } from "@/src/components/ThemedScrollView";
 
 export default function ContentScreen(): React.ReactElement {
@@ -69,50 +70,56 @@ export default function ContentScreen(): React.ReactElement {
 
   if (loading && params)
     return (
-      <View style={styles.spinnerView}>
-        <AppSpinner size="large" />
-      </View>
+      <ThemedView style={{ flex: 1 }}>
+        <View style={styles.spinnerView}>
+          <AppSpinner size="large" />
+        </View>
+      </ThemedView>
     );
 
   if (!loading && modules.length === 0) {
     return (
-      <NoContent action={(
-        <AppButton onPress={handleRefresh}>Refresh</AppButton>
-      )} />
+      <ThemedView style={{ flex: 1 }}>
+        <NoContent action={(
+          <AppButton onPress={handleRefresh}>Refresh</AppButton>
+        )} />
+      </ThemedView>
     );
   }
 
   return (
-    <GestureHandlerRootView style={[styles.container, { flex: 1 }]}>
-      {!canEdit(user) ? (
-        <ThemedScrollView style={styles.container} refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={handleRefresh} />
-        }>
-          {modules.map((m, idx) => (
-            <CustomizeMenuItem
-              key={m.id}
-              title={`${idx + 1}  ${m.name}`}
-              icon='school'
-              progress={m.crcModuleProgresses && m.crcModuleProgresses.length > 0 ? m.crcModuleProgresses[0].progress : undefined}
-              onNavigate={() => router.push(`/content-home/${m.id}`)}
-            />
-          ))}
-        </ThemedScrollView>
-      ) : (
-        <DraggableFlatList
-          data={modules}
-          renderItem={renderItem}
-          keyExtractor={(item) => `draggable-item-${item.id}`}
-          onDragEnd={handleSaveOrder}
-          refreshControl={
-            <RefreshControl
-              refreshing={loading}
-              onRefresh={handleRefresh}
-            />
-          }
-          style={styles.container}
-        />
-      )}
-    </GestureHandlerRootView>
+    <ThemedView style={{ flex: 1 }}>
+      <GestureHandlerRootView style={[styles.container, { flex: 1 }]}>
+        {!canEdit(user) ? (
+          <ThemedScrollView style={styles.container} refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={handleRefresh} />
+          }>
+            {modules.map((m, idx) => (
+              <CustomizeMenuItem
+                key={m.id}
+                title={`${idx + 1}  ${m.name}`}
+                icon='school'
+                progress={m.crcModuleProgresses && m.crcModuleProgresses.length > 0 ? m.crcModuleProgresses[0].progress : undefined}
+                onNavigate={() => router.push(`/content-home/${m.id}`)}
+              />
+            ))}
+          </ThemedScrollView>
+        ) : (
+          <DraggableFlatList
+            data={modules}
+            renderItem={renderItem}
+            keyExtractor={(item) => `draggable-item-${item.id}`}
+            onDragEnd={handleSaveOrder}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={handleRefresh}
+              />
+            }
+            style={styles.container}
+          />
+        )}
+      </GestureHandlerRootView>
+    </ThemedView>
   );
 }
