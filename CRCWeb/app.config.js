@@ -10,7 +10,7 @@ module.exports = ({ config }) => ({
     ...config.expo,
     name: 'CRCWeb',
     slug: 'CRCWeb',
-    version: '1.0.1',
+    version: '1.0.2',
     scheme: 'crcdata',
     newArchEnabled: true,
     orientation: 'portrait',
@@ -19,7 +19,7 @@ module.exports = ({ config }) => ({
       ...config.expo?.splash,
       backgroundColor: '#0a0a0a',
     },
-    runtimeVersion: '1.0.1',
+    runtimeVersion: '1.0.2',
     updates: {
       url: 'https://u.expo.dev/d52b3498-bba2-4bf9-ac1e-c8ce31c8d87d',
       enabled: true,
@@ -71,7 +71,7 @@ module.exports = ({ config }) => ({
       ...config.expo?.android,
       userInterfaceStyle: 'automatic',
       package: 'com.anonymous.CRCData',
-      versionCode: 3,
+      versionCode: 1,
       permissions: [
         'ACCESS_COARSE_LOCATION',
         'ACCESS_FINE_LOCATION',
