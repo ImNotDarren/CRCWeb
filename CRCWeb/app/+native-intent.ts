@@ -1,6 +1,7 @@
 /**
- * Maps Fitbit OAuth redirect (crcdata://redirect?code=...&state=...) to /redirect
- * so the app opens the redirect screen and completes the token exchange.
+ * Maps Fitbit OAuth redirect (crcdata://redirect?code=...&state=...) to the correct screen.
+ * Cold start: route to /redirect for token exchange before navigating.
+ * Warm start: route to fitbit tab; FitbitRedirectListener handles exchange via URL event.
  */
 export function redirectSystemPath({
   path,
@@ -9,13 +10,13 @@ export function redirectSystemPath({
   path: string | undefined;
   initial: boolean;
 }): string | undefined {
-  if (!initial || !path) return path;
+  if (!path) return path;
   try {
-    if (typeof path === 'string' && path.includes('redirect') && path.includes('code=')) {
-      return '/redirect';
-    }
-    if (typeof path === 'string' && path.startsWith('crcdata://redirect')) {
-      return '/redirect';
+    const isFitbitRedirect = typeof path === 'string' &&
+      ((path.includes('redirect') && path.includes('code=')) ||
+       path.startsWith('crcdata://redirect'));
+    if (isFitbitRedirect) {
+      return initial ? '/redirect' : '/(tabs)/fitbit';
     }
   } catch {
     // ignore

@@ -12,6 +12,7 @@ import { alert } from '@/utils/alert';
 import type { RootState } from '@/src/types/store';
 import type { FitbitAccessToken } from '@/utils/fitbit';
 import { useColors } from '@/hooks/useColors';
+import { get, save } from '@/localStorage';
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 const FITBIT_OAUTH_REDIRECT_URL = process.env.EXPO_PUBLIC_FITBIT_OAUTH_REDIRECT_URL || '';
@@ -68,7 +69,13 @@ export default function FitbitPanel(): React.ReactElement {
             user: { id: user.user?.id ?? 0 },
             accessToken,
           });
-          dispatch({ type: 'UPDATE_ACCESS_TOKEN', value: newToken });
+          if (newToken) {
+            dispatch({ type: 'UPDATE_ACCESS_TOKEN', value: newToken });
+            const refreshedSummary = (await getDailyActivitySummary(newToken)) as ActivitySummary;
+            if (!refreshedSummary.errors?.length) {
+              setActivitySummary(refreshedSummary);
+            }
+          }
           return;
         }
         setIsLoading(false);
@@ -99,28 +106,46 @@ export default function FitbitPanel(): React.ReactElement {
     outputRange: ['0deg', '360deg'],
   });
 
+  const hasAccessToken = !!(user.accessToken && (user.accessToken as FitbitAccessToken).access_token);
+
   useEffect(() => {
     if (Object.keys(activitySummary).length === 0) {
-      if (user.accessToken && (user.accessToken as FitbitAccessToken).access_token) {
+      if (hasAccessToken) {
         getData(user.accessToken as FitbitAccessToken);
       } else {
-        fetch(`${SERVER_URL}/cbw/accesstokens/${user.user?.id}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        })
-          .then((res) => res.json())
-          .then((data: { token?: string }) => {
+        const loadToken = async (): Promise<void> => {
+          try {
+            const stored = await get('fitbitAccessToken');
+            if (stored) {
+              const token = JSON.parse(stored) as FitbitAccessToken;
+              if (token.access_token) {
+                dispatch({ type: 'UPDATE_ACCESS_TOKEN', value: token });
+                return; // Effect re-runs when hasAccessToken becomes true
+              }
+            }
+            if (!user.user?.id) return;
+            const res = await fetch(`${SERVER_URL}/cbw/accesstokens/${user.user.id}`, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' },
+            });
+            const data = (await res.json()) as { token?: string };
             if (data.token) {
               const token = JSON.parse(data.token) as FitbitAccessToken | { errors?: unknown };
               if ('errors' in token && token.errors) return;
+              await save('fitbitAccessToken', data.token);
               dispatch({ type: 'UPDATE_ACCESS_TOKEN', value: token });
-              getData(token as FitbitAccessToken);
+              // Effect re-runs when hasAccessToken becomes true
             }
-          })
-          .catch((err) => console.error('Error:', err));
+          } catch (err) {
+            console.error('Error:', err);
+          }
+        };
+        loadToken();
       }
     }
-  }, [user.user?.id]);
+    // hasAccessToken (boolean) prevents re-triggers from token object reference changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.user?.id, hasAccessToken]);
 
   const steps = activitySummary?.summary?.steps ?? 0;
   const stepsGoal = activitySummary?.goals?.steps ?? 1000;

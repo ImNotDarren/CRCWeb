@@ -3,14 +3,14 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from '@react-navigation/native';
 import { LightNavTheme, DarkNavTheme } from '@/constants/Theme';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import FlashMessage from 'react-native-flash-message';
 import * as Linking from 'expo-linking';
 import { store } from '@/redux/store';
-import { get } from '@/localStorage';
+import { get, save } from '@/localStorage';
 import { extractCodeAndStateFromURL } from '@/utils/fitbit';
 import { alert } from '@/utils/alert';
 import type { RootState } from '@/src/types/store';
@@ -21,10 +21,25 @@ const FITBIT_CLIENT_ID = process.env.EXPO_PUBLIC_FITBIT_CLIENT_ID || '';
 const FITBIT_CODE_VERIFIER = process.env.EXPO_PUBLIC_FITBIT_CODE_VERIFIER || '';
 
 function FitbitRedirectListener(): null {
-  const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
 
+  // Restore persisted Fitbit token from AsyncStorage on mount
+  useEffect(() => {
+    const restoreToken = async (): Promise<void> => {
+      try {
+        const stored = await get('fitbitAccessToken');
+        if (stored) {
+          dispatch({ type: 'UPDATE_ACCESS_TOKEN', value: JSON.parse(stored) });
+        }
+      } catch {
+        // ignore
+      }
+    };
+    restoreToken();
+  }, [dispatch]);
+
+  // Handle warm start OAuth redirect via URL event listener
   useEffect(() => {
     const handleUrl = async ({ url }: { url: string }): Promise<void> => {
       if (!url?.includes('crcdata') || !url?.includes('redirect') || !url?.includes('code=')) return;
@@ -45,9 +60,9 @@ function FitbitRedirectListener(): null {
         const data = await res.json();
         if (data.errors) {
           alert(data.errors[0].errorType, data.errors[0].message);
-          router.replace('/(tabs)/fitbit');
           return;
         }
+        await save('fitbitAccessToken', JSON.stringify(data));
         if (user?.user?.id) {
           await fetch(`${SERVER_URL}/cbw/accesstokens`, {
             method: 'POST',
@@ -56,15 +71,13 @@ function FitbitRedirectListener(): null {
           });
         }
         dispatch({ type: 'UPDATE_ACCESS_TOKEN', value: data });
-        router.replace('/(tabs)/fitbit');
       } catch (err) {
         console.error(err);
-        router.replace('/(tabs)/fitbit');
       }
     };
     const sub = Linking.addEventListener('url', handleUrl);
     return () => sub.remove();
-  }, [router, dispatch, user?.user?.id]);
+  }, [dispatch, user?.user?.id]);
 
   return null;
 }

@@ -1,3 +1,5 @@
+import { save } from '@/localStorage';
+
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 const FITBIT_CLIENT_ID = process.env.EXPO_PUBLIC_FITBIT_CLIENT_ID || '';
 
@@ -35,6 +37,7 @@ export const refreshToken = async (user: UserStateWithToken): Promise<FitbitAcce
       }
       return null;
     }
+    await save('fitbitAccessToken', JSON.stringify(data));
     await fetch(`${SERVER_URL}/cbw/accesstokens`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

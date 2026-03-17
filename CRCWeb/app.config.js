@@ -19,8 +19,14 @@ module.exports = ({ config }) => ({
       ...config.expo?.splash,
       backgroundColor: '#0a0a0a',
     },
+    runtimeVersion: '1.0.1',
     updates: {
-      enabled: false,
+      url: 'https://u.expo.dev/d52b3498-bba2-4bf9-ac1e-c8ce31c8d87d',
+      enabled: true,
+      fallbackToCacheTimeout: 0,
+      requestHeaders: {
+        'expo-channel-name': 'production',
+      },
     },
     ios: {
       ...config.expo?.ios,
@@ -114,6 +120,7 @@ module.exports = ({ config }) => ({
         },
       ],
       './plugins/withIosEntitlements',
+      'expo-web-browser',
     ],
     extra: {
       ...config.expo?.extra,

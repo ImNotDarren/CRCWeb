@@ -1,16 +1,16 @@
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from "react-native";
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import getStyles from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
 import { useEffect, useState, useCallback } from "react";
 import RichText from "@/src/components/RichText";
 import WhiteSpace from "@/src/components/WhiteSpace";
-import { AppButton, AppInput } from "@/src/components/ui";
-import { alert } from "@/utils/alert";
+import { AppInput } from "@/src/components/ui";
 import { showMessage } from "react-native-flash-message";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useColors } from "@/hooks/useColors";
 import { IconButton } from "@/src/components/IconButton";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 

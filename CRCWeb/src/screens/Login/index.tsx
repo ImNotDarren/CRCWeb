@@ -1,10 +1,11 @@
-import { Text, TextInput, TouchableOpacity, View, Linking } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import getStyles from './style';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, save } from '@/localStorage';
 import { AppRadio } from '@/src/components/ui';
 import { alert } from '@/utils/alert';
+import { openURL } from '@/utils/url';
 import { useRouter } from 'expo-router';
 import type { RootState } from '@/src/types/store';
 import type { User } from '@/src/types/common';
@@ -42,7 +43,7 @@ export default function LoginScreen(): React.ReactElement {
   };
 
   const handleOpenPrivacyPolicy = (): void => {
-    Linking.openURL('https://imnotdarren.github.io/CRCWeb/privacy-policy.html').catch((err) =>
+    openURL('https://imnotdarren.github.io/CRCWeb/privacy-policy.html').catch((err) =>
       console.error("Couldn't load page", err)
     );
   };

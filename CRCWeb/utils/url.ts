@@ -1,9 +1,25 @@
 import { Linking } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+
+const FITBIT_OAUTH_REDIRECT_URL = process.env.EXPO_PUBLIC_FITBIT_OAUTH_REDIRECT_URL || '';
 
 export const openURL = async (url: string): Promise<void> => {
-  const bypassURLs = ['https://www.youtube.com', 'youtube:'];
+  const isHttpUrl = url.startsWith('http://') || url.startsWith('https://');
+  const isFitbitAuth = FITBIT_OAUTH_REDIRECT_URL && url.startsWith(FITBIT_OAUTH_REDIRECT_URL);
+  const externalURLs = ['https://www.youtube.com', 'youtube:'];
+  const shouldOpenExternally = externalURLs.some((prefix) => url.startsWith(prefix));
+
+  if (isHttpUrl && !isFitbitAuth && !shouldOpenExternally) {
+    try {
+      await WebBrowser.openBrowserAsync(url);
+    } catch (err) {
+      console.error(`Failed to open URL in browser: ${url}`, err);
+    }
+    return;
+  }
+
   const supported = await Linking.canOpenURL(url);
-  if (supported || bypassURLs.some((bypassURL) => url.startsWith(bypassURL))) {
+  if (supported || shouldOpenExternally) {
     await Linking.openURL(url);
   } else {
     console.error(`Don't know how to open this URL: ${url}`);

@@ -8,6 +8,7 @@ import { alert } from '@/utils/alert';
 import type { RootState } from '@/src/types/store';
 import { useColors } from '@/hooks/useColors';
 import { ThemedView } from '@/src/components/ThemedView';
+import { save } from '@/localStorage';
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || '';
 const FITBIT_CLIENT_ID = process.env.EXPO_PUBLIC_FITBIT_CLIENT_ID || '';
@@ -24,13 +25,13 @@ export default function RedirectScreen(): React.ReactElement {
     let cancelled = false;
     const run = async (): Promise<void> => {
       const url = await Linking.getInitialURL();
-      if (cancelled || !url || !url.includes('crcdata')) {
-        router.replace('/(tabs)');
+      if (cancelled || !url || !url.includes('redirect') || !url.includes('code=')) {
+        router.replace('/');
         return;
       }
       const { code } = extractCodeAndStateFromURL(url);
       if (!code) {
-        router.replace('/(tabs)');
+        router.replace('/');
         return;
       }
       try {
@@ -49,22 +50,18 @@ export default function RedirectScreen(): React.ReactElement {
         if (cancelled) return;
         if (data.errors) {
           alert(data.errors[0].errorType, data.errors[0].message);
-          router.replace('/(tabs)/fitbit');
+          router.replace('/');
           return;
         }
-        if (user?.user?.id) {
-          await fetch(`${SERVER_URL}/cbw/accesstokens`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: JSON.stringify(data), uid: user.user.id }),
-          });
-        }
+        await save('fitbitAccessToken', JSON.stringify(data));
         dispatch({ type: 'UPDATE_ACCESS_TOKEN', value: data });
-        router.replace('/(tabs)/fitbit');
+        // Always navigate to root; auth flow handles login then user reaches fitbit tab
+        // Token is persisted in AsyncStorage for later use
+        router.replace('/');
       } catch (err) {
         if (!cancelled) {
           console.error(err);
-          router.replace('/(tabs)/fitbit');
+          router.replace('/');
         }
       }
     };
@@ -72,7 +69,9 @@ export default function RedirectScreen(): React.ReactElement {
     return () => {
       cancelled = true;
     };
-  }, [router, dispatch, user?.user?.id]);
+    // No user?.user?.id dep — cold start always has null user; avoid re-running when user logs in
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, dispatch]);
 
   return (
     <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

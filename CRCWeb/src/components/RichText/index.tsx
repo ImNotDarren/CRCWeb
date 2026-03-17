@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { Text, StyleSheet, Linking, Image, TouchableOpacity, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { alert } from '@/utils/alert';
+import { openURL } from '@/utils/url';
 import { useColors } from '@/hooks/useColors';
 
 interface RichTextProps {
@@ -85,7 +86,7 @@ const RichText = ({
           <Text
             key={`link-${offset}-${linkCounter++}`}
             style={[styles.link, parentStyle]}
-            onPress={() => Linking.openURL(p5)}
+            onPress={() => void openURL(p5)}
           >
             {p4}
           </Text>

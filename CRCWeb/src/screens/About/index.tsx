@@ -1,4 +1,4 @@
-import { Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
@@ -6,8 +6,7 @@ import { ThemedText } from '@/src/components/ThemedText';
 import { useColors } from '@/hooks/useColors';
 
 const APP_NAME = 'CRCWeb';
-const appVersion =
-  Constants.expoConfig?.version ?? Constants.manifest?.version ?? '1.0.0';
+const appVersion = Constants.expoConfig?.version ?? '1.0.0';
 
 const shadowCard = {
   shadowOffset: { width: 0, height: 4 },
@@ -109,7 +108,7 @@ export default function AboutScreen(): React.ReactElement {
         <Animated.View entering={FadeInUp.delay(500).springify()}>
           <View style={styles.footer}>
             <ThemedText type="secondary" style={styles.copyright}>
-              © 2025 Emory University. All rights reserved.
+              © 2026 Emory University. All rights reserved.
             </ThemedText>
           </View>
         </Animated.View>
