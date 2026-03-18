@@ -2,10 +2,19 @@
   "expo": {
     "name": "CRCWeb",
     "slug": "CRCWeb",
-    "version": "1.0.1",
+    "version": "1.0.2",
+    "runtimeVersion": "1.0.2",
+    "updates": {
+      "url": "https://u.expo.dev/d52b3498-bba2-4bf9-ac1e-c8ce31c8d87d",
+      "enabled": true,
+      "fallbackToCacheTimeout": 0,
+      "requestHeaders": {
+        "expo-channel-name": "production"
+      }
+    },
     "orientation": "portrait",
     "icon": "./assets/1024x1024Icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
