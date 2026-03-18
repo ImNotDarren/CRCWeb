@@ -18,7 +18,7 @@ export default function SurveyScreen(): React.ReactElement {
     { title: 'After Survey', url: 'https://redcap.emory.edu/surveys/?s=8FHH87R7LPY8Y3W3' },
     {
       title: 'Weekly Check-in',
-      url: `https://redcap.emory.edu/surveys/?s=4AHNNAF3EELD7X8H&uid=${user?.id ?? ''}`,
+      url: `https://redcap.emory.edu/surveys/?s=4AHNNAF3EELD7X8H&uid=${user?.email ?? ''}`,
     },
     { title: 'Consent Form', url: 'https://redcap.emory.edu/surveys/?s=W9JJNRN9JDKCHPFK' },
   ];
