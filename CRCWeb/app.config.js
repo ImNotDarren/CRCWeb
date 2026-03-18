@@ -33,7 +33,7 @@ module.exports = ({ config }) => ({
       userInterfaceStyle: 'automatic',
       bundleIdentifier: 'com.anonymous.CRCData',
       supportsTablet: true,
-      buildNumber: '1',
+      buildNumber: '2',
       infoPlist: {
         ...config.expo?.ios?.infoPlist,
         NSLocationWhenInUseUsageDescription:
@@ -71,7 +71,7 @@ module.exports = ({ config }) => ({
       ...config.expo?.android,
       userInterfaceStyle: 'automatic',
       package: 'com.anonymous.CRCData',
-      versionCode: 1,
+      versionCode: 2,
       permissions: [
         'ACCESS_COARSE_LOCATION',
         'ACCESS_FINE_LOCATION',

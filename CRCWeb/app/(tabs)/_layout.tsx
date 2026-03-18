@@ -1,27 +1,40 @@
 import { useEffect } from 'react';
-import {
-  NativeTabs,
-  Icon,
-  Label,
-  VectorIcon,
-} from 'expo-router/unstable-native-tabs';
-import type { ImageSourcePropType } from 'react-native';
 import { Platform } from 'react-native';
+import type { ImageSourcePropType, ColorValue } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import type { ColorValue } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from 'expo-router';
+import { Tabs } from 'expo-router';
+import type { RootState } from '@/src/types/store';
+import { usePermissionsByUser } from '@/hooks/api';
+import { useColors } from '@/hooks/useColors';
+
+let NativeTabs: any, Icon: any, Label: any, VectorIcon: any;
+if (Platform.OS !== 'web') {
+  const nativeTabsModule = require('expo-router/unstable-native-tabs');
+  NativeTabs = nativeTabsModule.NativeTabs;
+  Icon = nativeTabsModule.Icon;
+  Label = nativeTabsModule.Label;
+  VectorIcon = nativeTabsModule.VectorIcon;
+}
 
 type VectorIconFamily = {
   getImageSource: (name: string, size: number, color: ColorValue) => Promise<ImageSourcePropType | null>;
 };
 
-const MaterialCommunityIconFamily = {
-  getImageSource: (MaterialCommunityIcons as unknown as { getImageSource: VectorIconFamily['getImageSource'] }).getImageSource,
-} as VectorIconFamily;
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from 'expo-router';
-import type { RootState } from '@/src/types/store';
-import { usePermissionsByUser } from '@/hooks/api';
-import { useColors } from '@/hooks/useColors';
+const MaterialCommunityIconFamily = Platform.OS !== 'web'
+  ? ({
+      getImageSource: (MaterialCommunityIcons as unknown as { getImageSource: VectorIconFamily['getImageSource'] }).getImageSource,
+    } as VectorIconFamily)
+  : null;
+
+const TAB_CONFIG = [
+  { name: 'index', icon: 'home', label: 'Home' },
+  { name: 'content', icon: 'school', label: 'Content' },
+  { name: 'fitbit', icon: 'fire-circle', label: 'Fitbit' },
+  { name: 'survey', icon: 'form-select', label: 'Survey' },
+  { name: 'me', icon: 'account', label: 'Me' },
+] as const;
 
 export default function TabsLayout(): React.ReactElement {
   const dispatch = useDispatch();
@@ -43,6 +56,45 @@ export default function TabsLayout(): React.ReactElement {
     dispatch({ type: 'UPDATE_PERMISSIONS', value: permissions });
   }, [permissions, dispatch]);
 
+  if (Platform.OS === 'web') {
+    return (
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: colors.tabIconSelected,
+          tabBarInactiveTintColor: colors.tabIconDefault,
+          tabBarStyle: { backgroundColor: colors.cardBackground },
+          headerShown: false,
+        }}
+      >
+        {TAB_CONFIG.map((tab) => {
+          if (tab.name === 'fitbit') {
+            return (
+              <Tabs.Screen
+                key={tab.name}
+                name={tab.name}
+                options={{
+                  href: null,
+                }}
+              />
+            );
+          }
+          return (
+            <Tabs.Screen
+              key={tab.name}
+              name={tab.name}
+              options={{
+                title: tab.label,
+                tabBarIcon: ({ color, size }) => (
+                  <MaterialCommunityIcons name={tab.icon} size={size} color={color} />
+                ),
+              }}
+            />
+          );
+        })}
+      </Tabs>
+    );
+  }
+
   return (
     <NativeTabs
       backgroundColor={colors.cardBackground}
@@ -62,7 +114,7 @@ export default function TabsLayout(): React.ReactElement {
         />
         <Label>Content</Label>
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="fitbit" hidden={!fitbitPermission || Platform.OS === 'web'}>
+      <NativeTabs.Trigger name="fitbit" hidden={!fitbitPermission}>
         <Icon
           src={<VectorIcon family={MaterialCommunityIconFamily} name="fire-circle" />}
           selectedColor={colors.tabIconSelected}
