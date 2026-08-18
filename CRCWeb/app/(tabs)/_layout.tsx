@@ -48,7 +48,10 @@ export default function TabsLayout(): React.ReactElement {
 
   useEffect(() => {
     if (currentVersion?.name) {
-      navigation.setOptions({ title: currentVersion.name });
+      // ponytail: the seeded "default" version has no display name of its own
+      navigation.setOptions({
+        title: currentVersion.name.toLowerCase() === 'default' ? 'CRCWeb' : currentVersion.name,
+      });
     }
   }, [currentVersion, navigation]);
 

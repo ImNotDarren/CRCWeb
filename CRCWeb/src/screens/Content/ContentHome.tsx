@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/src/types/store";
 import { useEffect, useState } from "react";
 import LectureScreen from "./Lecture";
-import ContentHeader from "./Header";
 import { AppButton } from "@/src/components/ui";
 import ContentsScreen from "./Content";
 import ResourcesScreen from "./Resources";
@@ -55,16 +54,19 @@ export default function ContentHomeScreen(): React.ReactElement {
       navigation.setOptions({
         title: module?.name || 'Content',
         headerRight: () => (
-          <ContextMenu
-            dropdownMenuMode
-            actions={actions}
-            onPress={(index) => {
-              if (index < MENU_ITEMS.length) setCurrPage(index);
-              else router.push(`/quiz/${mid}`);
-            }}
-          >
-            <IconButton icon="dots-vertical" onPress={() => {}} />
-          </ContextMenu>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {canEdit(user) && <IconButton icon="pencil" onPress={handleEdit} />}
+            <ContextMenu
+              dropdownMenuMode
+              actions={actions}
+              onPress={(index) => {
+                if (index < MENU_ITEMS.length) setCurrPage(index);
+                else router.push(`/quiz/${mid}`);
+              }}
+            >
+              <IconButton icon="dots-vertical" onPress={() => {}} />
+            </ContextMenu>
+          </View>
         ),
       });
     }, 0);
@@ -123,16 +125,8 @@ export default function ContentHomeScreen(): React.ReactElement {
     if (midStr) router.push(`/edit/${screen}/${midStr}`);
   };
 
-  const EditAction = () => (
-    <IconButton icon="pencil" onPress={handleEdit} />
-  );
-
   return (
     <View style={styles.outsideContainer}>
-      <ContentHeader
-        title={MENU_ITEMS[currPage]}
-        forwardAction={canEdit(user) ? <EditAction /> : null}
-      />
       {renderMap[MENU_ITEMS[currPage]]}
 
       <View style={styles.navigationButtonView}>
